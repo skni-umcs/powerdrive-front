@@ -1,0 +1,25 @@
+:root {
+    --background-color-black: #121212;
+    --dark-mode-background-color-dark: #202020;
+    --dark-mode-background-color-medium: #272727;
+    --dark-mode-background-color-light: #353535;
+    --color-blue: #5793FB;
+    --color-red: #B20D30;
+    --color-green: #3F784C;
+    --color-white: #EEEEEE;
+    --boirder-radius-sm: 5px;
+}
+
+html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--background-color-black);
+    color: var(--color-white);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+

@@ -1,0 +1,20 @@
+@import "base.css";
+
+.app--navbar-logo {
+    display: flex;
+    align-items: center;
+}
+
+.app--navbar-search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--dark-mode-background-color-dark);
+    border-radius: var(--boirder-radius-sm);
+    padding: 0 0.5em;
+}
+
+.app--navbar-account {
+    display: flex;
+    align-items: center;
+}
