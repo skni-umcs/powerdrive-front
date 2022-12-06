@@ -4,7 +4,7 @@ import { IconButton, InputBase } from "@mui/material";
 
 const Search = () => {
   return (
-    <div className="app--navbar-search-container">
+    <div className="app__navbar-search-container">
       <InputBase placeholder="Wyszukaj" />
       <IconButton>
         <SearchIcon />
