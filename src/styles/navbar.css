@@ -1,0 +1,37 @@
+@import "base.css";
+
+.app__navbar-logo {
+    display: flex;
+    align-items: center;
+}
+
+.app__navbar-search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--dark-mode-background-color-dark);
+    border-radius: var(--boirder-radius-sm);
+    padding: 0 0.5em;
+}
+
+.app__navbar-account {
+    display: flex;
+    align-items: center;
+}
+
+.app__navbar-link,
+.app__navbar-link--active {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 0 0.5rem;
+}
+
+.app__navbar-link {
+    color: var(--color-grey);
+}
+
+.app__navbar-link--active {
+    color: var(--color-white);
+}
+
