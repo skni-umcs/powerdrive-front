@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: baggins-dev
+    build:
+      context: .
+      target: development
+    volumes:
+      - ./public:/app/public
+      - ./src:/app/src
+    ports:
+      - "3000:3000"
