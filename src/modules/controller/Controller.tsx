@@ -3,10 +3,12 @@ import Navbar from "../common/navbar/Navbar";
 import {Outlet} from "react-router-dom";
 
 const Controller = () => {
-    return <div>
+    return <React.Fragment>
         <Navbar />
-        <Outlet />
-    </div>
+        <div className="app__global__container">
+            <Outlet />
+        </div>
+    </React.Fragment>
 }
 
 export default Controller;
