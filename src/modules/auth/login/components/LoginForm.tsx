@@ -1,17 +1,26 @@
-import React, { useState } from "react";
-import { TextField } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
+import React, { useEffect, useState } from "react";
+import { Snackbar, TextField } from "@mui/material";
+import { Alert, LoadingButton } from "@mui/lab";
 import { LoginFormData } from "../../../../models/ui/LoginFormData";
 import { RequiredValidator } from "../../../form/validators/RequiredValidator";
-import { FormFieldData } from "../../../../models/ui/FormFieldData";
 import { PropsBase } from "../../../../models/api/PropsBase";
 import { LoginData } from "../../../../models/api/LoginData";
+import { LANGUAGE } from "../../../../services/LanguageService";
+import { LoginErrorTypeEnum } from "../../../../enums/LoginErrorTypeEnum";
+import { validateFormField } from "../../../form/utils/ValidateFormFieldUtil";
 
 interface LoginFormProps extends PropsBase {
   onSubmit: (formData: LoginData) => void;
   isLoading: boolean;
+  error: LoginErrorTypeEnum | null;
+  attempts: number;
 }
-const LoginForm = ({ onSubmit, isLoading }: LoginFormProps) => {
+const LoginForm = ({
+  onSubmit,
+  isLoading,
+  error,
+  attempts,
+}: LoginFormProps) => {
   const [formData, setFormData] = useState<LoginFormData>({
     username: {
       content: "",
@@ -26,24 +35,29 @@ const LoginForm = ({ onSubmit, isLoading }: LoginFormProps) => {
       validators: [RequiredValidator],
     },
   });
+  const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
 
-  const validateFormField = (formField: FormFieldData): FormFieldData => {
-    let hasError = false;
-    let errorText = "";
-    formField.validators.forEach((validator) => {
-      let validationRes = validator(formField.content);
-      if (validationRes.hasError) {
-        hasError = true;
-        errorText = validationRes.errorText;
-      }
-    });
-
-    return {
-      ...formField,
-      hasError,
-      errorText,
-    };
+  const handleCloseErrorSnackbar = () => {
+    setErrorSnackbarOpen(false);
   };
+
+  useEffect(() => {
+    if (error) {
+      if (error === LoginErrorTypeEnum.LOGIN_ERROR) {
+        setFormData((prev) => ({
+          ...prev,
+          password: {
+            ...prev.password,
+            hasError: true,
+            errorText:
+              LANGUAGE.AUTH.ERRORS[error as keyof typeof LANGUAGE.AUTH.ERRORS],
+          },
+        }));
+      } else {
+        setErrorSnackbarOpen(true);
+      }
+    }
+  }, [error, attempts]);
 
   const handleFormChange = (
     value: string,
@@ -84,30 +98,33 @@ const LoginForm = ({ onSubmit, isLoading }: LoginFormProps) => {
   };
 
   return (
-    <div className="app__auth__card__form">
+    <div
+      className="app__auth__card__form"
+      onKeyDown={(event) => (event.key === "Enter" ? handleSubmit() : null)}
+    >
       <TextField
         error={formData.username.hasError}
         fullWidth
-        margin="normal"
-        label="Nazwa użytkownika"
+        margin="dense"
+        label={LANGUAGE.AUTH.USERNAME}
         variant="filled"
         value={formData.username.content}
         onChange={(e) => handleFormChange(e.target.value, "username")}
         helperText={
-          formData.username.hasError ? formData.username.errorText : ""
+          formData.username.hasError ? formData.username.errorText : " "
         }
       />
       <TextField
         error={formData.password.hasError}
         fullWidth
-        margin="normal"
+        margin="dense"
         type="password"
-        label="Hasło"
+        label={LANGUAGE.AUTH.PASSWORD}
         variant="filled"
         value={formData.password.content}
         onChange={(e) => handleFormChange(e.target.value, "password")}
         helperText={
-          formData.password.hasError ? formData.password.errorText : ""
+          formData.password.hasError ? formData.password.errorText : " "
         }
       />
       <div className="app__m-2">
@@ -116,9 +133,19 @@ const LoginForm = ({ onSubmit, isLoading }: LoginFormProps) => {
           onClick={handleSubmit}
           variant="contained"
         >
-          Zaloguj
+          {LANGUAGE.AUTH.LOGIN}
         </LoadingButton>
       </div>
+      <Snackbar
+        open={errorSnackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseErrorSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert severity="error" onClose={handleCloseErrorSnackbar}>
+          {LANGUAGE.AUTH.ERRORS.SERVER_ERROR}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

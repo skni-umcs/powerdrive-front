@@ -5,6 +5,6 @@ export const RequiredValidator: ValidatorFunction = (
   value: string
 ): ValidationResult => {
   const hasError = value.length === 0;
-  const errorText = hasError ? "This field is required" : "";
+  const errorText = hasError ? "REQUIRED" : " ";
   return { hasError, errorText };
 };

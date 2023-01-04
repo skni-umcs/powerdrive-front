@@ -16,6 +16,7 @@
     justify-content: flex-start;
     min-width: 300px;
     align-items: stretch;
+    max-width: 600px;
 }
 
 .app__auth__card__header {
@@ -37,8 +38,25 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
+    padding: 0.5rem 0;
     flex: 1;
+}
+
+.app__auth__card__links__link {
+    color: var(--color-grey);
+    text-decoration: none;
+}
+
+.app__auth__card__links__link:hover {
+    color: var(--color-lightgrey);
+}
+
+.app__auth__card__instruction {
+    max-width: 45ch;
+    text-align: center;
+    line-height: 1.4;
+    padding: 0.5rem 0 1rem 0;
 }
 
 @media screen and (max-width: 768px) {
