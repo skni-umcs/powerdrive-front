@@ -1,49 +1,52 @@
 import React, { useState } from "react";
-import "../../../styles/auth.css";
-import LoginForm from "./components/LoginForm";
-import { LoginData } from "../../../models/api/LoginData";
+import { LANGUAGE } from "../../../services/LanguageService";
 import { Link, useNavigate } from "react-router-dom";
 import { PathEnum } from "../../../enums/PathEnum";
-import { LANGUAGE } from "../../../services/LanguageService";
-import { login } from "../../../services/AuthService";
+import RegisterForm from "./components/RegisterForm";
+import { RegisterErrorTypeEnum } from "../../../enums/RegisterErrorTypeEnum";
+import { register } from "../../../services/AuthService";
 import { finalize, take } from "rxjs";
-import { LoginErrorTypeEnum } from "../../../enums/LoginErrorTypeEnum";
+import { RegisterData } from "../../../models/api/RegisterData";
 
-const Login = () => {
+const Register = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [loginError, setLoginError] = useState<LoginErrorTypeEnum | null>(null);
+  const [registerError, setRegisterError] =
+    useState<RegisterErrorTypeEnum | null>(null);
   const [attemptCounter, setAttemptCounter] = useState(0);
-  const handleSubmitLogin = (formData: LoginData) => {
+
+  const handleSubmitRegister = (formData: RegisterData) => {
     setIsLoading(true);
-    login(formData)
+    register(formData)
       .pipe(
         take(1),
         finalize(() => setIsLoading(false))
       )
-      .subscribe((loginRes) => {
-        setLoginError(loginRes.error!);
+      .subscribe((registerRes) => {
+        setRegisterError(registerRes.error!);
         setAttemptCounter(attemptCounter + 1);
-        if (loginRes.isSuccessful) navigate("/" + PathEnum.DRIVE);
+        if (registerRes.isSuccessful) navigate("/" + PathEnum.DRIVE);
       });
   };
 
   return (
     <div className="app__auth__container">
       <div className="app__auth__card">
-        <h2 className="app__auth__card__header">{LANGUAGE.AUTH.LOGIN_TITLE}</h2>
-        <LoginForm
-          onSubmit={handleSubmitLogin}
+        <h2 className="app__auth__card__header">
+          {LANGUAGE.AUTH.REGISTER_TITLE}
+        </h2>
+        <RegisterForm
+          onSubmit={handleSubmitRegister}
           isLoading={isLoading}
-          error={loginError}
+          error={registerError}
           attempts={attemptCounter}
         />
         <div className="app__auth__card__links">
           <Link
             className="app__auth__card__links__link"
-            to={"/" + PathEnum.REGISTER}
+            to={"/" + PathEnum.LOGIN}
           >
-            {LANGUAGE.AUTH.REGISTER}
+            {LANGUAGE.AUTH.LOGIN}
           </Link>
           <Link
             className="app__auth__card__links__link"
@@ -57,4 +60,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

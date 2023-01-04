@@ -1,7 +1,12 @@
 import React from "react";
+import SecuredContainer from "../common/securedContainer/SecuredContainer";
 
 const Drive = () => {
-    return <div>Drive</div>
-}
+  return (
+    <SecuredContainer>
+      <div>Drive</div>
+    </SecuredContainer>
+  );
+};
 
 export default Drive;

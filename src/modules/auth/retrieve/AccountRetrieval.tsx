@@ -1,0 +1,65 @@
+import React, { useState } from "react";
+import { LANGUAGE } from "../../../services/LanguageService";
+import { Snackbar } from "@mui/material";
+import { Alert } from "@mui/lab";
+import { sendPasswordResetEmail } from "../../../services/AuthService";
+import { finalize, take } from "rxjs";
+import { useNavigate } from "react-router-dom";
+import { PathEnum } from "../../../enums/PathEnum";
+import AccountRetrievalForm from "./components/AccountRetrievalForm";
+import { AccountRetrievalData } from "../../../models/api/AccountRetrievalData";
+
+const AccountRetrieval = () => {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
+
+  const handleCloseErrorSnackbar = () => {
+    setErrorSnackbarOpen(false);
+  };
+
+  const handleSubmitRetrieval = (formData: AccountRetrievalData): void => {
+    setIsLoading(true);
+    sendPasswordResetEmail(formData.email)
+      .pipe(
+        take(1),
+        finalize(() => setIsLoading(false))
+      )
+      .subscribe((res) => {
+        if (res.isSuccessful) {
+          navigate("/" + PathEnum.RETRIEVE_LINK_SENT);
+        } else {
+          setErrorSnackbarOpen(true);
+        }
+      });
+  };
+
+  return (
+    <div className="app__auth__container">
+      <div className="app__auth__card">
+        <h2 className="app__auth__card__header">
+          {LANGUAGE.AUTH.ACCOUNT_RETRIEVAL}
+        </h2>
+        <div className="app__auth__card__instruction">
+          {LANGUAGE.AUTH.ACCOUNT_RETRIEVAL_INSTRUCTION}
+        </div>
+        <AccountRetrievalForm
+          isLoading={isLoading}
+          onSubmit={handleSubmitRetrieval}
+        />
+      </div>
+      <Snackbar
+        open={errorSnackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseErrorSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert severity="error" onClose={handleCloseErrorSnackbar}>
+          {LANGUAGE.AUTH.ERRORS.ACCOUNT_RETRIEVAL_ERROR}
+        </Alert>
+      </Snackbar>
+    </div>
+  );
+};
+
+export default AccountRetrieval;

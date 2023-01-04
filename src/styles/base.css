@@ -7,6 +7,7 @@
     --color-red: #B20D30;
     --color-green: #3F784C;
     --color-white: #EEEEEE;
+    --color-lightgrey: #CCCCCC;
     --color-grey: #888888;
     --boirder-radius-sm: 5px;
 }
@@ -17,10 +18,34 @@ html {
     font-family: 'Roboto', sans-serif;
     background-color: var(--background-color-black);
     color: var(--color-white);
+    min-height: 100vh;
 }
 
 body {
     margin: 0;
     padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex: 1;
+}
+
+#root {
+    min-height: 100vh;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.app__m-1 {
+    margin: 0.6rem;
+}
+
+.app__m-2 {
+    margin: 1rem;
+}
+
+.app__global__container {
+    display: flex;
+    flex: 1;
 }
 

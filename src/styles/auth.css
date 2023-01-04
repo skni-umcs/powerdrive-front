@@ -1,2 +1,68 @@
 @import "base.css";
 
+.app__auth__container {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.app__auth__card {
+    background-color: var(--dark-mode-background-color-medium);
+    border-radius: 3px;
+    padding: 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-width: 300px;
+    align-items: stretch;
+    max-width: 600px;
+}
+
+.app__auth__card__header {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 1rem;
+    text-align: center;
+}
+
+.app__auth__card__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    flex: 1;
+}
+
+.app__auth__card__links {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0.5rem 0;
+    flex: 1;
+}
+
+.app__auth__card__links__link {
+    color: var(--color-grey);
+    text-decoration: none;
+}
+
+.app__auth__card__links__link:hover {
+    color: var(--color-lightgrey);
+}
+
+.app__auth__card__instruction {
+    max-width: 45ch;
+    text-align: center;
+    line-height: 1.4;
+    padding: 0.5rem 0 1rem 0;
+}
+
+@media screen and (max-width: 768px) {
+    .app__auth__card {
+        min-width: inherit;
+        width: inherit;
+        margin: 0;
+    }
+}

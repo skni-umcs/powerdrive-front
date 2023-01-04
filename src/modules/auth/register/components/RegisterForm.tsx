@@ -1,0 +1,266 @@
+import React, { useEffect, useState } from "react";
+import { RegisterFormData } from "../../../../models/ui/RegisterFormData";
+import { RequiredValidator } from "../../../form/validators/RequiredValidator";
+import { LANGUAGE } from "../../../../services/LanguageService";
+import { PropsBase } from "../../../../models/api/PropsBase";
+import { RegisterData } from "../../../../models/api/RegisterData";
+import { RegisterErrorTypeEnum } from "../../../../enums/RegisterErrorTypeEnum";
+import { Grid, Snackbar, TextField } from "@mui/material";
+import { Alert, LoadingButton } from "@mui/lab";
+import { EmailValidator } from "../../../form/validators/EmailValidator";
+import { PasswordValidator } from "../../../form/validators/PasswordValidator";
+import { FormValidatorFunction } from "../../../../models/ui/FormValidatorFunction";
+import { PasswordRepValidator } from "../../../form/validators/PasswordRepValidator";
+import { validateFormField } from "../../../form/utils/ValidateFormFieldUtil";
+
+interface RegisterFormProps extends PropsBase {
+  onSubmit: (formData: RegisterData) => void;
+  isLoading: boolean;
+  error: RegisterErrorTypeEnum | null;
+  attempts: number;
+}
+const RegisterForm = ({
+  onSubmit,
+  isLoading,
+  error,
+  attempts,
+}: RegisterFormProps) => {
+  const [formData, setFormData] = useState<RegisterFormData>({
+    email: {
+      content: "",
+      hasError: false,
+      errorText: " ",
+      validators: [RequiredValidator, EmailValidator],
+    },
+    name: {
+      content: "",
+      hasError: false,
+      errorText: " ",
+      validators: [RequiredValidator],
+    },
+    surname: {
+      content: "",
+      hasError: false,
+      errorText: " ",
+      validators: [RequiredValidator],
+    },
+    username: {
+      content: "",
+      hasError: false,
+      errorText: " ",
+      validators: [RequiredValidator],
+    },
+    password: {
+      content: "",
+      hasError: false,
+      errorText: " ",
+      validators: [RequiredValidator, PasswordValidator],
+    },
+    repeatPassword: {
+      content: "",
+      hasError: false,
+      errorText: " ",
+      validators: [RequiredValidator],
+    },
+  });
+
+  const [formValidators] = useState<FormValidatorFunction[]>([
+    PasswordRepValidator,
+  ]);
+  const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
+
+  const handleCloseErrorSnackbar = () => {
+    setErrorSnackbarOpen(false);
+  };
+
+  useEffect(() => {
+    if (error) {
+      if (error === RegisterErrorTypeEnum.EMAIL_ALREADY_IN_USE) {
+        setFormData((prev) => ({
+          ...prev,
+          email: {
+            ...prev.email,
+            hasError: true,
+            errorText:
+              LANGUAGE.AUTH.ERRORS[error as keyof typeof LANGUAGE.AUTH.ERRORS],
+          },
+        }));
+      } else if (error === RegisterErrorTypeEnum.USERNAME_TAKEN) {
+        setFormData((prev) => ({
+          ...prev,
+          username: {
+            ...prev.username,
+            hasError: true,
+            errorText:
+              LANGUAGE.AUTH.ERRORS[error as keyof typeof LANGUAGE.AUTH.ERRORS],
+          },
+        }));
+      } else {
+        setErrorSnackbarOpen(true);
+      }
+    }
+  }, [error, attempts]);
+
+  const handleFormChange = (
+    value: string,
+    fieldName: keyof RegisterFormData
+  ): void => {
+    const updatedFormField = {
+      ...formData[fieldName],
+      content: value,
+    };
+
+    setFormData({
+      ...formData,
+      [fieldName]: validateFormField(updatedFormField),
+    });
+  };
+
+  const handleSubmit = (): void => {
+    const currentFormData: RegisterFormData = { ...formData };
+    let hasError = false;
+
+    for (let field in currentFormData) {
+      currentFormData[field as keyof RegisterFormData] = validateFormField(
+        currentFormData[field as keyof RegisterFormData]
+      );
+
+      hasError =
+        hasError || currentFormData[field as keyof RegisterFormData].hasError;
+    }
+
+    for (let validator of formValidators) {
+      const validationRes = validator(currentFormData);
+      for (let error of validationRes) {
+        currentFormData[error.fieldName].hasError = true;
+        currentFormData[error.fieldName].errorText =
+          LANGUAGE.AUTH.ERRORS[
+            error.errorText as keyof typeof LANGUAGE.AUTH.ERRORS
+          ];
+      }
+
+      hasError = hasError || validationRes.length > 0;
+    }
+
+    setFormData(currentFormData);
+
+    if (hasError) return;
+    else
+      onSubmit({
+        email: formData.email.content,
+        name: formData.name.content,
+        surname: formData.surname.content,
+        username: formData.username.content,
+        password: formData.password.content,
+      });
+  };
+
+  return (
+    <div
+      className="app__auth__card__form"
+      onKeyDown={(event) => (event.key === "Enter" ? handleSubmit() : null)}
+    >
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            error={formData.email.hasError}
+            fullWidth
+            margin="dense"
+            label={LANGUAGE.AUTH.EMAIL}
+            variant="filled"
+            value={formData.email.content}
+            onChange={(e) => handleFormChange(e.target.value, "email")}
+            helperText={
+              formData.email.hasError ? formData.email.errorText : " "
+            }
+          />
+          <TextField
+            error={formData.name.hasError}
+            fullWidth
+            margin="dense"
+            label={LANGUAGE.AUTH.NAME}
+            variant="filled"
+            value={formData.name.content}
+            onChange={(e) => handleFormChange(e.target.value, "name")}
+            helperText={formData.name.hasError ? formData.name.errorText : " "}
+          />
+          <TextField
+            error={formData.surname.hasError}
+            fullWidth
+            margin="dense"
+            label={LANGUAGE.AUTH.SURNAME}
+            variant="filled"
+            value={formData.surname.content}
+            onChange={(e) => handleFormChange(e.target.value, "surname")}
+            helperText={
+              formData.surname.hasError ? formData.surname.errorText : " "
+            }
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            error={formData.username.hasError}
+            fullWidth
+            margin="dense"
+            label={LANGUAGE.AUTH.USERNAME}
+            variant="filled"
+            value={formData.username.content}
+            onChange={(e) => handleFormChange(e.target.value, "username")}
+            helperText={
+              formData.username.hasError ? formData.username.errorText : " "
+            }
+          />
+          <TextField
+            error={formData.password.hasError}
+            fullWidth
+            margin="dense"
+            type="password"
+            label={LANGUAGE.AUTH.PASSWORD}
+            variant="filled"
+            value={formData.password.content}
+            onChange={(e) => handleFormChange(e.target.value, "password")}
+            helperText={
+              formData.password.hasError ? formData.password.errorText : " "
+            }
+          />
+          <TextField
+            error={formData.repeatPassword.hasError}
+            fullWidth
+            margin="dense"
+            type="password"
+            label={LANGUAGE.AUTH.REPEAT_PASSWORD}
+            variant="filled"
+            value={formData.repeatPassword.content}
+            onChange={(e) => handleFormChange(e.target.value, "repeatPassword")}
+            helperText={
+              formData.repeatPassword.hasError
+                ? formData.repeatPassword.errorText
+                : " "
+            }
+          />
+        </Grid>
+      </Grid>
+      <div className="app__m-2">
+        <LoadingButton
+          loading={isLoading}
+          onClick={handleSubmit}
+          variant="contained"
+        >
+          {LANGUAGE.AUTH.REGISTER}
+        </LoadingButton>
+      </div>
+      <Snackbar
+        open={errorSnackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseErrorSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert severity="error" onClose={handleCloseErrorSnackbar}>
+          {LANGUAGE.AUTH.ERRORS.SERVER_ERROR}
+        </Alert>
+      </Snackbar>
+    </div>
+  );
+};
+
+export default RegisterForm;
