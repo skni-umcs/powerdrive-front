@@ -24,7 +24,8 @@ const Login = () => {
       .subscribe((loginRes) => {
         setLoginError(loginRes.error!);
         setAttemptCounter(attemptCounter + 1);
-        if (loginRes.isSuccessful) navigate("/" + PathEnum.DRIVE);
+        if (loginRes.isSuccessful)
+          navigate("/" + PathEnum.APP + "/" + PathEnum.DRIVE);
       });
   };
 

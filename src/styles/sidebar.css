@@ -1,0 +1,38 @@
+@import "base.css";
+
+.app__sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--dark-mode-background-color-dark);
+    padding: 0.5em;
+}
+
+.app__sidebar__navigation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.app__sidebar__navigation__item,
+.app__sidebar__navigation__item--active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: var(--boirder-radius-sm);
+    cursor: pointer;
+    margin: 0 0.5rem;
+}
+
+.app__sidebar__navigation__item:hover {
+    background-color: var(--color-grey);
+}
+
+.app__sidebar__navigation__icon {
+    width: 2rem;
+    height: 2rem;
+}
+

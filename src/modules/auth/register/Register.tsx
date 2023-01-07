@@ -25,7 +25,8 @@ const Register = () => {
       .subscribe((registerRes) => {
         setRegisterError(registerRes.error!);
         setAttemptCounter(attemptCounter + 1);
-        if (registerRes.isSuccessful) navigate("/" + PathEnum.DRIVE);
+        if (registerRes.isSuccessful)
+          navigate("/" + PathEnum.APP + "/" + PathEnum.DRIVE);
       });
   };
 

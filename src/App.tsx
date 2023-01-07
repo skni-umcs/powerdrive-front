@@ -14,6 +14,7 @@ import AccountRetrieval from "./modules/auth/retrieve/AccountRetrieval";
 import RetrieveLinkSent from "./modules/auth/linkSent/RetrieveLinkSent";
 import { CookiesProvider, useCookies } from "react-cookie";
 import { initializeAuth } from "./services/AuthService";
+import WebApp from "./modules/webapp/WebApp";
 
 const router = createBrowserRouter([
   {
@@ -41,16 +42,22 @@ const router = createBrowserRouter([
         element: <PasswordReset />,
       },
       {
-        path: PathEnum.DRIVE,
-        element: <Drive />,
-      },
-      {
-        path: PathEnum.CALENDAR,
-        element: <Calendar />,
-      },
-      {
-        path: PathEnum.NOTES,
-        element: <Notes />,
+        path: PathEnum.APP,
+        element: <WebApp />,
+        children: [
+          {
+            path: PathEnum.DRIVE,
+            element: <Drive />,
+          },
+          {
+            path: PathEnum.CALENDAR,
+            element: <Calendar />,
+          },
+          {
+            path: PathEnum.NOTES,
+            element: <Notes />,
+          },
+        ],
       },
       {
         path: "",
