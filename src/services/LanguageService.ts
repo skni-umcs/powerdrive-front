@@ -1,3 +1,5 @@
+import { BehaviorSubject } from "rxjs";
+
 export enum Language {
   PL = "PL",
   EN = "EN",
@@ -46,6 +48,17 @@ const LANGUAGES = {
           "Nie udało się wysłać linku do przywracania konta",
       },
     },
+    SIDEBAR: {
+      DRIVE: "Dysk",
+      NOTES: "Notatki",
+      CALENDAR: "Kalendarz",
+      YOUR_FILES: "Twoje pliki",
+      YOUR_NOTES: "Twoje notatki",
+      SHARED: "Udostępnione",
+      FAVORITES: "Ulubione",
+      DELETED: "Usunięte",
+      LAST_USED: "Ostatnio używane",
+    },
   },
   EN: {
     NAVBAR: {
@@ -88,12 +101,24 @@ const LANGUAGES = {
         ACCOUNT_RETRIEVAL_ERROR: "Failed to send link to retrieve account",
       },
     },
+    SIDEBAR: {
+      DRIVE: "Drive",
+      NOTES: "Notes",
+      CALENDAR: "Calendar",
+      YOUR_FILES: "Your files",
+      YOUR_NOTES: "Your notes",
+      SHARED: "Shared",
+      FAVORITES: "Favorites",
+      DELETED: "Deleted",
+      LAST_USED: "Last used",
+    },
   },
 };
 
-export let LANGUAGE = LANGUAGES.PL;
+const language = new BehaviorSubject<any>(LANGUAGES.PL);
+export const language$ = language.asObservable();
 
 export const setLanguage = (lang: Language) => {
   console.log("Setting language to: ", lang);
-  LANGUAGE = LANGUAGES[lang as keyof typeof LANGUAGES];
+  language.next(LANGUAGES[lang as keyof typeof LANGUAGES]);
 };

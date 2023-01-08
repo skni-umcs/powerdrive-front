@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import { LANGUAGE } from "../../../services/LanguageService";
+import { language$ } from "../../../services/LanguageService";
 import PasswordResetForm from "./components/PasswordResetForm";
 import { PasswordResetData } from "../../../models/api/PasswordResetData";
 import { resetPassword } from "../../../services/AuthService";
 import { finalize, take } from "rxjs";
 import { PathEnum } from "../../../enums/PathEnum";
 import { useNavigate } from "react-router-dom";
+import { bind } from "react-rxjs";
+
+const [useLanguage] = bind(language$);
 
 const PasswordReset = () => {
+  const LANGUAGE = useLanguage();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 

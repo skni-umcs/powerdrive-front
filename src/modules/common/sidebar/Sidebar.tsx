@@ -1,14 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../../styles/sidebar.css";
-import SidebarNavigation from "./components/SidebarNavigation";
-import SidebarContent from "./components/sidebarContent/SidebarContent";
+import DefaultSidebar from "./components/defaultSidebar/DefaultSidebar";
+import MobileSidebar from "./components/mobileSidebar/MobileSidebar";
 
 const Sidebar = () => {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    function handleResize() {
+      setWidth(window.innerWidth);
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <div className="app__sidebar">
-      <SidebarContent />
-      <SidebarNavigation />
-    </div>
+    <React.Fragment>
+      {width < 768 ? <MobileSidebar /> : <DefaultSidebar />}
+    </React.Fragment>
   );
 };
 

@@ -8,4 +8,8 @@ export enum PathEnum {
   DRIVE = "drive",
   CALENDAR = "calendar",
   NOTES = "notes",
+  HOME = "home",
+  SHARED = "shared",
+  FAVORITES = "favorites",
+  DELETED = "deleted",
 }

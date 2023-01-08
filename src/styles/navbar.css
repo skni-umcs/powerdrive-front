@@ -10,7 +10,7 @@
     justify-content: center;
     align-items: center;
     background-color: var(--dark-mode-background-color-dark);
-    border-radius: var(--boirder-radius-sm);
+    border-radius: var(--border-radius-sm);
     padding: 0 0.5em;
 }
 
@@ -35,3 +35,10 @@
     color: var(--color-white);
 }
 
+@media screen and (max-width: 768px) {
+    .app__navbar-link,
+    .app__navbar-link--active {
+        font-size: 0.8rem;
+        margin: 0 0.2rem;
+    }
+}

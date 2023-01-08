@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { RegisterFormData } from "../../../../models/ui/RegisterFormData";
 import { RequiredValidator } from "../../../form/validators/RequiredValidator";
-import { LANGUAGE } from "../../../../services/LanguageService";
+import { language$ } from "../../../../services/LanguageService";
 import { PropsBase } from "../../../../models/api/PropsBase";
 import { RegisterData } from "../../../../models/api/RegisterData";
 import { RegisterErrorTypeEnum } from "../../../../enums/RegisterErrorTypeEnum";
@@ -12,6 +12,9 @@ import { PasswordValidator } from "../../../form/validators/PasswordValidator";
 import { FormValidatorFunction } from "../../../../models/ui/FormValidatorFunction";
 import { PasswordRepValidator } from "../../../form/validators/PasswordRepValidator";
 import { validateFormField } from "../../../form/utils/ValidateFormFieldUtil";
+import { bind } from "react-rxjs";
+
+const [useLanguage] = bind(language$);
 
 interface RegisterFormProps extends PropsBase {
   onSubmit: (formData: RegisterData) => void;
@@ -25,6 +28,7 @@ const RegisterForm = ({
   error,
   attempts,
 }: RegisterFormProps) => {
+  const LANGUAGE = useLanguage();
   const [formData, setFormData] = useState<RegisterFormData>({
     email: {
       content: "",
@@ -133,10 +137,7 @@ const RegisterForm = ({
       const validationRes = validator(currentFormData);
       for (let error of validationRes) {
         currentFormData[error.fieldName].hasError = true;
-        currentFormData[error.fieldName].errorText =
-          LANGUAGE.AUTH.ERRORS[
-            error.errorText as keyof typeof LANGUAGE.AUTH.ERRORS
-          ];
+        currentFormData[error.fieldName].errorText = error.errorText;
       }
 
       hasError = hasError || validationRes.length > 0;
@@ -171,7 +172,9 @@ const RegisterForm = ({
             value={formData.email.content}
             onChange={(e) => handleFormChange(e.target.value, "email")}
             helperText={
-              formData.email.hasError ? formData.email.errorText : " "
+              formData.email.hasError
+                ? LANGUAGE.AUTH.ERRORS[formData.email.errorText]
+                : " "
             }
           />
           <TextField
@@ -182,7 +185,11 @@ const RegisterForm = ({
             variant="filled"
             value={formData.name.content}
             onChange={(e) => handleFormChange(e.target.value, "name")}
-            helperText={formData.name.hasError ? formData.name.errorText : " "}
+            helperText={
+              formData.name.hasError
+                ? LANGUAGE.AUTH.ERRORS[formData.name.errorText]
+                : " "
+            }
           />
           <TextField
             error={formData.surname.hasError}
@@ -193,7 +200,9 @@ const RegisterForm = ({
             value={formData.surname.content}
             onChange={(e) => handleFormChange(e.target.value, "surname")}
             helperText={
-              formData.surname.hasError ? formData.surname.errorText : " "
+              formData.surname.hasError
+                ? LANGUAGE.AUTH.ERRORS[formData.surname.errorText]
+                : " "
             }
           />
         </Grid>
@@ -207,7 +216,9 @@ const RegisterForm = ({
             value={formData.username.content}
             onChange={(e) => handleFormChange(e.target.value, "username")}
             helperText={
-              formData.username.hasError ? formData.username.errorText : " "
+              formData.username.hasError
+                ? LANGUAGE.AUTH.ERRORS[formData.username.errorText]
+                : " "
             }
           />
           <TextField
@@ -220,7 +231,9 @@ const RegisterForm = ({
             value={formData.password.content}
             onChange={(e) => handleFormChange(e.target.value, "password")}
             helperText={
-              formData.password.hasError ? formData.password.errorText : " "
+              formData.password.hasError
+                ? LANGUAGE.AUTH.ERRORS[formData.password.errorText]
+                : " "
             }
           />
           <TextField
@@ -234,7 +247,7 @@ const RegisterForm = ({
             onChange={(e) => handleFormChange(e.target.value, "repeatPassword")}
             helperText={
               formData.repeatPassword.hasError
-                ? formData.repeatPassword.errorText
+                ? LANGUAGE.AUTH.ERRORS[formData.repeatPassword.errorText]
                 : " "
             }
           />

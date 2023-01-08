@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Box,
@@ -17,14 +17,35 @@ import { NavLink } from "react-router-dom";
 import { PathEnum } from "../../../enums/PathEnum";
 import {
   Language,
-  LANGUAGE,
+  language$,
   setLanguage,
 } from "../../../services/LanguageService";
+import { useCookies } from "react-cookie";
+import { CookiesEnum } from "../../../enums/CookiesEnum";
 
+const [useLanguage] = bind(language$);
 const [useLoggedUser] = bind(loggedUser$);
 const Navbar = () => {
+  const LANGUAGE = useLanguage();
   const [anchorMenu, setAnchorMenu] = useState<null | HTMLElement>(null);
   const loggedUser = useLoggedUser();
+  const [width, setWidth] = useState(window.innerWidth);
+  const [cookies, setCookie, removeCookie] = useCookies(["user", "token"]);
+
+  useEffect(() => {
+    function handleResize() {
+      setWidth(window.innerWidth);
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleLogout = () => {
+    removeCookie(CookiesEnum.USER);
+    console.log("Removing cookie");
+    logout();
+  };
 
   return (
     <AppBar position="static">
@@ -42,7 +63,7 @@ const Navbar = () => {
         </div>
         {loggedUser ? (
           <React.Fragment>
-            <Search />
+            {width > 768 ? <Search /> : null}
             <div className="app__navbar-account">
               <div>Jan Kowalski</div>
               <IconButton
@@ -59,7 +80,7 @@ const Navbar = () => {
                 open={Boolean(anchorMenu)}
                 onClose={() => setAnchorMenu(null)}
               >
-                <Button onClick={() => logout()}>Logout</Button>
+                <Button onClick={handleLogout}>Logout</Button>
                 <Button onClick={() => setLanguage(Language.PL)}>PL</Button>
                 <Button onClick={() => setLanguage(Language.EN)}>EN</Button>
               </Menu>

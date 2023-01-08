@@ -1,7 +1,10 @@
 import React from "react";
-import { LANGUAGE } from "../../../services/LanguageService";
+import { language$ } from "../../../services/LanguageService";
+import { bind } from "react-rxjs";
 
+const [useLanguage] = bind(language$);
 const RetrieveLinkSent = () => {
+  const LANGUAGE = useLanguage();
   return (
     <div className="app__auth__container">
       <div className="app__auth__card">

@@ -8,7 +8,9 @@ const WebApp = () => {
     <SecuredContainer>
       <React.Fragment>
         <Sidebar />
-        <Outlet />
+        <div className="app__content__container">
+          <Outlet />
+        </div>
       </React.Fragment>
     </SecuredContainer>
   );
