@@ -2,7 +2,7 @@ export enum FileTypeEnum {
   FILE = "file",
   FOLDER = "folder",
   NOTE = "note",
-  NOTE_FOLDER = "note_folder",
+  NOTES_FOLDER = "notes_folder",
   PFD = "pdf",
   XML = "xml",
   DOC = "doc",

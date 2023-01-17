@@ -22,6 +22,7 @@ const SidebarShortcuts = ({
     <div className="app__sidebar__shortcuts">
       {shortcuts.map((shortcut) => (
         <div
+          key={shortcut.title}
           className={
             location.pathname.startsWith(shortcut.path)
               ? "app__sidebar__shortcut--active"

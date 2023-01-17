@@ -11,8 +11,9 @@ const SidebarLastUsedItems = ({ title, items }: SidebarLastUsedItemsProps) => {
       <div className="app__sidebar__last-used__header">{title}</div>
       <div className="app__sidebar__last-used__items">
         {items.map((item) => (
-          <div className="app__sidebar__last-used__item">
+          <div key={item.id} className="app__sidebar__last-used__item">
             <img
+              alt=""
               src={require("assets/images/" + item.type + ".png")}
               className="app__sidebar__last-used__item__icon"
             />

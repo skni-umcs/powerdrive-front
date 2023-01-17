@@ -12,7 +12,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
-    padding: 0.5rem;
+    padding: 0.5rem 2rem;
 }
 
 .app__sidebar__navigation__item,
@@ -24,7 +24,7 @@
     padding: 0.5rem;
     border-radius: var(--border-radius-sm);
     cursor: pointer;
-    margin: 0 0.5rem;
+    margin: 0 0.8rem;
 }
 
 .app__sidebar__navigation__item:hover {
@@ -113,4 +113,173 @@
 .app__sidebar__last-used__item__icon {
     width: 1.7rem;
     padding: 0.5rem;
+}
+
+.app__sidebar__calendar__widget {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0.4rem;
+}
+
+.app__sidebar__calendar__widget__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0.5rem 0 1rem 0;
+}
+
+.app__sidebar__calendar__widget__header__date {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.app__sidebar__calendar__widget__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex: 1;
+}
+
+.app__sidebar__calendar__widget__body__week {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+}
+
+.app__sidebar__calendar__widget__body__week__day,
+.app__sidebar__calendar__widget__body__week__day--today,
+.app__sidebar__calendar__widget__body__week__day--inactive {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    width: 1.7rem;
+    height: 1.6rem;
+    text-align: center;
+    padding: 0.1rem;
+    border-radius: 2px;
+}
+
+.app__sidebar__calendar__widget__body__week__day:hover {
+    background-color: var(--color-grey);
+    cursor: pointer;
+}
+
+.app__sidebar__calendar__widget__body__week__day--today {
+    background-color: var(--color-green);
+    cursor: pointer;
+}
+
+.app__sidebar__calendar__widget__body__week__day--inactive {
+    color: var(--color-grey);
+}
+
+.app__sidebar__calendar__list,
+.app__sidebar__upcoming-events {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 1rem 0.4rem 0.5rem 0.4rem;
+}
+
+.app__sidebar__calendar__list__header,
+.app__sidebar__upcoming-events__header {
+    box-sizing: border-box;
+    border-bottom: 2px solid var(--color-grey);
+    width: 95%;
+    padding: 0.5rem 0.2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.app__sidebar__calendar__list__items,
+.app__sidebar__upcoming-events__items {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.app__sidebar__calendar__list__item {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0.8rem 0.5rem 0.2rem 0.5rem;
+}
+
+.app__sidebar__calendar__list__item__checkbox,
+.app__sidebar__calendar__list__item__checkbox--checked {
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: var(--border-radius-sm);
+    background-color: var(--dark-mode-background-color-light);
+    border: 2px solid var(--color-grey);
+    position: relative;
+    cursor: pointer;
+    margin-right: 0.4rem
+}
+
+.app__sidebar__calendar__list__item__checkbox:hover:after,
+.app__sidebar__calendar__list__item__checkbox--checked::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0.35rem;
+    top: 0.1rem;
+    width: 3px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.app__sidebar__upcoming-events__item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0.5rem 0.2rem;
+    padding: 0.4rem;
+    cursor: pointer;
+    border-radius: var(--border-radius-sm);
+    width: 97%;
+}
+
+.app__sidebar__upcoming-events__item:hover {
+    background-color: var(--dark-mode-background-color-light);
+}
+
+.app__sidebar__upcoming-events__item__symbol {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 1.5rem;
+    margin-right: 0.6rem
+}
+
+.app__sidebar__upcoming-events__item__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.app__sidebar__upcoming-events__item__title {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 0.2rem;
+}
+
+.app__sidebar__upcoming-events__item__date {
+    font-size: 0.85rem;
+    color: var(--color-grey);
 }
