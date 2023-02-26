@@ -5,9 +5,12 @@ import { LoginFormData } from "../../../../models/ui/LoginFormData";
 import { RequiredValidator } from "../../../form/validators/RequiredValidator";
 import { PropsBase } from "../../../../models/api/PropsBase";
 import { LoginData } from "../../../../models/api/LoginData";
-import { LANGUAGE } from "../../../../services/LanguageService";
+import { language$ } from "../../../../services/LanguageService";
 import { LoginErrorTypeEnum } from "../../../../enums/LoginErrorTypeEnum";
 import { validateFormField } from "../../../form/utils/ValidateFormFieldUtil";
+import { bind } from "react-rxjs";
+
+const [useLanguage] = bind(language$);
 
 interface LoginFormProps extends PropsBase {
   onSubmit: (formData: LoginData) => void;
@@ -21,6 +24,7 @@ const LoginForm = ({
   error,
   attempts,
 }: LoginFormProps) => {
+  const LANGUAGE = useLanguage();
   const [formData, setFormData] = useState<LoginFormData>({
     username: {
       content: "",
@@ -111,7 +115,9 @@ const LoginForm = ({
         value={formData.username.content}
         onChange={(e) => handleFormChange(e.target.value, "username")}
         helperText={
-          formData.username.hasError ? formData.username.errorText : " "
+          formData.username.hasError
+            ? LANGUAGE.AUTH.ERRORS[formData.username.errorText]
+            : " "
         }
       />
       <TextField
@@ -124,7 +130,9 @@ const LoginForm = ({
         value={formData.password.content}
         onChange={(e) => handleFormChange(e.target.value, "password")}
         helperText={
-          formData.password.hasError ? formData.password.errorText : " "
+          formData.password.hasError
+            ? LANGUAGE.AUTH.ERRORS[formData.password.errorText]
+            : " "
         }
       />
       <div className="app__m-2">

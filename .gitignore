@@ -1,4 +1,4 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring home.
 
 # dependencies
 /node_modules
@@ -30,9 +30,6 @@ yarn-error.log*
 # Logs
 logs
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
 
@@ -101,13 +98,8 @@ web_modules/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variable files
+# dotenv environment variable home
 .env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
-
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
@@ -120,7 +112,7 @@ out
 .nuxt
 dist
 
-# Gatsby files
+# Gatsby home
 .cache/
 # Comment in the public line in if your project uses Gatsby and not Next.js
 # https://nextjs.org/blog/next-9-1#public-directory-support
@@ -132,7 +124,7 @@ dist
 # vuepress v2.x temp and cache directory
 .temp
 
-# Docusaurus cache and generated files
+# Docusaurus cache and generated home
 .docusaurus
 
 # Serverless directories
@@ -141,7 +133,7 @@ dist
 # FuseBox cache
 .fusebox/
 
-# DynamoDB Local files
+# DynamoDB Local home
 .dynamodb/
 
 # TernJS port file
@@ -194,7 +186,7 @@ sketch
 *.vsix
 
 ### VisualStudioCode Patch ###
-# Ignore all local history of files
+# Ignore all local history of home
 .history
 .ionide
 
@@ -218,10 +210,10 @@ sketch
 # AWS User-specific
 .idea/**/aws.xml
 
-# Generated files
+# Generated home
 .idea/**/contentModel.xml
 
-# Sensitive or high-churn files
+# Sensitive or high-churn home
 .idea/**/dataSources/
 .idea/**/dataSources.ids
 .idea/**/dataSources.local.xml
@@ -235,7 +227,7 @@ sketch
 .idea/**/libraries
 
 # Gradle and Maven with auto-import
-# When using Gradle or Maven with auto-import, you should exclude module files,
+# When using Gradle or Maven with auto-import, you should exclude module home,
 # since they will be recreated, and may cause churn.  Uncomment if using
 # auto-import.
 # .idea/artifacts

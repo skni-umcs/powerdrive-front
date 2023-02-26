@@ -1,3 +1,5 @@
+import { BehaviorSubject } from "rxjs";
+
 export enum Language {
   PL = "PL",
   EN = "EN",
@@ -46,6 +48,44 @@ const LANGUAGES = {
           "Nie udało się wysłać linku do przywracania konta",
       },
     },
+    SIDEBAR: {
+      DRIVE: "Dysk",
+      NOTES: "Notatki",
+      CALENDAR: "Kalendarz",
+      YOUR_FILES: "Twoje pliki",
+      YOUR_NOTES: "Twoje notatki",
+      SHARED: "Udostępnione",
+      FAVORITES: "Ulubione",
+      DELETED: "Usunięte",
+      LAST_USED: "Ostatnio używane",
+    },
+    CALENDAR: {
+      DAYS: {
+        0: "Niedziela",
+        1: "Poniedziałek",
+        2: "Wtorek",
+        3: "Środa",
+        4: "Czwartek",
+        5: "Piątek",
+        6: "Sobota",
+      },
+      MONTHS: {
+        0: "Styczeń",
+        1: "Luty",
+        2: "Marzec",
+        3: "Kwiecień",
+        4: "Maj",
+        5: "Czerwiec",
+        6: "Lipiec",
+        7: "Sierpień",
+        8: "Wrzesień",
+        9: "Październik",
+        10: "Listopad",
+        11: "Grudzień",
+      },
+      YOUR_CALENDARS: "Twoje kalendarze",
+      UPCOMING_EVENTS: "Nadchodzące wydarzenia",
+    },
   },
   EN: {
     NAVBAR: {
@@ -88,12 +128,51 @@ const LANGUAGES = {
         ACCOUNT_RETRIEVAL_ERROR: "Failed to send link to retrieve account",
       },
     },
+    SIDEBAR: {
+      DRIVE: "Drive",
+      NOTES: "Notes",
+      CALENDAR: "Calendar",
+      YOUR_FILES: "Your files",
+      YOUR_NOTES: "Your notes",
+      SHARED: "Shared",
+      FAVORITES: "Favorites",
+      DELETED: "Deleted",
+      LAST_USED: "Last used",
+    },
+    CALENDAR: {
+      DAYS: {
+        0: "Sunday",
+        1: "Monday",
+        2: "Tuesday",
+        3: "Wednesday",
+        4: "Thursday",
+        5: "Friday",
+        6: "Saturday",
+      },
+      MONTHS: {
+        0: "January",
+        1: "February",
+        2: "March",
+        3: "April",
+        4: "May",
+        5: "June",
+        6: "July",
+        7: "August",
+        8: "September",
+        9: "October",
+        10: "November",
+        11: "December",
+      },
+      YOUR_CALENDARS: "Your calendars",
+      UPCOMING_EVENTS: "Upcoming events",
+    },
   },
 };
 
-export let LANGUAGE = LANGUAGES.PL;
+const language = new BehaviorSubject<any>(LANGUAGES.PL);
+export const language$ = language.asObservable();
 
 export const setLanguage = (lang: Language) => {
   console.log("Setting language to: ", lang);
-  LANGUAGE = LANGUAGES[lang as keyof typeof LANGUAGES];
+  language.next(LANGUAGES[lang as keyof typeof LANGUAGES]);
 };

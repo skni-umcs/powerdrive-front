@@ -4,18 +4,22 @@ import { PasswordResetFormData } from "../../../../models/ui/PasswordResetFormDa
 import { FormValidatorFunction } from "../../../../models/ui/FormValidatorFunction";
 import { PasswordRepValidator } from "../../../form/validators/PasswordRepValidator";
 import { validateFormField } from "../../../form/utils/ValidateFormFieldUtil";
-import { LANGUAGE } from "../../../../services/LanguageService";
+import { language$ } from "../../../../services/LanguageService";
 import { PropsBase } from "../../../../models/api/PropsBase";
 import { PasswordResetData } from "../../../../models/api/PasswordResetData";
 import { TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { PasswordValidator } from "../../../form/validators/PasswordValidator";
+import { bind } from "react-rxjs";
+
+const [useLanguage] = bind(language$);
 
 interface PasswordResetFormProps extends PropsBase {
   onSubmit: (formData: PasswordResetData) => void;
   isLoading: boolean;
 }
 const PasswordResetForm = ({ onSubmit, isLoading }: PasswordResetFormProps) => {
+  const LANGUAGE = useLanguage();
   const [formData, setFormData] = useState<PasswordResetFormData>({
     password: {
       content: "",
@@ -99,7 +103,9 @@ const PasswordResetForm = ({ onSubmit, isLoading }: PasswordResetFormProps) => {
         value={formData.password.content}
         onChange={(e) => handleFormChange(e.target.value, "password")}
         helperText={
-          formData.password.hasError ? formData.password.errorText : " "
+          formData.password.hasError
+            ? LANGUAGE.AUTH.ERRORS[formData.password.errorText]
+            : " "
         }
       />
       <TextField
@@ -113,7 +119,7 @@ const PasswordResetForm = ({ onSubmit, isLoading }: PasswordResetFormProps) => {
         onChange={(e) => handleFormChange(e.target.value, "repeatPassword")}
         helperText={
           formData.repeatPassword.hasError
-            ? formData.repeatPassword.errorText
+            ? LANGUAGE.AUTH.ERRORS[formData.repeatPassword.errorText]
             : " "
         }
       />

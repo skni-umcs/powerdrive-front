@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TextField } from "@mui/material";
-import { LANGUAGE } from "../../../../services/LanguageService";
+import { language$ } from "../../../../services/LanguageService";
 import { LoadingButton } from "@mui/lab";
 import { FormFieldData } from "../../../../models/ui/FormFieldData";
 import { RequiredValidator } from "../../../form/validators/RequiredValidator";
@@ -8,6 +8,9 @@ import { EmailValidator } from "../../../form/validators/EmailValidator";
 import { validateFormField } from "../../../form/utils/ValidateFormFieldUtil";
 import { PropsBase } from "../../../../models/api/PropsBase";
 import { AccountRetrievalData } from "../../../../models/api/AccountRetrievalData";
+import { bind } from "react-rxjs";
+
+const [useLanguage] = bind(language$);
 
 interface AccountRetrievalFormProps extends PropsBase {
   onSubmit: (formData: AccountRetrievalData) => void;
@@ -17,6 +20,7 @@ const AccountRetrievalForm = ({
   onSubmit,
   isLoading,
 }: AccountRetrievalFormProps) => {
+  const LANGUAGE = useLanguage();
   const [emailField, setEmailField] = useState<FormFieldData>({
     content: "",
     hasError: false,
@@ -47,7 +51,9 @@ const AccountRetrievalForm = ({
         variant="filled"
         value={emailField.content}
         onChange={(e) => handleFormChange(e.target.value)}
-        helperText={emailField.hasError ? emailField.errorText : " "}
+        helperText={
+          emailField.hasError ? LANGUAGE.AUTH.ERRORS[emailField.errorText] : " "
+        }
       />
       <div className="app__m-2">
         <LoadingButton

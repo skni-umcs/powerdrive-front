@@ -15,24 +15,16 @@ export const loggedUser$ = loggedUser.asObservable();
 const authInitialized = new BehaviorSubject<boolean>(false);
 export const authInitialized$ = authInitialized.asObservable();
 
-let cookies: any;
-let setCookie: any;
-let removeCookie: any;
-export const initializeAuth = (
-  authCookies: any,
-  setAuthCookie: any,
-  removeAuthCookie: any
-): void => {
-  cookies = authCookies;
-  setCookie = setAuthCookie;
-  removeCookie = removeAuthCookie;
-
-  if (cookies.user) loggedUser.next(JSON.stringify(cookies.user));
-
+export const initializeAuth = (authCookies: any): void => {
+  if (authCookies.user) loggedUser.next(JSON.stringify(authCookies.user));
   authInitialized.next(true);
 };
 
-export const login = (user: LoginData): Observable<LoginResult> => {
+export const login = (
+  user: LoginData,
+  setCookie: any,
+  removeCookie: any
+): Observable<LoginResult> => {
   return of({
     isSuccessful: true,
   }).pipe(
@@ -49,7 +41,11 @@ export const login = (user: LoginData): Observable<LoginResult> => {
   );
 };
 
-export const register = (user: RegisterData): Observable<RegisterResult> => {
+export const register = (
+  user: RegisterData,
+  setCookie: any,
+  removeCookie: any
+): Observable<RegisterResult> => {
   return of({
     isSuccessful: true,
   }).pipe(
@@ -68,7 +64,6 @@ export const register = (user: RegisterData): Observable<RegisterResult> => {
 
 export const logout = () => {
   loggedUser.next(null);
-  removeCookie(CookiesEnum.USER);
 };
 
 export const sendPasswordResetEmail = (

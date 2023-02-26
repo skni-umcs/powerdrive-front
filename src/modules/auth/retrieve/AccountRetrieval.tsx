@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { LANGUAGE } from "../../../services/LanguageService";
+import { language$ } from "../../../services/LanguageService";
 import { Snackbar } from "@mui/material";
 import { Alert } from "@mui/lab";
 import { sendPasswordResetEmail } from "../../../services/AuthService";
@@ -8,8 +8,12 @@ import { useNavigate } from "react-router-dom";
 import { PathEnum } from "../../../enums/PathEnum";
 import AccountRetrievalForm from "./components/AccountRetrievalForm";
 import { AccountRetrievalData } from "../../../models/api/AccountRetrievalData";
+import { bind } from "react-rxjs";
+
+const [useLanguage] = bind(language$);
 
 const AccountRetrieval = () => {
+  const LANGUAGE = useLanguage();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);

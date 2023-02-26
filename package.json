@@ -22,6 +22,7 @@
     "react-router-dom": "^6.4.3",
     "react-rxjs": "^3.0.0-alpha.6",
     "react-scripts": "5.0.1",
+    "react-svg": "^15.1.18",
     "rxjs": "^7.5.7",
     "typescript": "^4.9.3",
     "web-vitals": "^2.1.4"

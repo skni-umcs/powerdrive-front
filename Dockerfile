@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
 RUN npm install
-# Copy app files
+# Copy app home
 COPY . .
 # Expose port
 EXPOSE 3000

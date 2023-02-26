@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { LANGUAGE } from "../../../services/LanguageService";
+import { language$ } from "../../../services/LanguageService";
 import { Link, useNavigate } from "react-router-dom";
 import { PathEnum } from "../../../enums/PathEnum";
 import RegisterForm from "./components/RegisterForm";
@@ -7,17 +7,23 @@ import { RegisterErrorTypeEnum } from "../../../enums/RegisterErrorTypeEnum";
 import { register } from "../../../services/AuthService";
 import { finalize, take } from "rxjs";
 import { RegisterData } from "../../../models/api/RegisterData";
+import { bind } from "react-rxjs";
+import { useCookies } from "react-cookie";
+
+const [useLanguage] = bind(language$);
 
 const Register = () => {
+  const LANGUAGE = useLanguage();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [registerError, setRegisterError] =
     useState<RegisterErrorTypeEnum | null>(null);
   const [attemptCounter, setAttemptCounter] = useState(0);
+  const [_, setAuthCookie, removeAuthCookie] = useCookies(["user", "token"]);
 
   const handleSubmitRegister = (formData: RegisterData) => {
     setIsLoading(true);
-    register(formData)
+    register(formData, setAuthCookie, removeAuthCookie)
       .pipe(
         take(1),
         finalize(() => setIsLoading(false))
@@ -25,7 +31,8 @@ const Register = () => {
       .subscribe((registerRes) => {
         setRegisterError(registerRes.error!);
         setAttemptCounter(attemptCounter + 1);
-        if (registerRes.isSuccessful) navigate("/" + PathEnum.DRIVE);
+        if (registerRes.isSuccessful)
+          navigate("/" + PathEnum.APP + "/" + PathEnum.DRIVE);
       });
   };
 

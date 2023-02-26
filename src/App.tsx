@@ -14,6 +14,15 @@ import AccountRetrieval from "./modules/auth/retrieve/AccountRetrieval";
 import RetrieveLinkSent from "./modules/auth/linkSent/RetrieveLinkSent";
 import { CookiesProvider, useCookies } from "react-cookie";
 import { initializeAuth } from "./services/AuthService";
+import WebApp from "./modules/webapp/WebApp";
+import DriveHome from "./modules/drive/components/files/DriveHome";
+import DriveShared from "./modules/drive/components/shared/DriveShared";
+import DriveFavorites from "./modules/drive/components/favorites/DriveFavorites";
+import DriveDeleted from "./modules/drive/components/deleted/DriveDeleted";
+import NotesHome from "./modules/notes/components/home/NotesHome";
+import NotesShared from "./modules/notes/components/shared/NotesShared";
+import NotesFavorites from "./modules/notes/components/favorites/NotesFavorites";
+import NotesDeleted from "./modules/notes/components/deleted/NotesDeleted";
 
 const router = createBrowserRouter([
   {
@@ -41,16 +50,58 @@ const router = createBrowserRouter([
         element: <PasswordReset />,
       },
       {
-        path: PathEnum.DRIVE,
-        element: <Drive />,
-      },
-      {
-        path: PathEnum.CALENDAR,
-        element: <Calendar />,
-      },
-      {
-        path: PathEnum.NOTES,
-        element: <Notes />,
+        path: PathEnum.APP,
+        element: <WebApp />,
+        children: [
+          {
+            path: PathEnum.DRIVE,
+            element: <Drive />,
+            children: [
+              {
+                path: PathEnum.HOME,
+                element: <DriveHome />,
+              },
+              {
+                path: PathEnum.SHARED,
+                element: <DriveShared />,
+              },
+              {
+                path: PathEnum.FAVORITES,
+                element: <DriveFavorites />,
+              },
+              {
+                path: PathEnum.DELETED,
+                element: <DriveDeleted />,
+              },
+            ],
+          },
+          {
+            path: PathEnum.CALENDAR,
+            element: <Calendar />,
+          },
+          {
+            path: PathEnum.NOTES,
+            element: <Notes />,
+            children: [
+              {
+                path: PathEnum.HOME,
+                element: <NotesHome />,
+              },
+              {
+                path: PathEnum.SHARED,
+                element: <NotesShared />,
+              },
+              {
+                path: PathEnum.FAVORITES,
+                element: <NotesFavorites />,
+              },
+              {
+                path: PathEnum.DELETED,
+                element: <NotesDeleted />,
+              },
+            ],
+          },
+        ],
       },
       {
         path: "",
@@ -70,13 +121,26 @@ const theme = createTheme({
 });
 
 const App = () => {
-  const [authCookies, setAuthCookie, removeAuthCookie] = useCookies([
-    "user",
-    "token",
-  ]);
+  const [authCookies] = useCookies(["user", "token"]);
+
+  const calculateVh = () => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", vh + "px");
+  };
 
   useEffect(() => {
-    initializeAuth(authCookies, setAuthCookie, removeAuthCookie);
+    calculateVh();
+    window.addEventListener("resize", calculateVh);
+    window.addEventListener("orientationchange", calculateVh);
+
+    return () => {
+      window.removeEventListener("resize", calculateVh);
+      window.removeEventListener("orientationchange", calculateVh);
+    };
+  }, []);
+
+  useEffect(() => {
+    initializeAuth(authCookies);
   }, []);
 
   return (
