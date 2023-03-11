@@ -1,0 +1,59 @@
+@import "base.css";
+
+.app__drive__content {
+    padding: 1rem;
+}
+
+.app__drive__content__breadcrumb {
+    color: inherit;
+    text-underline: none !important;
+    text-decoration: none !important;
+    cursor: pointer;
+    font-weight: bold;
+}
+.app__drive__content__breadcrumb:hover {
+    color: var(--color-white);
+}
+
+.app__drive__content__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    flex-direction: row;
+}
+
+.app__drive__content__header__title {
+    font-weight: bold;
+    color: var(--color-white);
+    font-size: 1.5rem;
+}
+
+.app__drive__content__header__actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+.app__drive__selected__container {
+    background-color: var(--dark-mode-background-color-light);
+    padding: 0.5rem;
+    border-radius: var(--border-radius-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+.app__drive__selected__text {
+    color: var(--color-white);
+    font-size: 1rem;
+}
+
+.app__drive__selected__actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: row;
+}

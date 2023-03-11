@@ -86,6 +86,10 @@ const LANGUAGES = {
       YOUR_CALENDARS: "Twoje kalendarze",
       UPCOMING_EVENTS: "Nadchodzące wydarzenia",
     },
+    DRIVE: {
+      YOUR_FILES: "Twoje pliki",
+      SELECTED_FILES: "Zaznaczone pliki",
+    }
   },
   EN: {
     NAVBAR: {
@@ -166,6 +170,10 @@ const LANGUAGES = {
       YOUR_CALENDARS: "Your calendars",
       UPCOMING_EVENTS: "Upcoming events",
     },
+    DRIVE: {
+      YOUR_FILES: "Your files",
+      SELECTED_FILES: "Selected files",
+    }
   },
 };
 

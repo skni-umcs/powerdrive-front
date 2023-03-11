@@ -58,7 +58,7 @@ const router = createBrowserRouter([
             element: <Drive />,
             children: [
               {
-                path: PathEnum.HOME,
+                path: PathEnum.HOME + "/*",
                 element: <DriveHome />,
               },
               {
