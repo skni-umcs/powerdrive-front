@@ -9,7 +9,8 @@ import { login } from "../../../services/AuthService";
 import { finalize, take } from "rxjs";
 import { LoginErrorTypeEnum } from "../../../enums/LoginErrorTypeEnum";
 import { bind } from "react-rxjs";
-import { useCookies } from "react-cookie";
+import { Snackbar } from "@mui/material";
+import { Alert } from "@mui/lab";
 
 const [useLanguage] = bind(language$);
 
@@ -17,50 +18,76 @@ const Login = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [loginError, setLoginError] = useState<LoginErrorTypeEnum | null>(null);
+  const [errorSnackOpen, setErrorSnackOpen] = useState(false);
+  const [successSnackOpen, setSuccessSnackOpen] = useState(false);
   const [attemptCounter, setAttemptCounter] = useState(0);
-  const [_, setAuthCookie, removeAuthCookie] = useCookies(["user", "token"]);
   const LANGUAGE = useLanguage();
   const handleSubmitLogin = (formData: LoginData) => {
     setIsLoading(true);
-    login(formData, setAuthCookie, removeAuthCookie)
+    login(formData)
       .pipe(
         take(1),
         finalize(() => setIsLoading(false))
       )
       .subscribe((loginRes) => {
-        setLoginError(loginRes.error!);
         setAttemptCounter(attemptCounter + 1);
-        if (loginRes.isSuccessful)
+        if (loginRes.isSuccessful) {
+          setSuccessSnackOpen(true);
           navigate("/" + PathEnum.APP + "/" + PathEnum.DRIVE);
+        } else {
+          setErrorSnackOpen(true);
+        }
       });
   };
 
   return (
-    <div className="app__auth__container">
-      <div className="app__auth__card">
-        <h2 className="app__auth__card__header">{LANGUAGE.AUTH.LOGIN_TITLE}</h2>
-        <LoginForm
-          onSubmit={handleSubmitLogin}
-          isLoading={isLoading}
-          error={loginError}
-          attempts={attemptCounter}
-        />
-        <div className="app__auth__card__links">
-          <Link
-            className="app__auth__card__links__link"
-            to={"/" + PathEnum.REGISTER}
-          >
-            {LANGUAGE.AUTH.REGISTER}
-          </Link>
-          <Link
-            className="app__auth__card__links__link"
-            to={"/" + PathEnum.ACCOUNT_RETRIEVAL}
-          >
-            {LANGUAGE.AUTH.RETRIEVE_ACCOUNT}
-          </Link>
+    <React.Fragment>
+      <div className="app__auth__container">
+        <div className="app__auth__card">
+          <h2 className="app__auth__card__header">
+            {LANGUAGE.AUTH.LOGIN_TITLE}
+          </h2>
+          <LoginForm
+            onSubmit={handleSubmitLogin}
+            isLoading={isLoading}
+            error={loginError}
+            attempts={attemptCounter}
+          />
+          <div className="app__auth__card__links">
+            <Link
+              className="app__auth__card__links__link"
+              to={"/" + PathEnum.REGISTER}
+            >
+              {LANGUAGE.AUTH.REGISTER}
+            </Link>
+            <Link
+              className="app__auth__card__links__link"
+              to={"/" + PathEnum.ACCOUNT_RETRIEVAL}
+            >
+              {LANGUAGE.AUTH.RETRIEVE_ACCOUNT}
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
+      <Snackbar
+        open={errorSnackOpen}
+        autoHideDuration={6000}
+        onClose={() => setErrorSnackOpen(false)}
+      >
+        <Alert severity={"error"} onClose={() => setErrorSnackOpen(false)}>
+          {LANGUAGE.AUTH.LOGIN_ATTEMPT_FAILED}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={successSnackOpen}
+        autoHideDuration={6000}
+        onClose={() => setSuccessSnackOpen(false)}
+      >
+        <Alert severity={"success"} onClose={() => setSuccessSnackOpen(false)}>
+          {LANGUAGE.AUTH.LOGIN_ATTEMPT_SUCCESS}
+        </Alert>
+      </Snackbar>
+    </React.Fragment>
   );
 };
 

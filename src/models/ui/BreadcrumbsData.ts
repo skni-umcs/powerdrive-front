@@ -1,4 +1,6 @@
+import { FileData } from "../api/FileData";
+
 export interface BreadcrumbsData {
-    label: string;
-    url: string;
+  label: string;
+  path: FileData[];
 }

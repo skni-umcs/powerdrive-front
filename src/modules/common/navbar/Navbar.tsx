@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Box,
@@ -20,30 +20,18 @@ import {
   language$,
   setLanguage,
 } from "../../../services/LanguageService";
-import { useCookies } from "react-cookie";
-import { CookiesEnum } from "../../../enums/CookiesEnum";
+import { mobileView$ } from "../../../services/DimensionsService";
 
 const [useLanguage] = bind(language$);
 const [useLoggedUser] = bind(loggedUser$);
+const [useMobileView] = bind(mobileView$);
 const Navbar = () => {
   const LANGUAGE = useLanguage();
+  const mobileView = useMobileView();
   const [anchorMenu, setAnchorMenu] = useState<null | HTMLElement>(null);
   const loggedUser = useLoggedUser();
-  const [width, setWidth] = useState(window.innerWidth);
-  const [cookies, setCookie, removeCookie] = useCookies(["user", "token"]);
-
-  useEffect(() => {
-    function handleResize() {
-      setWidth(window.innerWidth);
-    }
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const handleLogout = () => {
-    removeCookie(CookiesEnum.USER);
-    console.log("Removing cookie");
     logout();
   };
 
@@ -63,9 +51,11 @@ const Navbar = () => {
         </div>
         {loggedUser ? (
           <React.Fragment>
-            {width > 768 ? <Search /> : null}
+            {!mobileView && <Search />}
             <div className="app__navbar-account">
-              <div>Jan Kowalski</div>
+              {!mobileView && (
+                <div>{`${loggedUser.first_name} ${loggedUser.last_name}`}</div>
+              )}
               <IconButton
                 size="large"
                 edge="end"

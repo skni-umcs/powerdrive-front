@@ -1,4 +1,4 @@
 export enum SortModeEnum {
-    ASC,
-    DESC
+  ASC = "ASC",
+  DESC = "DESC",
 }

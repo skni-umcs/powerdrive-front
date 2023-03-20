@@ -36,13 +36,13 @@ const RegisterForm = ({
       errorText: " ",
       validators: [RequiredValidator, EmailValidator],
     },
-    name: {
+    first_name: {
       content: "",
       hasError: false,
       errorText: " ",
       validators: [RequiredValidator],
     },
-    surname: {
+    last_name: {
       content: "",
       hasError: false,
       errorText: " ",
@@ -149,8 +149,8 @@ const RegisterForm = ({
     else
       onSubmit({
         email: formData.email.content,
-        name: formData.name.content,
-        surname: formData.surname.content,
+        first_name: formData.first_name.content,
+        last_name: formData.last_name.content,
         username: formData.username.content,
         password: formData.password.content,
       });
@@ -178,29 +178,29 @@ const RegisterForm = ({
             }
           />
           <TextField
-            error={formData.name.hasError}
+            error={formData.first_name.hasError}
             fullWidth
             margin="dense"
             label={LANGUAGE.AUTH.NAME}
             variant="filled"
-            value={formData.name.content}
-            onChange={(e) => handleFormChange(e.target.value, "name")}
+            value={formData.first_name.content}
+            onChange={(e) => handleFormChange(e.target.value, "first_name")}
             helperText={
-              formData.name.hasError
+              formData.first_name.hasError
                 ? LANGUAGE.AUTH.ERRORS[formData.name.errorText]
                 : " "
             }
           />
           <TextField
-            error={formData.surname.hasError}
+            error={formData.last_name.hasError}
             fullWidth
             margin="dense"
             label={LANGUAGE.AUTH.SURNAME}
             variant="filled"
-            value={formData.surname.content}
-            onChange={(e) => handleFormChange(e.target.value, "surname")}
+            value={formData.last_name.content}
+            onChange={(e) => handleFormChange(e.target.value, "last_name")}
             helperText={
-              formData.surname.hasError
+              formData.last_name.hasError
                 ? LANGUAGE.AUTH.ERRORS[formData.surname.errorText]
                 : " "
             }

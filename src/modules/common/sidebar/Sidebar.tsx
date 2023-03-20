@@ -1,23 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "../../../styles/sidebar.css";
 import DefaultSidebar from "./components/defaultSidebar/DefaultSidebar";
 import MobileSidebar from "./components/mobileSidebar/MobileSidebar";
+import { mobileView$ } from "../../../services/DimensionsService";
+import { bind } from "react-rxjs";
+
+const [useMobileView] = bind(mobileView$);
 
 const Sidebar = () => {
-  const [width, setWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    function handleResize() {
-      setWidth(window.innerWidth);
-    }
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const mobileView = useMobileView();
 
   return (
     <React.Fragment>
-      {width < 768 ? <MobileSidebar /> : <DefaultSidebar />}
+      {mobileView ? <MobileSidebar /> : <DefaultSidebar />}
     </React.Fragment>
   );
 };

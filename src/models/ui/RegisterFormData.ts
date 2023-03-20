@@ -4,8 +4,8 @@ import { CustomFormData } from "./CustomFormData";
 export interface RegisterFormData extends CustomFormData {
   email: FormFieldData;
   username: FormFieldData;
-  name: FormFieldData;
-  surname: FormFieldData;
+  first_name: FormFieldData;
+  last_name: FormFieldData;
   password: FormFieldData;
   repeatPassword: FormFieldData;
 }

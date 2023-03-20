@@ -12,31 +12,32 @@
     --border-radius-sm: 5px;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 html {
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif;
     background-color: var(--background-color-black);
     color: var(--color-white);
-    min-height: calc(var(--vh) * 100);
-    max-height: calc(var(--vh) * 100);
+    height: calc(var(--vh) * 100);
 }
 
 body {
     margin: 0;
     padding: 0;
-    min-height: calc(var(--vh) * 100);
-    max-height: calc(var(--vh) * 100);
-    display: flex;
-    flex: 1;
+    height: inherit;
 }
 
 #root {
-    min-height: calc(var(--vh) * 100);
-    max-height: calc(var(--vh) * 100);
+    height: inherit;
     display: flex;
-    flex: 1;
     flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+    min-height: 500px;
 }
 
 .app__m-1 {
@@ -52,15 +53,31 @@ body {
     flex: 1;
     flex-direction: row;
     overflow-y: auto;
-    min-height: 500px;
+    min-height: 450px;
 }
 
 .app__content__container {
-    flex-grow: 1;
-    overflow-y: auto;
+    flex: 1;
+    overflow-y: hidden;
+    display: flex;
 }
 
-@media screen and (max-width: 768px) {
+/* Scrollbar */
+::-webkit-scrollbar {
+    background-color: transparent;
+    width: 0.4rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--dark-mode-background-color-light);
+    border-radius: var(--border-radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-grey);
+}
+
+@media screen and (max-width: 1024px) {
     .app__global__container {
         flex-direction: column-reverse;
     }

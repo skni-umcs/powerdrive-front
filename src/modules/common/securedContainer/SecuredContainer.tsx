@@ -1,23 +1,22 @@
 import React, { useEffect } from "react";
 import { PropsBase } from "../../../models/api/PropsBase";
 import { useNavigate } from "react-router-dom";
-import { authInitialized$, loggedUser$ } from "../../../services/AuthService";
+import { identityUpdated$, loggedUser$ } from "../../../services/AuthService";
 import { PathEnum } from "../../../enums/PathEnum";
-import { filter, switchMap } from "rxjs";
+import { switchMap } from "rxjs";
 
 const SecuredContainer = ({ children }: PropsBase) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    authInitialized$
-      .pipe(
-        filter(Boolean),
-        switchMap(() => loggedUser$)
-      )
+    const subscription = identityUpdated$
+      .pipe(switchMap(() => loggedUser$))
       .subscribe((loggedUser) => {
         if (!loggedUser) navigate("/" + PathEnum.LOGIN);
       });
-  }, []);
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
 
   return <React.Fragment>{children}</React.Fragment>;
 };

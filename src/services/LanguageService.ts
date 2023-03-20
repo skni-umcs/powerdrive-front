@@ -47,6 +47,10 @@ const LANGUAGES = {
         ACCOUNT_RETRIEVAL_ERROR:
           "Nie udało się wysłać linku do przywracania konta",
       },
+      LOGIN_ATTEMPT_FAILED: "Nieudana próba logowania",
+      LOGIN_ATTEMPT_SUCCESS: "Zalogowano pomyślnie",
+      REGISTER_ATTEMPT_FAILED: "Nieudana próba rejestracji",
+      REGISTER_ATTEMPT_SUCCESS: "Zarejestrowano pomyślnie",
     },
     SIDEBAR: {
       DRIVE: "Dysk",
@@ -88,8 +92,60 @@ const LANGUAGES = {
     },
     DRIVE: {
       YOUR_FILES: "Twoje pliki",
-      SELECTED_FILES: "Zaznaczone pliki",
-    }
+      ACTIONS: {
+        SPLIT_VIEW: "Podzielony widok",
+        SORT_MODE: "Tryb sortowania",
+        VIEW_MODE: "Tryb wyświetlania",
+      },
+      SELECTED_FILES: {
+        TITLE: "Zaznaczonych plików",
+        SHARE: "Udostępnij",
+        DOWNLOAD: "Pobierz",
+        DELETE: "Usuń",
+        CLEAR: "Wyczyść",
+      },
+      SORT_TYPE: {
+        NAME: "Nazwa",
+        SIZE: "Rozmiar",
+        DATE: "Data",
+        TYPE: "Typ",
+      },
+      SORT_MODE: {
+        ASC: "Rosnąco",
+        DESC: "Malejąco",
+      },
+      ERRORS: {
+        FILE_UPLOAD_ERROR: "Nie udało się przesłać pliku",
+        FOLDER_UPLOAD_ERROR: "Nie udało się przesłać folderu",
+        FOLDER_CREATE_ERROR: "Nie udało się utworzyć folderu",
+        FOLDER_CONTENT_DOWNLOAD_ERROR:
+          "Wystąpił błąd podczas pobierania zawartości folderu",
+      },
+      UPLOAD_FILE: "Prześlij plik",
+      UPLOAD_FOLDER: "Prześlij folder",
+      CREATE_FOLDER: "Utwórz folder",
+      CREATE_FOLDER_DIALOG: {
+        TITLE: "Utwórz folder",
+        DESCRIPTION: "Wprowadź nazwę folderu",
+        ERROR: "Wprowadzona nazwa jest niepoprawna",
+        CREATE: "Utwórz",
+        CANCEL: "Anuluj",
+      },
+      FILE_CONTEXT: {
+        DOWNLOAD: "Pobierz",
+        RENAME: "Zmień nazwę",
+        MOVE: "Przenieś",
+        SHOW_DETAILS: "Pokaż szczegóły",
+        DELETE: "Usuń",
+      },
+      DELETE_FILE_DIALOG: {
+        FILE_TITLE: "Czy na pewwno chcesz usunąć ten plik?",
+        FOLDER_TITLE: "Czy na pewwno chcesz usunąć ten folder?",
+        DESCRIPTION: "Tej operacji nie można cofnąć. Czy chcesz kontynuować?",
+        DELETE: "Usuń",
+        CANCEL: "Anuluj",
+      },
+    },
   },
   EN: {
     NAVBAR: {
@@ -131,6 +187,10 @@ const LANGUAGES = {
         USERNAME_TAKEN: "Username taken",
         ACCOUNT_RETRIEVAL_ERROR: "Failed to send link to retrieve account",
       },
+      LOGIN_ATTEMPT_FAILED: "Login attempt failed",
+      LOGIN_ATTEMPT_SUCCESS: "Logged in successfully",
+      REGISTER_ATTEMPT_FAILED: "Register attempt failed",
+      REGISTER_ATTEMPT_SUCCESS: "Registered successfully",
     },
     SIDEBAR: {
       DRIVE: "Drive",
@@ -172,8 +232,59 @@ const LANGUAGES = {
     },
     DRIVE: {
       YOUR_FILES: "Your files",
-      SELECTED_FILES: "Selected files",
-    }
+      ACTIONS: {
+        SPLIT_VIEW: "Split view",
+        SORT_MODE: "Sort mode",
+        VIEW_MODE: "View mode",
+      },
+      SELECTED_FILES: {
+        TITLE: "Selected files",
+        SHARE: "Share",
+        DOWNLOAD: "Download",
+        DELETE: "Delete",
+        CLEAR: "Clear",
+      },
+      SORT_TYPE: {
+        NAME: "Name",
+        SIZE: "Size",
+        DATE: "Date",
+        TYPE: "Type",
+      },
+      SORT_MODE: {
+        ASC: "Ascending",
+        DESC: "Descending",
+      },
+      ERRORS: {
+        FILE_UPLOAD_ERROR: "Failed to upload file",
+        FOLDER_UPLOAD_ERROR: "Failed to upload folder",
+        FOLDER_CREATE_ERROR: "Failed to create folder",
+        FOLDER_CONTENT_DOWNLOAD_ERROR: "Failed to download folder content",
+      },
+      UPLOAD_FILE: "Upload file",
+      UPLOAD_FOLDER: "Upload folder",
+      CREATE_FOLDER: "Create folder",
+      CREATE_FOLDER_DIALOG: {
+        TITLE: "Create folder",
+        DESCRIPTION: "Enter folder name",
+        ERROR: "Folder name is incorrect",
+        CREATE: "Create Folder",
+        CANCEL: "Cancel",
+      },
+      FILE_CONTEXT: {
+        DOWNLOAD: "Download",
+        RENAME: "Rename",
+        MOVE: "Move",
+        SHOW_DETAILS: "Show details",
+        DELETE: "Delete",
+      },
+      DELETE_FILE_DIALOG: {
+        FILE_TITLE: "Are you sure you want to delete this file?",
+        FOLDER_TITLE: "Are you sure you want to delete this folder?",
+        DESCRIPTION: "This action cannot be undone. Do you want to continue?",
+        DELETE: "Delete",
+        CANCEL: "Cancel",
+      },
+    },
   },
 };
 

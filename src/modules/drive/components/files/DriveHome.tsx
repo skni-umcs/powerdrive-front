@@ -1,34 +1,59 @@
-import React, {useEffect, useState} from "react";
-import DriveContent from "../common/DriveContent";
-import {useLocation} from "react-router-dom";
-import {BreadcrumbsData} from "../../../../models/ui/BreadcrumbsData";
-import {bind} from "react-rxjs";
-import {language$} from "../../../../services/LanguageService";
+import React, { useEffect } from "react";
+import DriveContent from "../common/driveContent/DriveContent";
+import { useLocation, useNavigate } from "react-router-dom";
+import { bind } from "react-rxjs";
+import {
+  directoryTree$,
+  setPrimaryFilesViewPath,
+  setSecondaryFilesViewPath,
+} from "../../../../services/DriveService";
+import { PathEnum } from "../../../../enums/PathEnum";
+import { FileData } from "../../../../models/api/FileData";
 
-const [useLanguage] = bind(language$);
+const [udeDirectoryTree] = bind(directoryTree$);
 
 const DriveHome = () => {
-  const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbsData[]>([]);
   const location = useLocation();
-  const LANGUAGE = useLanguage();
+  const directoryTree = udeDirectoryTree();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const folders = location.pathname.split("/").slice(3);
-    const breadcrumbs: BreadcrumbsData[] = [];
+    if (!directoryTree) return;
+    const locationDirectories = location.pathname.split("/").slice(4);
+    let currentDirectory = directoryTree;
+    const previewPath: FileData[] = [directoryTree];
 
-    for (let i = 0; i < folders.length; i++) {
-        breadcrumbs.push({
-          label: folders[i].toUpperCase(),
-          url: folders.slice(1, i + 1).join("/")
-        });
+    for (let directory of locationDirectories) {
+      const dirIdx = directoryTree?.children?.findIndex(
+        (child) => child.filename.toLowerCase() === directory.toLowerCase()
+      );
+
+      if (dirIdx !== undefined && dirIdx !== -1) {
+        currentDirectory = currentDirectory?.children?.[dirIdx]!;
+        previewPath.push(currentDirectory);
+      } else {
+        setPrimaryFilesViewPath(previewPath);
+        setSecondaryFilesViewPath(previewPath);
+        return navigate(
+          "/" +
+            [
+              PathEnum.APP,
+              PathEnum.DRIVE,
+              PathEnum.HOME,
+              ...previewPath.slice(1).map((file) => file.filename),
+            ].join("/")
+        );
+      }
     }
+    setPrimaryFilesViewPath(previewPath);
+    setSecondaryFilesViewPath(previewPath);
+  }, [directoryTree]);
 
-    setBreadcrumbs(breadcrumbs);
-  }, [location]);
-
-  return <React.Fragment>
-    <DriveContent breadcrumbs={breadcrumbs} title={LANGUAGE.DRIVE.YOUR_FILES} />
-  </React.Fragment>;
+  return (
+    <React.Fragment>
+      <DriveContent />
+    </React.Fragment>
+  );
 };
 
 export default DriveHome;

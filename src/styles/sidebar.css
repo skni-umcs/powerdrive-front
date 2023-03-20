@@ -1,6 +1,8 @@
 @import "base.css";
 
 .app__sidebar {
+    height: 100%;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

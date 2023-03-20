@@ -12,7 +12,6 @@ import Notes from "./modules/notes/Notes";
 import { createTheme, ThemeProvider } from "@mui/material";
 import AccountRetrieval from "./modules/auth/retrieve/AccountRetrieval";
 import RetrieveLinkSent from "./modules/auth/linkSent/RetrieveLinkSent";
-import { CookiesProvider, useCookies } from "react-cookie";
 import { initializeAuth } from "./services/AuthService";
 import WebApp from "./modules/webapp/WebApp";
 import DriveHome from "./modules/drive/components/files/DriveHome";
@@ -23,6 +22,8 @@ import NotesHome from "./modules/notes/components/home/NotesHome";
 import NotesShared from "./modules/notes/components/shared/NotesShared";
 import NotesFavorites from "./modules/notes/components/favorites/NotesFavorites";
 import NotesDeleted from "./modules/notes/components/deleted/NotesDeleted";
+import { initializeDrive } from "./services/DriveService";
+import { updateView } from "./services/DimensionsService";
 
 const router = createBrowserRouter([
   {
@@ -121,11 +122,10 @@ const theme = createTheme({
 });
 
 const App = () => {
-  const [authCookies] = useCookies(["user", "token"]);
-
   const calculateVh = () => {
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty("--vh", vh + "px");
+    updateView(window.innerWidth);
   };
 
   useEffect(() => {
@@ -140,14 +140,18 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    initializeAuth(authCookies);
+    const subscription = initializeAuth().subscribe();
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const subscription = initializeDrive().subscribe();
+    return () => subscription.unsubscribe();
   }, []);
 
   return (
     <ThemeProvider theme={theme}>
-      <CookiesProvider>
-        <RouterProvider router={router} />
-      </CookiesProvider>
+      <RouterProvider router={router} />
     </ThemeProvider>
   );
 };
