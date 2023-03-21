@@ -238,6 +238,16 @@ export const uploadFile = (
   );
 };
 
+export const uploadFiles = (
+  filesData: File[],
+  path: string
+): Observable<any> => {
+  return zip(filesData.map((file) => uploadFile(file, path, false))).pipe(
+    map((_) => ({ isSuccessful: true })),
+    catchError((err) => of({ isSuccessful: false, error: err }))
+  );
+};
+
 export const deleteFile = (fileId: string): Observable<OperationResult> => {
   const operationId = Math.random();
 

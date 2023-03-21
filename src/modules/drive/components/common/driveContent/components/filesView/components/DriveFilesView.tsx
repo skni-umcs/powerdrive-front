@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FileData } from "../../../../../../../../models/api/FileData";
-import { downloadDirectoryContent } from "../../../../../../../../services/DriveService";
+import {
+  downloadDirectoryContent,
+  uploadFiles,
+} from "../../../../../../../../services/DriveService";
 import DriveBreadcrumbs from "../../../../driveBreadcrumbs/DriveBreadcrumbs";
 import FileTile from "./FileTile";
 import { Snackbar } from "@mui/material";
@@ -12,6 +15,8 @@ import { SortTypeEnum } from "../../../../../../../../enums/SortTypeEnum";
 import { SortModeEnum } from "../../../../../../../../enums/SortModeEnum";
 import { getSortedFiles } from "../../../../../../../../services/SortUtil";
 import SkeletonFileTile from "./SkeletonFileTile";
+import { useDropzone } from "react-dropzone";
+import { first } from "rxjs";
 
 interface DriveFilesViewProps {
   splitViewEnabled: boolean;
@@ -44,6 +49,26 @@ const DriveFilesView = ({
   const [isLoading, setIsLoading] = useState(false);
   const [errorSnackOpen, setErrorSnackOpen] = useState(false);
 
+  const onDrop = useCallback((droppedFiles: File[]) => {
+    handleUploadFile(droppedFiles);
+  }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    noClick: true,
+  });
+
+  const handleUploadFile = (files: File[]) => {
+    if (!files || files.length === 0 || !previewPath) return;
+
+    const path = previewPath[previewPath.length - 1].path;
+    uploadFiles(files, path)
+      .pipe(first())
+      .subscribe((result) => {
+        if (!result.isSuccessful) console.error(result.error);
+      });
+  };
+
   useEffect(() => {
     if (previewPath === null) return;
     setIsLoading(true);
@@ -61,7 +86,8 @@ const DriveFilesView = ({
 
   return (
     <React.Fragment>
-      <div className="app__drive__files__view">
+      <div {...getRootProps()} className="app__drive__files__view">
+        <input className="input-zone" {...getInputProps()} />
         {splitViewEnabled && !mobileView && (
           <DriveBreadcrumbs viewType={filesViewType} />
         )}

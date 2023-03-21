@@ -103,9 +103,9 @@ const DriveActions = () => {
             <Tooltip
               title={`${LANGUAGE.DRIVE.FINISHED}: ${Math.floor(value)}%`}
               placement="top"
+              key={id}
             >
               <CircularProgress
-                key={id}
                 sx={{ marginRight: 3 }}
                 variant="determinate"
                 size={30}
@@ -120,9 +120,9 @@ const DriveActions = () => {
           <Tooltip
             title={`${LANGUAGE.DRIVE.FINISHED}: ${Math.floor(value)}%`}
             placement="top"
+            key={id}
           >
             <CircularProgress
-              key={id}
               sx={{ marginRight: 3 }}
               variant="determinate"
               size={30}

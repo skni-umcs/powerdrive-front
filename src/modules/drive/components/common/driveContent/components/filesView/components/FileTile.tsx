@@ -107,7 +107,15 @@ const FileTile = ({
     setSelectedFiles(updatedSelectedFiles);
   };
 
-  const handleTileClick = () => {
+  const handleTileDoubleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!file.is_dir) {
+      handleDownload();
+    }
+  };
+
+  const handleTileClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (file.is_dir) {
       onPathChange(file);
     }
@@ -163,6 +171,7 @@ const FileTile = ({
             ? "app__drive__file__tile--splitview"
             : "app__drive__file__tile"
         }
+        onDoubleClick={handleTileDoubleClick}
         onClick={handleTileClick}
       >
         <div
