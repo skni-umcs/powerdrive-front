@@ -108,18 +108,19 @@
     position: relative;
     height: 160px;
     margin: 0.5%;
+    width: 10%;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     border-radius: var(--border-radius-sm);
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    overflow: hidden;
 }
 
 .app__drive__file__tile,
 .app__drive__file__tile--splitview {
     background-color: var(--dark-mode-background-color-medium);
+    overflow: hidden;
 }
 
 .app__drive__file__tile--skeleton,
