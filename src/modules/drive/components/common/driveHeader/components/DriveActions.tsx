@@ -14,12 +14,14 @@ import SplitscreenIcon from "@mui/icons-material/Splitscreen";
 import ScreenshotMonitorIcon from "@mui/icons-material/ScreenshotMonitor";
 import { DriveViewModeEnum } from "../../../../../../enums/DriveViewModeEnum";
 import {
+  downloadProgress$,
   driveOperationInProgress$,
   setSortMode,
   setSortType,
   setSplitViewEnabled,
   setViewMode,
   splitViewEnabled$,
+  uploadProgress$,
   viewMode$,
 } from "../../../../../../services/DriveService";
 import { bind } from "react-rxjs";
@@ -33,6 +35,8 @@ const [useViewMode] = bind(viewMode$);
 const [useSplitViewEnabled] = bind(splitViewEnabled$);
 const [useMobileView] = bind(mobileView$);
 const [useDriveOperationInProgress] = bind(driveOperationInProgress$);
+const [useDownloadProgress] = bind(downloadProgress$);
+const [useUploadProgress] = bind(uploadProgress$);
 
 const DriveActions = () => {
   const LANGUAGE = useLanguage();
@@ -40,6 +44,8 @@ const DriveActions = () => {
   const splitViewEnabled = useSplitViewEnabled();
   const mobileView = useMobileView();
   const driveOperationInProgress = useDriveOperationInProgress();
+  const downloadProgress = useDownloadProgress();
+  const uploadProgress = useUploadProgress();
   const [sortMenuOpen, setSortMenuOpen] = useState<boolean>(false);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
 
@@ -74,7 +80,11 @@ const DriveActions = () => {
   return (
     <div className="app__drive__content__header__actions">
       {driveOperationInProgress && (
-        <CircularProgress sx={{ marginRight: 3 }} size={30} />
+        <CircularProgress
+          sx={{ marginRight: 3 }}
+          size={30}
+          value={downloadProgress ? downloadProgress : uploadProgress}
+        />
       )}
       {!mobileView && <SelectedFiles />}
       <div className="app__drive__content__header__actions__container">

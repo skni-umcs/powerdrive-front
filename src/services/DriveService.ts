@@ -57,6 +57,12 @@ const driveOperationInProgress = new BehaviorSubject<boolean>(false);
 export const driveOperationInProgress$ =
   driveOperationInProgress.asObservable();
 
+const downloadProgress = new BehaviorSubject<number | undefined>(undefined);
+export const downloadProgress$ = downloadProgress.asObservable();
+
+const uploadProgress = new BehaviorSubject<number | undefined>(undefined);
+export const uploadProgress$ = uploadProgress.asObservable();
+
 export const initializeDrive = (): Observable<any> => {
   return identityUpdated$.pipe(
     switchMap((_) => loggedUser$),
@@ -165,6 +171,13 @@ export const uploadFile = (
     switchMap((token) =>
       from(
         axios.post(baseUrl + "/file", formData, {
+          onUploadProgress: (progressEvent) => {
+            if (progressEvent.total) {
+              uploadProgress.next(
+                Math.round((progressEvent.loaded * 100) / progressEvent.total!)
+              );
+            }
+          },
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -185,7 +198,10 @@ export const uploadFile = (
     }),
     map((_) => ({ isSuccessful: true })),
     catchError((err) => of({ isSuccessful: false, error: err })),
-    finalize(() => driveOperationInProgress.next(false))
+    finalize(() => {
+      driveOperationInProgress.next(false);
+      uploadProgress.next(undefined);
+    })
   );
 };
 
@@ -226,6 +242,13 @@ export const downloadFile = (file: FileData): Observable<OperationResult> => {
     switchMap((token) =>
       from(
         axios.get(baseUrl + "/file/" + file.id + "/download", {
+          onDownloadProgress: (progressEvent) => {
+            if (progressEvent.total) {
+              downloadProgress.next(
+                Math.round((progressEvent.loaded * 100) / progressEvent!.total!)
+              );
+            }
+          },
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -237,7 +260,10 @@ export const downloadFile = (file: FileData): Observable<OperationResult> => {
     map((fileContent) => saveAs(fileContent, file.filename)),
     map((_) => ({ isSuccessful: true })),
     catchError((err) => of({ isSuccessful: false, error: err })),
-    finalize(() => driveOperationInProgress.next(false))
+    finalize(() => {
+      driveOperationInProgress.next(false);
+      downloadProgress.next(undefined);
+    })
   );
 };
 
