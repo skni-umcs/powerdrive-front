@@ -161,97 +161,93 @@ const RegisterForm = ({
       className="app__auth__card__form"
       onKeyDown={(event) => (event.key === "Enter" ? handleSubmit() : null)}
     >
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            error={formData.email.hasError}
-            fullWidth
-            margin="dense"
-            label={LANGUAGE.AUTH.EMAIL}
-            variant="filled"
-            value={formData.email.content}
-            onChange={(e) => handleFormChange(e.target.value, "email")}
-            helperText={
-              formData.email.hasError
-                ? LANGUAGE.AUTH.ERRORS[formData.email.errorText]
-                : " "
-            }
-          />
-          <TextField
-            error={formData.first_name.hasError}
-            fullWidth
-            margin="dense"
-            label={LANGUAGE.AUTH.NAME}
-            variant="filled"
-            value={formData.first_name.content}
-            onChange={(e) => handleFormChange(e.target.value, "first_name")}
-            helperText={
-              formData.first_name.hasError
-                ? LANGUAGE.AUTH.ERRORS[formData.name.errorText]
-                : " "
-            }
-          />
-          <TextField
-            error={formData.last_name.hasError}
-            fullWidth
-            margin="dense"
-            label={LANGUAGE.AUTH.SURNAME}
-            variant="filled"
-            value={formData.last_name.content}
-            onChange={(e) => handleFormChange(e.target.value, "last_name")}
-            helperText={
-              formData.last_name.hasError
-                ? LANGUAGE.AUTH.ERRORS[formData.surname.errorText]
-                : " "
-            }
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            error={formData.username.hasError}
-            fullWidth
-            margin="dense"
-            label={LANGUAGE.AUTH.USERNAME}
-            variant="filled"
-            value={formData.username.content}
-            onChange={(e) => handleFormChange(e.target.value, "username")}
-            helperText={
-              formData.username.hasError
-                ? LANGUAGE.AUTH.ERRORS[formData.username.errorText]
-                : " "
-            }
-          />
-          <TextField
-            error={formData.password.hasError}
-            fullWidth
-            margin="dense"
-            type="password"
-            label={LANGUAGE.AUTH.PASSWORD}
-            variant="filled"
-            value={formData.password.content}
-            onChange={(e) => handleFormChange(e.target.value, "password")}
-            helperText={
-              formData.password.hasError
-                ? LANGUAGE.AUTH.ERRORS[formData.password.errorText]
-                : " "
-            }
-          />
-          <TextField
-            error={formData.repeatPassword.hasError}
-            fullWidth
-            margin="dense"
-            type="password"
-            label={LANGUAGE.AUTH.REPEAT_PASSWORD}
-            variant="filled"
-            value={formData.repeatPassword.content}
-            onChange={(e) => handleFormChange(e.target.value, "repeatPassword")}
-            helperText={
-              formData.repeatPassword.hasError
-                ? LANGUAGE.AUTH.ERRORS[formData.repeatPassword.errorText]
-                : " "
-            }
-          />
-        </Grid>
+      <Grid container>
+        <TextField
+          error={formData.email.hasError}
+          fullWidth
+          margin="dense"
+          label={LANGUAGE.AUTH.EMAIL}
+          variant="filled"
+          value={formData.email.content}
+          onChange={(e) => handleFormChange(e.target.value, "email")}
+          helperText={
+            formData.email.hasError
+              ? LANGUAGE.AUTH.ERRORS[formData.email.errorText]
+              : " "
+          }
+        />
+        <TextField
+          error={formData.first_name.hasError}
+          fullWidth
+          margin="dense"
+          label={LANGUAGE.AUTH.NAME}
+          variant="filled"
+          value={formData.first_name.content}
+          onChange={(e) => handleFormChange(e.target.value, "first_name")}
+          helperText={
+            formData.first_name.hasError
+              ? LANGUAGE.AUTH.ERRORS[formData.first_name.errorText]
+              : " "
+          }
+        />
+        <TextField
+          error={formData.last_name.hasError}
+          fullWidth
+          margin="dense"
+          label={LANGUAGE.AUTH.SURNAME}
+          variant="filled"
+          value={formData.last_name.content}
+          onChange={(e) => handleFormChange(e.target.value, "last_name")}
+          helperText={
+            formData.last_name.hasError
+              ? LANGUAGE.AUTH.ERRORS[formData.last_name.errorText]
+              : " "
+          }
+        />
+        <TextField
+          error={formData.username.hasError}
+          fullWidth
+          margin="dense"
+          label={LANGUAGE.AUTH.USERNAME}
+          variant="filled"
+          value={formData.username.content}
+          onChange={(e) => handleFormChange(e.target.value, "username")}
+          helperText={
+            formData.username.hasError
+              ? LANGUAGE.AUTH.ERRORS[formData.username.errorText]
+              : " "
+          }
+        />
+        <TextField
+          error={formData.password.hasError}
+          fullWidth
+          margin="dense"
+          type="password"
+          label={LANGUAGE.AUTH.PASSWORD}
+          variant="filled"
+          value={formData.password.content}
+          onChange={(e) => handleFormChange(e.target.value, "password")}
+          helperText={
+            formData.password.hasError
+              ? LANGUAGE.AUTH.ERRORS[formData.password.errorText]
+              : " "
+          }
+        />
+        <TextField
+          error={formData.repeatPassword.hasError}
+          fullWidth
+          margin="dense"
+          type="password"
+          label={LANGUAGE.AUTH.REPEAT_PASSWORD}
+          variant="filled"
+          value={formData.repeatPassword.content}
+          onChange={(e) => handleFormChange(e.target.value, "repeatPassword")}
+          helperText={
+            formData.repeatPassword.hasError
+              ? LANGUAGE.AUTH.ERRORS[formData.repeatPassword.errorText]
+              : " "
+          }
+        />
       </Grid>
       <div className="app__m-2">
         <LoadingButton
