@@ -92,6 +92,7 @@ const LANGUAGES = {
     },
     DRIVE: {
       YOUR_FILES: "Twoje pliki",
+      FINISHED: "Ukończono",
       ACTIONS: {
         SPLIT_VIEW: "Podzielony widok",
         SORT_MODE: "Tryb sortowania",
@@ -232,6 +233,7 @@ const LANGUAGES = {
     },
     DRIVE: {
       YOUR_FILES: "Your files",
+      FINISHED: "Finished",
       ACTIONS: {
         SPLIT_VIEW: "Split view",
         SORT_MODE: "Sort mode",

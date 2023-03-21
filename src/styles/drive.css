@@ -252,6 +252,10 @@
     opacity: 1;
 }
 
+.app__drive__file__tile--splitview:hover > div > .app__drive__file__tile__selection {
+    opacity: 1;
+}
+
 .app__drive__file__tile__selection {
     opacity: 0;
 }

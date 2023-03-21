@@ -100,6 +100,27 @@ const DriveActions = () => {
       {downloadProgress &&
         Array.from(downloadProgress).map(([id, value]) => {
           return (
+            <Tooltip
+              title={`${LANGUAGE.DRIVE.FINISHED}: ${Math.floor(value)}%`}
+              placement="top"
+            >
+              <CircularProgress
+                key={id}
+                sx={{ marginRight: 3 }}
+                variant="determinate"
+                size={30}
+                value={value}
+              />
+            </Tooltip>
+          );
+        })}
+
+      {uploadProgress &&
+        Array.from(uploadProgress).map(([id, value]) => (
+          <Tooltip
+            title={`${LANGUAGE.DRIVE.FINISHED}: ${Math.floor(value)}%`}
+            placement="top"
+          >
             <CircularProgress
               key={id}
               sx={{ marginRight: 3 }}
@@ -107,18 +128,7 @@ const DriveActions = () => {
               size={30}
               value={value}
             />
-          );
-        })}
-
-      {uploadProgress &&
-        Array.from(uploadProgress).map(([id, value]) => (
-          <CircularProgress
-            key={id}
-            sx={{ marginRight: 3 }}
-            variant="determinate"
-            size={30}
-            value={value}
-          />
+          </Tooltip>
         ))}
       {!mobileView && <SelectedFiles />}
       <div className="app__drive__content__header__actions__container">
