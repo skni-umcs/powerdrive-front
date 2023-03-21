@@ -42,20 +42,15 @@ const DriveActions = () => {
   const splitViewEnabled = useSplitViewEnabled();
   const mobileView = useMobileView();
   const driveOperationInProgress = useDriveOperationInProgress();
-  const [downloadProgress, setDownloadProgress] = useState<{
-    date: Date;
-    progress: Map<number, number>;
-  }>();
-  const [uploadProgress, setUploadProgress] = useState<{
-    date: Date;
-    progress: Map<number, number>;
-  }>();
+  const [downloadProgress, setDownloadProgress] =
+    useState<Map<number, number>>();
+  const [uploadProgress, setUploadProgress] = useState<Map<number, number>>();
   const [sortMenuOpen, setSortMenuOpen] = useState<boolean>(false);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
 
   useEffect(() => {
     const subscription = downloadProgress$.subscribe((progressMap) =>
-      setDownloadProgress({ date: new Date(), progress: progressMap })
+      setDownloadProgress(progressMap)
     );
 
     return () => subscription.unsubscribe();
@@ -63,7 +58,7 @@ const DriveActions = () => {
 
   useEffect(() => {
     const subscription = uploadProgress$.subscribe((progressMap) =>
-      setUploadProgress({ date: new Date(), progress: progressMap })
+      setUploadProgress(progressMap)
     );
 
     return () => subscription.unsubscribe();
@@ -103,7 +98,7 @@ const DriveActions = () => {
         <CircularProgress sx={{ marginRight: 3 }} size={30} />
       )}
       {downloadProgress &&
-        Array.from(downloadProgress.progress).map(([id, value]) => {
+        Array.from(downloadProgress).map(([id, value]) => {
           return (
             <CircularProgress
               key={id}
@@ -114,8 +109,9 @@ const DriveActions = () => {
             />
           );
         })}
+
       {uploadProgress &&
-        Array.from(uploadProgress.progress).map(([id, value]) => (
+        Array.from(uploadProgress).map(([id, value]) => (
           <CircularProgress
             key={id}
             sx={{ marginRight: 3 }}

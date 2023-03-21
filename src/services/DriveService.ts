@@ -121,7 +121,7 @@ export const downloadDirectoryContent = (
   directoryId: string,
   downloadRequestor: FilesViewTypeEnum
 ): Observable<OperationResult> => {
-  const operationId = new Date().getTime();
+  const operationId = Math.random();
 
   driveOperationInProgress.next([
     ...driveOperationInProgress.getValue(),
@@ -171,7 +171,7 @@ export const uploadFile = (
   path: string,
   isDir: boolean
 ): Observable<OperationResult> => {
-  const operationId = new Date().getTime();
+  const operationId = Math.random();
 
   driveOperationInProgress.next([
     ...driveOperationInProgress.getValue(),
@@ -196,12 +196,14 @@ export const uploadFile = (
           },
           onUploadProgress: (progressEvent) => {
             uploadProgress.next(
-              uploadProgress
-                .getValue()
-                .set(
-                  operationId,
-                  progressEvent.progress ? progressEvent.progress * 100 : 0
-                )
+              new Map(
+                uploadProgress
+                  .getValue()
+                  .set(
+                    operationId,
+                    progressEvent.progress ? progressEvent.progress * 100 : 0
+                  )
+              )
             );
           },
         })
@@ -222,21 +224,22 @@ export const uploadFile = (
     map((_) => ({ isSuccessful: true })),
     catchError((err) => of({ isSuccessful: false, error: err })),
     finalize(() => {
-      const updatedUploadMap = uploadProgress.getValue();
-      updatedUploadMap.delete(operationId);
-
       driveOperationInProgress.next([
         ...driveOperationInProgress
           .getValue()
           .filter((op) => op !== operationId),
       ]);
-      uploadProgress.next(updatedUploadMap);
+
+      const updatedUploadMap = uploadProgress.getValue();
+      updatedUploadMap.delete(operationId);
+
+      uploadProgress.next(new Map(updatedUploadMap));
     })
   );
 };
 
 export const deleteFile = (fileId: string): Observable<OperationResult> => {
-  const operationId = new Date().getTime();
+  const operationId = Math.random();
 
   driveOperationInProgress.next([
     ...driveOperationInProgress.getValue(),
@@ -277,7 +280,7 @@ export const deleteFile = (fileId: string): Observable<OperationResult> => {
 };
 
 export const downloadFile = (file: FileData): Observable<OperationResult> => {
-  const operationId = new Date().getTime();
+  const operationId = Math.random();
 
   driveOperationInProgress.next([
     ...driveOperationInProgress.getValue(),
@@ -294,12 +297,14 @@ export const downloadFile = (file: FileData): Observable<OperationResult> => {
           responseType: "blob",
           onDownloadProgress: (progressEvent) => {
             downloadProgress.next(
-              downloadProgress
-                .getValue()
-                .set(
-                  operationId,
-                  progressEvent.progress ? progressEvent.progress * 100 : 0
-                )
+              new Map(
+                downloadProgress
+                  .getValue()
+                  .set(
+                    operationId,
+                    progressEvent.progress ? progressEvent.progress * 100 : 0
+                  )
+              )
             );
           },
         })
@@ -310,14 +315,16 @@ export const downloadFile = (file: FileData): Observable<OperationResult> => {
     map((_) => ({ isSuccessful: true })),
     catchError((err) => of({ isSuccessful: false, error: err })),
     finalize(() => {
-      const updatedDownloadMap = downloadProgress.getValue();
-      updatedDownloadMap.delete(operationId);
       driveOperationInProgress.next([
         ...driveOperationInProgress
           .getValue()
           .filter((op) => op !== operationId),
       ]);
-      downloadProgress.next(updatedDownloadMap);
+
+      const updatedDownloadMap = downloadProgress.getValue();
+      updatedDownloadMap.delete(operationId);
+
+      downloadProgress.next(new Map(updatedDownloadMap));
     })
   );
 };
