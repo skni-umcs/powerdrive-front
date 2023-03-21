@@ -53,14 +53,18 @@ export const secondaryFilesViewFiles$ = secondaryFilesViewFiles.asObservable();
 const selectedFiles = new BehaviorSubject<FileData[]>([]);
 export const selectedFiles$ = selectedFiles.asObservable();
 
-const driveOperationInProgress = new BehaviorSubject<boolean>(false);
+const driveOperationInProgress = new BehaviorSubject<number[]>([]);
 export const driveOperationInProgress$ =
   driveOperationInProgress.asObservable();
 
-const downloadProgress = new BehaviorSubject<number | undefined>(undefined);
+const downloadProgress = new BehaviorSubject<Map<number, number>>(
+  new Map<number, number>()
+);
 export const downloadProgress$ = downloadProgress.asObservable();
 
-const uploadProgress = new BehaviorSubject<number | undefined>(undefined);
+const uploadProgress = new BehaviorSubject<Map<number, number>>(
+  new Map<number, number>()
+);
 export const uploadProgress$ = uploadProgress.asObservable();
 
 export const initializeDrive = (): Observable<any> => {
@@ -117,7 +121,12 @@ export const downloadDirectoryContent = (
   directoryId: string,
   downloadRequestor: FilesViewTypeEnum
 ): Observable<OperationResult> => {
-  driveOperationInProgress.next(true);
+  const operationId = new Date().getTime();
+
+  driveOperationInProgress.next([
+    ...driveOperationInProgress.getValue(),
+    operationId,
+  ]);
 
   return getToken().pipe(
     switchMap((token) =>
@@ -147,7 +156,13 @@ export const downloadDirectoryContent = (
     }),
     map((_) => ({ isSuccessful: true })),
     catchError((err) => of({ isSuccessful: false, error: err })),
-    finalize(() => driveOperationInProgress.next(false))
+    finalize(() =>
+      driveOperationInProgress.next([
+        ...driveOperationInProgress
+          .getValue()
+          .filter((op) => op !== operationId),
+      ])
+    )
   );
 };
 
@@ -156,7 +171,12 @@ export const uploadFile = (
   path: string,
   isDir: boolean
 ): Observable<OperationResult> => {
-  driveOperationInProgress.next(true);
+  const operationId = new Date().getTime();
+
+  driveOperationInProgress.next([
+    ...driveOperationInProgress.getValue(),
+    operationId,
+  ]);
 
   const fileMeta = {
     path: path,
@@ -171,15 +191,18 @@ export const uploadFile = (
     switchMap((token) =>
       from(
         axios.post(baseUrl + "/file", formData, {
-          onUploadProgress: (progressEvent) => {
-            if (progressEvent.total) {
-              uploadProgress.next(
-                Math.round((progressEvent.loaded * 100) / progressEvent.total!)
-              );
-            }
-          },
           headers: {
             Authorization: `Bearer ${token}`,
+          },
+          onUploadProgress: (progressEvent) => {
+            uploadProgress.next(
+              uploadProgress
+                .getValue()
+                .set(
+                  operationId,
+                  progressEvent.progress ? progressEvent.progress * 100 : 0
+                )
+            );
           },
         })
       )
@@ -199,14 +222,26 @@ export const uploadFile = (
     map((_) => ({ isSuccessful: true })),
     catchError((err) => of({ isSuccessful: false, error: err })),
     finalize(() => {
-      driveOperationInProgress.next(false);
-      uploadProgress.next(undefined);
+      const updatedUploadMap = uploadProgress.getValue();
+      updatedUploadMap.delete(operationId);
+
+      driveOperationInProgress.next([
+        ...driveOperationInProgress
+          .getValue()
+          .filter((op) => op !== operationId),
+      ]);
+      uploadProgress.next(updatedUploadMap);
     })
   );
 };
 
 export const deleteFile = (fileId: string): Observable<OperationResult> => {
-  driveOperationInProgress.next(true);
+  const operationId = new Date().getTime();
+
+  driveOperationInProgress.next([
+    ...driveOperationInProgress.getValue(),
+    operationId,
+  ]);
 
   return getToken().pipe(
     switchMap((token) =>
@@ -231,28 +266,42 @@ export const deleteFile = (fileId: string): Observable<OperationResult> => {
     }),
     map((_) => ({ isSuccessful: true })),
     catchError((err) => of({ isSuccessful: false, error: err })),
-    finalize(() => driveOperationInProgress.next(false))
+    finalize(() =>
+      driveOperationInProgress.next([
+        ...driveOperationInProgress
+          .getValue()
+          .filter((op) => op !== operationId),
+      ])
+    )
   );
 };
 
 export const downloadFile = (file: FileData): Observable<OperationResult> => {
-  driveOperationInProgress.next(true);
+  const operationId = new Date().getTime();
+
+  driveOperationInProgress.next([
+    ...driveOperationInProgress.getValue(),
+    operationId,
+  ]);
 
   return getToken().pipe(
     switchMap((token) =>
       from(
         axios.get(baseUrl + "/file/" + file.id + "/download", {
-          onDownloadProgress: (progressEvent) => {
-            if (progressEvent.total) {
-              downloadProgress.next(
-                Math.round((progressEvent.loaded * 100) / progressEvent!.total!)
-              );
-            }
-          },
           headers: {
             Authorization: `Bearer ${token}`,
           },
           responseType: "blob",
+          onDownloadProgress: (progressEvent) => {
+            downloadProgress.next(
+              downloadProgress
+                .getValue()
+                .set(
+                  operationId,
+                  progressEvent.progress ? progressEvent.progress * 100 : 0
+                )
+            );
+          },
         })
       )
     ),
@@ -261,8 +310,14 @@ export const downloadFile = (file: FileData): Observable<OperationResult> => {
     map((_) => ({ isSuccessful: true })),
     catchError((err) => of({ isSuccessful: false, error: err })),
     finalize(() => {
-      driveOperationInProgress.next(false);
-      downloadProgress.next(undefined);
+      const updatedDownloadMap = downloadProgress.getValue();
+      updatedDownloadMap.delete(operationId);
+      driveOperationInProgress.next([
+        ...driveOperationInProgress
+          .getValue()
+          .filter((op) => op !== operationId),
+      ]);
+      downloadProgress.next(updatedDownloadMap);
     })
   );
 };

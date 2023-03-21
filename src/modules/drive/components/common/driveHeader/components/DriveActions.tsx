@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SelectedFiles from "./SelectedFiles";
 import {
   CircularProgress,
@@ -35,8 +35,6 @@ const [useViewMode] = bind(viewMode$);
 const [useSplitViewEnabled] = bind(splitViewEnabled$);
 const [useMobileView] = bind(mobileView$);
 const [useDriveOperationInProgress] = bind(driveOperationInProgress$);
-const [useDownloadProgress] = bind(downloadProgress$);
-const [useUploadProgress] = bind(uploadProgress$);
 
 const DriveActions = () => {
   const LANGUAGE = useLanguage();
@@ -44,10 +42,32 @@ const DriveActions = () => {
   const splitViewEnabled = useSplitViewEnabled();
   const mobileView = useMobileView();
   const driveOperationInProgress = useDriveOperationInProgress();
-  const downloadProgress = useDownloadProgress();
-  const uploadProgress = useUploadProgress();
+  const [downloadProgress, setDownloadProgress] = useState<{
+    date: Date;
+    progress: Map<number, number>;
+  }>();
+  const [uploadProgress, setUploadProgress] = useState<{
+    date: Date;
+    progress: Map<number, number>;
+  }>();
   const [sortMenuOpen, setSortMenuOpen] = useState<boolean>(false);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+
+  useEffect(() => {
+    const subscription = downloadProgress$.subscribe((progressMap) =>
+      setDownloadProgress({ date: new Date(), progress: progressMap })
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const subscription = uploadProgress$.subscribe((progressMap) =>
+      setUploadProgress({ date: new Date(), progress: progressMap })
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleCloseSortMenu = () => {
     setSortMenuOpen(false);
@@ -79,13 +99,31 @@ const DriveActions = () => {
 
   return (
     <div className="app__drive__content__header__actions">
-      {driveOperationInProgress && (
-        <CircularProgress
-          sx={{ marginRight: 3 }}
-          size={30}
-          value={downloadProgress ? downloadProgress : uploadProgress}
-        />
+      {driveOperationInProgress.length > 0 && (
+        <CircularProgress sx={{ marginRight: 3 }} size={30} />
       )}
+      {downloadProgress &&
+        Array.from(downloadProgress.progress).map(([id, value]) => {
+          return (
+            <CircularProgress
+              key={id}
+              sx={{ marginRight: 3 }}
+              variant="determinate"
+              size={30}
+              value={value}
+            />
+          );
+        })}
+      {uploadProgress &&
+        Array.from(uploadProgress.progress).map(([id, value]) => (
+          <CircularProgress
+            key={id}
+            sx={{ marginRight: 3 }}
+            variant="determinate"
+            size={30}
+            value={value}
+          />
+        ))}
       {!mobileView && <SelectedFiles />}
       <div className="app__drive__content__header__actions__container">
         {!mobileView && (
