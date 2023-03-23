@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { FileData } from "../../../../../../../../models/api/FileData";
 import {
   downloadDirectoryContent,
+  primaryFilesViewPath$,
+  secondaryFilesViewPath$,
   uploadFiles,
 } from "../../../../../../../../services/DriveService";
 import DriveBreadcrumbs from "../../../../driveBreadcrumbs/DriveBreadcrumbs";
@@ -16,7 +18,7 @@ import { SortModeEnum } from "../../../../../../../../enums/SortModeEnum";
 import { getSortedFiles } from "../../../../../../../../services/SortUtil";
 import SkeletonFileTile from "./SkeletonFileTile";
 import { useDropzone } from "react-dropzone";
-import { first } from "rxjs";
+import { first, filter, switchMap } from "rxjs";
 
 interface DriveFilesViewProps {
   splitViewEnabled: boolean;
@@ -59,11 +61,18 @@ const DriveFilesView = ({
   });
 
   const handleUploadFile = (files: File[]) => {
-    if (!files || files.length === 0 || !previewPath) return;
+    const path$ =
+      filesViewType === FilesViewTypeEnum.PRIMARY
+        ? primaryFilesViewPath$
+        : secondaryFilesViewPath$;
 
-    const path = previewPath[previewPath.length - 1].path;
-    uploadFiles(files, path)
-      .pipe(first())
+    path$
+      .pipe(
+        first(),
+        filter((path) => !!files && files.length > 0 && !!path),
+        switchMap((path) => uploadFiles(files, path![path!.length - 1].path)),
+        first()
+      )
       .subscribe((result) => {
         if (!result.isSuccessful) console.error(result.error);
       });
@@ -74,7 +83,7 @@ const DriveFilesView = ({
     setIsLoading(true);
     downloadDirectoryContent(
       previewPath[previewPath.length - 1].id,
-      filesViewType
+      previewPath[previewPath.length - 1].path
     ).subscribe((result) => {
       if (!result.isSuccessful) {
         setErrorSnackOpen(true);

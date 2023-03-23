@@ -19,7 +19,6 @@ import { getToken, identityUpdated$, loggedUser$ } from "./AuthService";
 import axios from "axios";
 import { baseUrl } from "../const/environment";
 import { OperationResult } from "../models/api/OperationResult";
-import { FilesViewTypeEnum } from "../enums/FilesViewTypeEnum";
 import { saveAs } from "file-saver";
 
 const directoryTree = new BehaviorSubject<FileData | null>(null);
@@ -82,7 +81,6 @@ export const initializeDrive = (): Observable<any> => {
         })
       )
     ),
-    tap((tree) => console.log(tree.data)),
     tap((tree) => directoryTree.next(tree.data)),
     catchError((err) => {
       console.error(err);
@@ -95,6 +93,9 @@ export const setViewMode = (mode: DriveViewModeEnum) => {
 };
 
 export const setSplitViewEnabled = (status: boolean) => {
+  if (status) {
+    setSecondaryFilesViewPath(primaryFilesViewPath.getValue());
+  }
   if (status !== splitViewEnabled.getValue()) splitViewEnabled.next(status);
 };
 
@@ -119,7 +120,7 @@ export const setSelectedFiles = (files: FileData[]) => {
 
 export const downloadDirectoryContent = (
   directoryId: string,
-  downloadRequestor: FilesViewTypeEnum
+  downloadRequestorPath: string
 ): Observable<OperationResult> => {
   const operationId = Math.random();
 
@@ -138,20 +139,21 @@ export const downloadDirectoryContent = (
     ),
     map((res) => res.data),
     tap((files) => {
-      if (downloadRequestor === FilesViewTypeEnum.PRIMARY) {
+      const primaryFilesViewPathValue = primaryFilesViewPath.getValue()!;
+      const secondaryFilesViewPathValue = secondaryFilesViewPath.getValue()!;
+
+      if (
+        primaryFilesViewPathValue[primaryFilesViewPathValue!.length - 1]
+          .path === downloadRequestorPath
+      ) {
         primaryFilesViewFiles.next(files);
-        if (
-          secondaryFilesViewPath.getValue() === primaryFilesViewPath.getValue()
-        ) {
-          secondaryFilesViewFiles.next(files);
-        }
-      } else {
+      }
+
+      if (
+        secondaryFilesViewPathValue[secondaryFilesViewPathValue!.length - 1]
+          .path === downloadRequestorPath
+      ) {
         secondaryFilesViewFiles.next(files);
-        if (
-          secondaryFilesViewPath.getValue() === primaryFilesViewPath.getValue()
-        ) {
-          primaryFilesViewFiles.next(files);
-        }
       }
     }),
     map((_) => ({ isSuccessful: true })),
@@ -211,10 +213,32 @@ export const uploadFile = (
     ),
     map((res) => res.data),
     tap((file) => {
-      primaryFilesViewFiles.next([...primaryFilesViewFiles.getValue(), file]);
-      if (
-        secondaryFilesViewPath.getValue() === primaryFilesViewPath.getValue()
-      ) {
+      const primaryFilesViewPathValue = primaryFilesViewPath.getValue()!;
+      const secondaryFilesViewPathValue = secondaryFilesViewPath.getValue()!;
+
+      let primaryPath =
+        primaryFilesViewPathValue[primaryFilesViewPathValue!.length - 1].path;
+      let secondaryPath =
+        secondaryFilesViewPathValue[secondaryFilesViewPathValue!.length - 1]
+          .path;
+
+      if (isDir) {
+        const lastSeparatorIndex = path.lastIndexOf("/");
+
+        if (lastSeparatorIndex !== -1) {
+          path = path.substring(0, lastSeparatorIndex);
+        }
+
+        if (lastSeparatorIndex === 0) {
+          path = "/";
+        }
+      }
+
+      if (primaryPath === path) {
+        primaryFilesViewFiles.next([...primaryFilesViewFiles.getValue(), file]);
+      }
+
+      if (secondaryPath === path) {
         secondaryFilesViewFiles.next([
           ...secondaryFilesViewFiles.getValue(),
           file,
