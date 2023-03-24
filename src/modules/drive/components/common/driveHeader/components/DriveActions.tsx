@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import SelectedFiles from "./SelectedFiles";
 import {
   CircularProgress,
@@ -14,14 +14,12 @@ import SplitscreenIcon from "@mui/icons-material/Splitscreen";
 import ScreenshotMonitorIcon from "@mui/icons-material/ScreenshotMonitor";
 import { DriveViewModeEnum } from "../../../../../../enums/DriveViewModeEnum";
 import {
-  downloadProgress$,
   driveOperationInProgress$,
   setSortMode,
   setSortType,
   setSplitViewEnabled,
   setViewMode,
   splitViewEnabled$,
-  uploadProgress$,
   viewMode$,
 } from "../../../../../../services/DriveService";
 import { bind } from "react-rxjs";
@@ -29,6 +27,7 @@ import { SortTypeEnum } from "../../../../../../enums/SortTypeEnum";
 import { SortModeEnum } from "../../../../../../enums/SortModeEnum";
 import { language$ } from "../../../../../../services/LanguageService";
 import { mobileView$ } from "../../../../../../services/DimensionsService";
+import ExpandableProgressIndicator from "./ExpandableProgressIndicator";
 
 const [useLanguage] = bind(language$);
 const [useViewMode] = bind(viewMode$);
@@ -42,27 +41,8 @@ const DriveActions = () => {
   const splitViewEnabled = useSplitViewEnabled();
   const mobileView = useMobileView();
   const driveOperationInProgress = useDriveOperationInProgress();
-  const [downloadProgress, setDownloadProgress] =
-    useState<Map<number, number>>();
-  const [uploadProgress, setUploadProgress] = useState<Map<number, number>>();
   const [sortMenuOpen, setSortMenuOpen] = useState<boolean>(false);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
-
-  useEffect(() => {
-    const subscription = downloadProgress$.subscribe((progressMap) =>
-      setDownloadProgress(progressMap)
-    );
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    const subscription = uploadProgress$.subscribe((progressMap) =>
-      setUploadProgress(progressMap)
-    );
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   const handleCloseSortMenu = () => {
     setSortMenuOpen(false);
@@ -97,39 +77,7 @@ const DriveActions = () => {
       {driveOperationInProgress.length > 0 && (
         <CircularProgress sx={{ marginRight: 3 }} size={30} />
       )}
-      {downloadProgress &&
-        Array.from(downloadProgress).map(([id, value]) => {
-          return (
-            <Tooltip
-              title={`${LANGUAGE.DRIVE.FINISHED}: ${Math.floor(value)}%`}
-              placement="top"
-              key={id}
-            >
-              <CircularProgress
-                sx={{ marginRight: 3 }}
-                variant="determinate"
-                size={30}
-                value={value}
-              />
-            </Tooltip>
-          );
-        })}
-
-      {uploadProgress &&
-        Array.from(uploadProgress).map(([id, value]) => (
-          <Tooltip
-            title={`${LANGUAGE.DRIVE.FINISHED}: ${Math.floor(value)}%`}
-            placement="top"
-            key={id}
-          >
-            <CircularProgress
-              sx={{ marginRight: 3 }}
-              variant="determinate"
-              size={30}
-              value={value}
-            />
-          </Tooltip>
-        ))}
+      <ExpandableProgressIndicator />
       {!mobileView && <SelectedFiles />}
       <div className="app__drive__content__header__actions__container">
         {!mobileView && (

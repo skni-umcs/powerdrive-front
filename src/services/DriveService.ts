@@ -20,6 +20,7 @@ import axios from "axios";
 import { baseUrl } from "../const/environment";
 import { OperationResult } from "../models/api/OperationResult";
 import { saveAs } from "file-saver";
+import { OperationProgressData } from "../models/ui/OperationProgressData";
 
 const directoryTree = new BehaviorSubject<FileData | null>(null);
 export const directoryTree$ = directoryTree.asObservable();
@@ -56,13 +57,13 @@ const driveOperationInProgress = new BehaviorSubject<number[]>([]);
 export const driveOperationInProgress$ =
   driveOperationInProgress.asObservable();
 
-const downloadProgress = new BehaviorSubject<Map<number, number>>(
-  new Map<number, number>()
-);
+const downloadProgress = new BehaviorSubject<
+  Map<number, OperationProgressData>
+>(new Map<number, OperationProgressData>());
 export const downloadProgress$ = downloadProgress.asObservable();
 
-const uploadProgress = new BehaviorSubject<Map<number, number>>(
-  new Map<number, number>()
+const uploadProgress = new BehaviorSubject<Map<number, OperationProgressData>>(
+  new Map<number, OperationProgressData>()
 );
 export const uploadProgress$ = uploadProgress.asObservable();
 
@@ -199,12 +200,13 @@ export const uploadFile = (
           onUploadProgress: (progressEvent) => {
             uploadProgress.next(
               new Map(
-                uploadProgress
-                  .getValue()
-                  .set(
-                    operationId,
-                    progressEvent.progress ? progressEvent.progress * 100 : 0
-                  )
+                uploadProgress.getValue().set(operationId, {
+                  progress: progressEvent.progress
+                    ? progressEvent.progress * 100
+                    : 0,
+                  filename: fileData?.name ? fileData.name : "",
+                  isDir: isDir,
+                })
               )
             );
           },
@@ -334,10 +336,13 @@ export const downloadFile = (file: FileData): Observable<OperationResult> => {
               new Map(
                 downloadProgress
                   .getValue()
-                  .set(
-                    operationId,
-                    progressEvent.progress ? progressEvent.progress * 100 : 0
-                  )
+                  .set(operationId, {
+                    progress: progressEvent.progress
+                      ? progressEvent.progress * 100
+                      : 0,
+                    filename: file.filename,
+                    isDir: file.is_dir,
+                  })
               )
             );
           },
