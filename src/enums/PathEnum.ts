@@ -12,4 +12,5 @@ export enum PathEnum {
   SHARED = "shared",
   FAVORITES = "favorites",
   DELETED = "deleted",
+  SETTINGS = "settings"
 }

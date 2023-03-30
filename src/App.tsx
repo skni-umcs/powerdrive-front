@@ -23,6 +23,7 @@ import NotesHome from "./modules/notes/components/home/NotesHome";
 import NotesShared from "./modules/notes/components/shared/NotesShared";
 import NotesFavorites from "./modules/notes/components/favorites/NotesFavorites";
 import NotesDeleted from "./modules/notes/components/deleted/NotesDeleted";
+import Settings from "./modules/common/settings/Settings";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: PathEnum.PASSWORD_RESET,
         element: <PasswordReset />,
+      },
+      {
+        path: PathEnum.SETTINGS,
+        element: <Settings/>
       },
       {
         path: PathEnum.APP,
