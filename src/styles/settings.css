@@ -1,0 +1,22 @@
+@import "base.css";
+
+.app__settings__main{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width:80%;
+    border-radius: 5px;
+    background-color: var(--dark-mode-background-color-medium);
+} 
+.app__settings__account {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: blanchedalmond;
+}
+.app__set__header {
+        display: flex;
+            flex-direction: row;
+    font-size: 2rem;
+}
