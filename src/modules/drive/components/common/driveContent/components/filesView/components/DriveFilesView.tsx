@@ -51,15 +51,6 @@ const DriveFilesView = ({
   const [isLoading, setIsLoading] = useState(false);
   const [errorSnackOpen, setErrorSnackOpen] = useState(false);
 
-  const onDrop = useCallback((droppedFiles: File[]) => {
-    handleUploadFile(droppedFiles);
-  }, []);
-
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    noClick: true,
-  });
-
   const handleUploadFile = (files: File[]) => {
     const path$ =
       filesViewType === FilesViewTypeEnum.PRIMARY
@@ -78,6 +69,15 @@ const DriveFilesView = ({
       });
   };
 
+  const onDrop = useCallback((droppedFiles: File[]) => {
+    handleUploadFile(droppedFiles);
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    noClick: true,
+  });
+
   useEffect(() => {
     if (previewPath === null) return;
     setIsLoading(true);
@@ -94,29 +94,33 @@ const DriveFilesView = ({
   }, [previewPath]);
 
   return (
-    <React.Fragment>
-      <div {...getRootProps()} className="app__drive__files__view">
-        <input className="input-zone" {...getInputProps()} />
-        {splitViewEnabled && !mobileView && (
-          <DriveBreadcrumbs viewType={filesViewType} />
-        )}
-        <div className="app__drive__file__files">
-          {!isLoading
-            ? getSortedFiles(sortType, sortMode, files).map((file) => (
-                <FileTile
-                  key={file.id}
-                  file={file}
-                  splitViewEnabled={splitViewEnabled}
-                  selectedFiles={selectedFiles}
-                  mobileView={mobileView}
-                  onPathChange={onPathChange}
-                  onFileDelete={onFileDelete}
-                />
-              ))
-            : [...Array(5)].map((_, i) => <SkeletonFileTile key={i} />)}
+    <div {...getRootProps()} className="app__drive__files__view">
+      {isDragActive && (
+        <div className="app__drive__files__drag">
+          <div className="app__drive__files__drag__title">
+            {LANGUAGE.DRIVE.DROP}
+          </div>
         </div>
+      )}
+      <input className="input-zone" {...getInputProps()} />
+      {splitViewEnabled && !mobileView && (
+        <DriveBreadcrumbs viewType={filesViewType} />
+      )}
+      <div className="app__drive__file__files">
+        {!isLoading
+          ? getSortedFiles(sortType, sortMode, files).map((file) => (
+              <FileTile
+                key={file.id}
+                file={file}
+                splitViewEnabled={splitViewEnabled}
+                selectedFiles={selectedFiles}
+                mobileView={mobileView}
+                onPathChange={onPathChange}
+                onFileDelete={onFileDelete}
+              />
+            ))
+          : [...Array(5)].map((_, i) => <SkeletonFileTile key={i} />)}
       </div>
-
       <Snackbar
         open={errorSnackOpen}
         autoHideDuration={6000}
@@ -126,7 +130,7 @@ const DriveFilesView = ({
           {LANGUAGE.DRIVE.ERRORS.FOLDER_CONTENT_DOWNLOAD_ERROR}
         </Alert>
       </Snackbar>
-    </React.Fragment>
+    </div>
   );
 };
 

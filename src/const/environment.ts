@@ -1,1 +1,1 @@
-export const baseUrl = "http://212.182.25.252:8123";
+export const baseUrl = "https://powerdrive.skni.umcs.pl/api";

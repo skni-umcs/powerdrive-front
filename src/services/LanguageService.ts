@@ -93,6 +93,10 @@ const LANGUAGES = {
     DRIVE: {
       YOUR_FILES: "Twoje pliki",
       FINISHED: "Ukończono",
+      PROGRESS: {
+        DOWNLOAD_FILES: "Pobierane pliki",
+        UPLOAD_FILES: "Przesyłane pliki",
+      },
       ACTIONS: {
         SPLIT_VIEW: "Podzielony widok",
         SORT_MODE: "Tryb sortowania",
@@ -146,6 +150,7 @@ const LANGUAGES = {
         DELETE: "Usuń",
         CANCEL: "Anuluj",
       },
+      DROP: "Upuść pliki tutaj",
     },
   },
   EN: {
@@ -234,6 +239,10 @@ const LANGUAGES = {
     DRIVE: {
       YOUR_FILES: "Your files",
       FINISHED: "Finished",
+      PROGRESS: {
+        DOWNLOAD_FILES: "Downloading files",
+        UPLOAD_FILES: "Uploading files",
+      },
       ACTIONS: {
         SPLIT_VIEW: "Split view",
         SORT_MODE: "Sort mode",
@@ -286,6 +295,7 @@ const LANGUAGES = {
         DELETE: "Delete",
         CANCEL: "Cancel",
       },
+      DROP: "Drop files here",
     },
   },
 };
