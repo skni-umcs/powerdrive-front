@@ -92,7 +92,19 @@ const LANGUAGES = {
       PASSWORD_RESET: "ZMIANA HASŁA",
       DRIVE_SETTINGS: "USTAWIENIA DYSKU",
       CALENDAR_SETTINGS: "USTAWIENIA KALENDARZA",
-      NOTES_SETTINGS: "USTAWIENIA NOTATEK"
+      NOTES_SETTINGS: "USTAWIENIA NOTATEK",
+      FORM:{
+        EMAIL: "Adres email",
+        USERNAME: "Nazwa użytkownika",
+        FIRSTNAME: "Imię",
+        SURNAME: "Nazwisko",
+        UPDATE: "AKTUALIZUJ",
+        OLD_PASSWORD: "Stare hasło",
+        REPEAT_OLD_PASSWORD: "Powtórz stare hasło",
+        NEW_PASSWORD: "Nowe hasło",
+        REPEAT_NEW_PASSWORD: "Powtórz nowe hasło",
+        CHANGE_PASSWORD: "ZMIEŃ HASŁO",
+      }
     }
   },
   EN: {
@@ -180,7 +192,19 @@ const LANGUAGES = {
       PASSWORD_RESET: "RESET PASSWORD",
       DRIVE_SETTINGS: "DRIVE SETTINGS",
       CALENDAR_SETTINGS: "CALENDAR SETTINGS",
-      NOTES_SETTINGS: "NOTES SETTINGS"
+      NOTES_SETTINGS: "NOTES SETTINGS",
+      FORM:{
+        EMAIL: "Email adress",
+        USERNAME: "Username",
+        FIRSTNAME: "Firstname",
+        SURNAME: "Surname",
+        UPDATE: "UPDATE",
+        OLD_PASSWORD: "Previous password",
+        REPEAT_OLD_PASSWORD: "Confirm previous password",
+        NEW_PASSWORD: "New password",
+        REPEAT_NEW_PASSWORD: "Confirm new password",
+        CHANGE_PASSWORD: "CHANGE PASSWORD",
+      }
     }
   },
 };
