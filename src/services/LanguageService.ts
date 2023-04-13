@@ -86,6 +86,14 @@ const LANGUAGES = {
       YOUR_CALENDARS: "Twoje kalendarze",
       UPCOMING_EVENTS: "Nadchodzące wydarzenia",
     },
+    SETTINGS: {
+      SETTINGS: "Ustawienia",
+      ACCOUNT_SETTINGS: "USTAWIENIA KONTA",
+      PASSWORD_RESET: "ZMIANA HASŁA",
+      DRIVE_SETTINGS: "USTAWIENIA DYSKU",
+      CALENDAR_SETTINGS: "USTAWIENIA KALENDARZA",
+      NOTES_SETTINGS: "USTAWIENIA NOTATEK"
+    }
   },
   EN: {
     NAVBAR: {
@@ -166,6 +174,14 @@ const LANGUAGES = {
       YOUR_CALENDARS: "Your calendars",
       UPCOMING_EVENTS: "Upcoming events",
     },
+    SETTINGS: {
+      SETTINGS: "Settings",
+      ACCOUNT_SETTINGS: "ACCOUNT SETTINGS",
+      PASSWORD_RESET: "RESET PASSWORD",
+      DRIVE_SETTINGS: "DRIVE SETTINGS",
+      CALENDAR_SETTINGS: "CALENDAR SETTINGS",
+      NOTES_SETTINGS: "NOTES SETTINGS"
+    }
   },
 };
 

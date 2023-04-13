@@ -5,18 +5,35 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    width:80%;
+    border-radius: 5px;
+    width: 50%;
+    margin: 0 auto;
+} 
+.app__settings__account__reset {
+    display: flex;
+    width:100%;
+    justify-content: space-between;
+}
+
+.app__settings__subsection__half{
+    
+    flex-direction: row;
+    padding: 1rem 0;
     border-radius: 5px;
     background-color: var(--dark-mode-background-color-medium);
-} 
-.app__settings__account {
-    display: flex;
+    width: 48%;
+}
+.app__settings__subsection {
+    justify-content: left;
     flex-direction: row;
-    justify-content: space-around;
-    background-color: blanchedalmond;
+    margin: 1rem;
+    padding: 1rem 0;
+    border-radius: 5px;
+    background-color: var(--dark-mode-background-color-medium);
+    width: 100%;
 }
 .app__set__header {
-        display: flex;
-            flex-direction: row;
+    display: flex;
+    flex-direction: row;
     font-size: 2rem;
 }
