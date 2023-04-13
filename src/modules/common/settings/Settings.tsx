@@ -19,8 +19,8 @@ const Settings = () => {
   return (
     <div className="app__settings__main">
       <div className="app__settings__subsection app__settings__header">
-        <div style={{ display: "flex", width: "100%" }}>
-          <ArrowBackIcon sx={{ fontSize: "2rem" }} />
+        <div style={{ display: "flex", width: "100%", justifyContent: "left" }}>
+          <ArrowBackIcon sx={{ fontSize: "3rem" }} />
           <h1>{LANGUAGE.SETTINGS.SETTINGS}</h1>
         </div>
         <div style={{ display: "flex", paddingRight: "1rem" }}>

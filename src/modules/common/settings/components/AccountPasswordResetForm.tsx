@@ -73,9 +73,11 @@ const AccountPasswordResetForm: React.FC<Props> = ({ onSubmit }) => {
         value={repeatedNewPassword}
         onChange={(e) => setRepeatedNewPassword(e.target.value)}
       />
-      <LoadingButton type="submit">
-        {LANGUAGE.SETTINGS.FORM.CHANGE_PASSWORD}
-      </LoadingButton>
+      <div className="app__m-2">
+        <LoadingButton type="submit" variant="contained">
+          {LANGUAGE.SETTINGS.FORM.CHANGE_PASSWORD}
+        </LoadingButton>
+      </div>
     </div>
   );
 };

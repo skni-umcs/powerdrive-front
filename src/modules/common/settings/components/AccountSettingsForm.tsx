@@ -64,9 +64,11 @@ const AccountSettingsForm: React.FC<Props> = ({ onSubmit }) => {
         value={surname}
         onChange={(e) => setSurname(e.target.value)}
       />
-      <LoadingButton type="submit">
-        {LANGUAGE.SETTINGS.FORM.UPDATE}
-      </LoadingButton>
+      <div className="app__m-2">
+        <LoadingButton type="submit" variant="contained">
+          {LANGUAGE.SETTINGS.FORM.UPDATE}
+        </LoadingButton>
+      </div>
     </div>
   );
 };

@@ -12,7 +12,8 @@
     font-weight: 500;
     font-size: 2rem;
     padding: 0;
-    margin: 0;
+    margin: auto 0;
+    margin-left: 1rem;
     flex-direction: row;
 }
 .app__settings__main h2 {
@@ -41,6 +42,7 @@
     
     flex-direction: row;
     padding: 1rem 0;
+    margin: 1rem 0;
     border-radius: 5px;
     background-color: var(--dark-mode-background-color-medium);
     width: 363px;
@@ -59,4 +61,5 @@
     flex-direction: column;
     height: 90%;
     justify-content: space-around;
+    align-items: center;
 }
