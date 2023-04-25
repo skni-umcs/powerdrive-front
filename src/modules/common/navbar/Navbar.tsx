@@ -36,7 +36,7 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ boxShadow: 3, zIndex: 150 }}>
       <Toolbar
         color="primary"
         sx={{ display: "flex", justifyContent: "space-between" }}

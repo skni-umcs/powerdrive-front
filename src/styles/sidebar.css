@@ -1,12 +1,14 @@
 @import "base.css";
 
 .app__sidebar {
+    z-index: 100;
     height: 100%;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     background-color: var(--dark-mode-background-color-dark);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
 }
 
 .app__sidebar__navigation {
@@ -123,6 +125,10 @@
     justify-content: flex-start;
     align-items: center;
     padding: 0.4rem;
+    background-color: var(--dark-mode-background-color-medium);
+    border-radius: var(--border-radius-sm);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    margin: 0.8rem
 }
 
 .app__sidebar__calendar__widget__header {
@@ -144,6 +150,7 @@
     flex-direction: column;
     justify-content: flex-start;
     flex: 1;
+    width: 100%;
 }
 
 .app__sidebar__calendar__widget__body__week {
@@ -189,14 +196,26 @@
     justify-content: flex-start;
     align-items: flex-start;
     padding: 1rem 0.4rem 0.5rem 0.4rem;
+    margin: 0.8rem;
+    background-color: var(--dark-mode-background-color-medium);
+    border-radius: var(--border-radius-sm);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+.app__sidebar__calendar__controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    padding: 0.2rem;
 }
 
 .app__sidebar__calendar__list__header,
 .app__sidebar__upcoming-events__header {
     box-sizing: border-box;
-    border-bottom: 2px solid var(--color-grey);
     width: 95%;
-    padding: 0.5rem 0.2rem;
+    padding: 0.2rem;
     font-size: 1.1rem;
     font-weight: bold;
 }
@@ -219,8 +238,8 @@
 
 .app__sidebar__calendar__list__item__checkbox,
 .app__sidebar__calendar__list__item__checkbox--checked {
-    width: 1.1rem;
-    height: 1.1rem;
+    width: 1.5rem;
+    height: 1.5rem;
     border-radius: var(--border-radius-sm);
     background-color: var(--dark-mode-background-color-light);
     border: 2px solid var(--color-grey);
@@ -234,8 +253,8 @@
     content: "";
     display: block;
     position: absolute;
-    left: 0.35rem;
-    top: 0.1rem;
+    left: 0.4rem;
+    top: 0.15rem;
     width: 3px;
     height: 8px;
     border: solid white;

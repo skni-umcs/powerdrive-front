@@ -24,6 +24,7 @@ import NotesFavorites from "./modules/notes/components/favorites/NotesFavorites"
 import NotesDeleted from "./modules/notes/components/deleted/NotesDeleted";
 import { initializeDrive } from "./services/DriveService";
 import { updateView } from "./services/DimensionsService";
+import { initializeCalendar } from "./services/CalendarService";
 
 const router = createBrowserRouter([
   {
@@ -146,6 +147,11 @@ const App = () => {
 
   useEffect(() => {
     const subscription = initializeDrive().subscribe();
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const subscription = initializeCalendar().subscribe();
     return () => subscription.unsubscribe();
   }, []);
 

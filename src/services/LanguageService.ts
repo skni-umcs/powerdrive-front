@@ -73,6 +73,15 @@ const LANGUAGES = {
         5: "Piątek",
         6: "Sobota",
       },
+      DAYS_SHORT: {
+        0: "N",
+        1: "Pn",
+        2: "Wt",
+        3: "Śr",
+        4: "Cz",
+        5: "Pt",
+        6: "So",
+      },
       MONTHS: {
         0: "Styczeń",
         1: "Luty",
@@ -218,6 +227,15 @@ const LANGUAGES = {
         4: "Thursday",
         5: "Friday",
         6: "Saturday",
+      },
+      DAYS_SHORT: {
+        0: "Sun",
+        1: "Mon",
+        2: "Tue",
+        3: "Wed",
+        4: "Thu",
+        5: "Fri",
+        6: "Sat",
       },
       MONTHS: {
         0: "January",
