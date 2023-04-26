@@ -10,6 +10,7 @@ export interface CalendarEvent {
   description: string;
   calendar_id: string;
   organizer_id: string;
+  block_color: string;
   is_recurring: boolean;
   loop_type?: LoopTypeEnum;
   loop_period?: number;
@@ -17,4 +18,7 @@ export interface CalendarEvent {
   reoccurring_days?: ReoccurringDaysEnum[];
   day_of_month?: number;
   day_of_week?: number;
+  eventOffset?: number;
+  overlapCount?: number;
+  overlapIdx?: number;
 }

@@ -98,6 +98,11 @@ const LANGUAGES = {
       },
       YOUR_CALENDARS: "Twoje kalendarze",
       UPCOMING_EVENTS: "Nadchodzące wydarzenia",
+      WEEK_VIEW_MODE: {
+        DAY: "Dzień",
+        SCHEDULE: "Grafik",
+        WEEK: "Tydzień",
+      },
     },
     DRIVE: {
       YOUR_FILES: "Twoje pliki",
@@ -253,6 +258,11 @@ const LANGUAGES = {
       },
       YOUR_CALENDARS: "Your calendars",
       UPCOMING_EVENTS: "Upcoming events",
+      WEEK_VIEW_MODE: {
+        DAY: "Day",
+        SCHEDULE: "Schedule",
+        WEEK: "Week",
+      },
     },
     DRIVE: {
       YOUR_FILES: "Your files",

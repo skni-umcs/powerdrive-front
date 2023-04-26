@@ -45,9 +45,11 @@ const Navbar = () => {
           <IconButton>
             <img src={require("../../../assets/images/driveLogo.png")} alt="" />
           </IconButton>
-          <Typography variant="h6" component="div">
-            Power Drive
-          </Typography>
+          {!mobileView && (
+            <Typography variant="h6" component="div">
+              Power Drive
+            </Typography>
+          )}
         </div>
         {loggedUser ? (
           <React.Fragment>

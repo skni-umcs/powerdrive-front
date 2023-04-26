@@ -1,11 +1,13 @@
 import React from "react";
 import { bind } from "react-rxjs";
+import AddIcon from "@mui/icons-material/Add";
 import { language$ } from "../../../../../../../../../../services/LanguageService";
 import {
   calendars$,
   setCalendars,
 } from "../../../../../../../../../../services/CalendarService";
 import { loggedUser$ } from "../../../../../../../../../../services/AuthService";
+import { Divider, IconButton } from "@mui/material";
 
 const [useLanguage] = bind(language$);
 const [useLoggedUser] = bind(loggedUser$);
@@ -30,6 +32,9 @@ const CalendarList = () => {
     <div className="app__sidebar__calendar__list">
       <div className="app__sidebar__calendar__list__header">
         {LANGUAGE.CALENDAR.YOUR_CALENDARS}
+        <IconButton size="small">
+          <AddIcon />
+        </IconButton>
       </div>
       <div className="app__sidebar__calendar__list__items">
         {calendars.map((calendar) => (

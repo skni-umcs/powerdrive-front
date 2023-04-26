@@ -127,7 +127,7 @@
     padding: 0.4rem;
     background-color: var(--dark-mode-background-color-medium);
     border-radius: var(--border-radius-sm);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     margin: 0.8rem
 }
 
@@ -137,11 +137,13 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 0.5rem 0 1rem 0;
+    padding: 0.2rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 0.2rem;
 }
 
 .app__sidebar__calendar__widget__header__date {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: bold;
 }
 
@@ -195,29 +197,91 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    padding: 1rem 0.4rem 0.5rem 0.4rem;
+    padding: 0.4rem 0.4rem 0.5rem 0.4rem;
     margin: 0.8rem;
     background-color: var(--dark-mode-background-color-medium);
     border-radius: var(--border-radius-sm);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
-.app__sidebar__calendar__controls {
+.app__sidebar__calendar__week-view-mode-selector {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: stretch;
+    border-radius: var(--border-radius-sm);
+    background-color: var(--dark-mode-background-color-medium);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    margin: 0.8rem;
+}
+
+.app__sidebar__calendar__week-view-mode-selector__item,
+.app__sidebar__calendar__week-view-mode-selector__item--active {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    flex: 1;
+    border-radius: var(--border-radius-sm);
+    transition: all 0.1s ease-in-out;
+}
+
+.app__sidebar__calendar__week-view-mode-selector__item--active {
+    background-color: var(--color-green);
+
+}
+
+.app__sidebar__calendar__week-view-mode-selector__item:hover {
+    background-color: var(--dark-mode-background-color-light);
+}
+
+.app__sidebar__calendar__date-changer {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: stretch;
+    margin: 0.8rem;
+    background-color: var(--dark-mode-background-color-medium);
+    border-radius: var(--border-radius-sm);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.app__sidebar__calendar__date-changer__date {
+    flex: 1;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.app__sidebar__calendar__date-changer__icon {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 95%;
-    padding: 0.2rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    /*flex: 1;*/
+    border-radius: var(--border-radius-sm);
+    transition: all 0.1s ease-in-out;
+}
+
+.app__sidebar__calendar__date-changer__icon:hover {
+    background-color: var(--color-green);
 }
 
 .app__sidebar__calendar__list__header,
 .app__sidebar__upcoming-events__header {
     box-sizing: border-box;
-    width: 95%;
     padding: 0.2rem;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: bold;
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .app__sidebar__calendar__list__items,
@@ -238,8 +302,8 @@
 
 .app__sidebar__calendar__list__item__checkbox,
 .app__sidebar__calendar__list__item__checkbox--checked {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.6rem;
+    height: 1.6rem;
     border-radius: var(--border-radius-sm);
     background-color: var(--dark-mode-background-color-light);
     border: 2px solid var(--color-grey);
@@ -253,12 +317,12 @@
     content: "";
     display: block;
     position: absolute;
-    left: 0.4rem;
-    top: 0.15rem;
-    width: 3px;
-    height: 8px;
+    left: 0.5rem;
+    top: 0.25rem;
+    width: 0.3rem;
+    height: 0.5rem;
     border: solid white;
-    border-width: 0 3px 3px 0;
+    border-width: 0 2.5px 2.5px 0;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);

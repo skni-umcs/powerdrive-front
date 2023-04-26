@@ -3,6 +3,8 @@ import { upcomingEvents$ } from "../../../../../../../../../../services/Calendar
 import { bind } from "react-rxjs";
 import { UpcomingEventData } from "../../../../../../../../../../models/ui/UpcomingEventData";
 import { language$ } from "../../../../../../../../../../services/LanguageService";
+import { IconButton } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 
 const getFormattedTitle = (title: string) => {
   if (title.length > 25) {
@@ -53,6 +55,9 @@ const CalendarUpcomingEvents = () => {
     <div className="app__sidebar__upcoming-events">
       <div className="app__sidebar__upcoming-events__header">
         {LANGUAGE.CALENDAR.UPCOMING_EVENTS}
+        <IconButton size="small">
+          <AddIcon />
+        </IconButton>
       </div>
       <div className="app__sidebar__upcoming-events__items">
         {upcomingEvents.map((event) => (
