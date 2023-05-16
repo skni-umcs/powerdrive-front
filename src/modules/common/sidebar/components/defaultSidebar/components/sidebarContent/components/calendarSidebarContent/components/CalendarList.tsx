@@ -4,6 +4,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { language$ } from "../../../../../../../../../../services/LanguageService";
 import {
   calendars$,
+  sendOpenAddCalendarDialogEvent,
   setCalendars,
 } from "../../../../../../../../../../services/CalendarService";
 import { loggedUser$ } from "../../../../../../../../../../services/AuthService";
@@ -32,7 +33,7 @@ const CalendarList = () => {
     <div className="app__sidebar__calendar__list">
       <div className="app__sidebar__calendar__list__header">
         {LANGUAGE.CALENDAR.YOUR_CALENDARS}
-        <IconButton size="small">
+        <IconButton size="small" onClick={sendOpenAddCalendarDialogEvent}>
           <AddIcon />
         </IconButton>
       </div>

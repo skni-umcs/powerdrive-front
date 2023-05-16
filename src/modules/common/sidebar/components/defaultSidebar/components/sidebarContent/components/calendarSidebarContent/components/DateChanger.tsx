@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import {
@@ -8,15 +8,23 @@ import {
 } from "../../../../../../../../../../services/CalendarService";
 import { bind } from "react-rxjs";
 import { language$ } from "../../../../../../../../../../services/LanguageService";
+import { CalendarEvent } from "../../../../../../../../../../models/api/CalendarEvent";
 
 const [useLanguage] = bind(language$);
-const [useVisibleDays] = bind(visibleDays$);
 
 const DateChanger = () => {
   const LANGUAGE = useLanguage();
-  const visibleDays = useVisibleDays();
+  const [visibleDays, setVisibleDays] = useState<Date[]>();
+
+  useEffect(() => {
+    const subscription = visibleDays$.subscribe((days) => {
+      setVisibleDays(days);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   const getFormattedRange = () => {
+    if (!visibleDays) return "";
     if (visibleDays.length === 1) {
       return LANGUAGE.CALENDAR.DAYS[visibleDays[0].getDay()];
     } else {

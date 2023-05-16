@@ -40,17 +40,26 @@
 }
 
 .app__calendar__week__header__item__date {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 1.2rem;
+    width: 2rem;
+    height: 2rem;
     font-weight: bold;
     color: var(--color-white);
     margin-bottom: 0.2rem;
 }
 
 .app__calendar__week__header__item__date--today {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 1.2rem;
+    width: 2rem;
+    height: 2rem;
     font-weight: bold;
     color: var(--color-white);
-    padding: 0.3rem;
     margin-bottom: 0.2rem;
     background-color: var(--color-green);
     border-radius: 50%;
@@ -207,4 +216,58 @@
     margin: 0.2rem 0;
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     color: inherit;
+}
+
+.app__calendar__add-event-dialog__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.MuiOutlinedInput-root.Mui-focused,
+fieldset {
+    border-color: #3F784C !important;
+}
+
+label.Mui-focused {
+    color: #CCC !important;
+}
+
+.app__calendar__event-form__section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.app__calendar__event-form__section__title {
+    font-size: 0.8rem;
+    color: var(--color-grey);
+    margin: 0 0.5rem;
+}
+
+.app__calendar__event-form__section__row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.app__calendar__event-form__section__column {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: center;
+    margin: 0.5rem;
+}
+
+.app__calendar__event-form__actions {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
 }

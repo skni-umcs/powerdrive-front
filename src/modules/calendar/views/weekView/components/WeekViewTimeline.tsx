@@ -31,7 +31,9 @@ const WeekViewTimeline = () => {
   return (
     <div className="app__calendar__week__timeline">
       {timelineItems.map((item) => (
-        <div className="app__calendar__week__timeline__item">{item.name}</div>
+        <div key={item.id} className="app__calendar__week__timeline__item">
+          {item.name}
+        </div>
       ))}
     </div>
   );

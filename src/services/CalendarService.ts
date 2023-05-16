@@ -9,6 +9,7 @@ import {
   Observable,
   of,
   shareReplay,
+  Subject,
   switchMap,
   tap,
 } from "rxjs";
@@ -32,52 +33,7 @@ export const calendarWeekViewMode$ = calendarWeekViewMode.asObservable();
 const calendars = new BehaviorSubject<CalendarData[]>([]);
 export const calendars$ = calendars.asObservable();
 
-const calendarEvents = new BehaviorSubject<CalendarEvent[]>([
-  {
-    id: "1",
-    name: "Team Meeting",
-    place: "Conference Room A",
-    start_date: new Date("2023-04-26T09:00:00"),
-    duration: 130,
-    description: "Weekly team meeting to discuss progress and goals.",
-    calendar_id: "1",
-    organizer_id: "1234",
-    block_color: "#FBB02D",
-    is_recurring: true,
-    loop_period: 1,
-    end_date: new Date("2023-12-31"),
-    eventOffset: 9 * 60,
-  },
-  {
-    id: "2",
-    name: "Lunch with John",
-    place: "Cafe Bistro",
-    start_date: new Date("2023-04-26T12:30:00"),
-    duration: 90,
-    description: "Meet with John to discuss project updates.",
-    calendar_id: "2",
-    organizer_id: "5678",
-    block_color: "#DB5A42",
-    is_recurring: false,
-    eventOffset: 12 * 60 + 30,
-  },
-  {
-    id: "3",
-    name: "Marketing Presentation",
-    place: "Main Auditorium",
-    start_date: new Date("2023-04-26T13:00:00"),
-    duration: 120,
-    description: "Presentation on new marketing strategies.",
-    calendar_id: "3",
-    organizer_id: "9012",
-    block_color: "#00B295",
-    is_recurring: true,
-    loop_period: 1,
-    end_date: new Date("2023-12-31"),
-    day_of_month: 10,
-    eventOffset: 13 * 60,
-  },
-]);
+const calendarEvents = new BehaviorSubject<CalendarEvent[]>([]);
 export const calendarEvents$ = calendarEvents.asObservable();
 
 const upcomingEvents = new BehaviorSubject<UpcomingEventData[]>([]);
@@ -94,9 +50,38 @@ export const visibleDaysCount$ = calendarWeekViewMode$.pipe(
       case CalendarWeekViewModeEnum.WEEK:
         return 7;
     }
-  }),
-  tap((mode) => console.log(mode))
+  })
 );
+
+const openAddEventDialog = new Subject<Date | undefined>();
+export const openAddEventDialog$ = openAddEventDialog.asObservable();
+
+const openEditEventDialog = new Subject<Partial<CalendarEvent>>();
+export const openEditEventDialog$ = openEditEventDialog.asObservable();
+
+const openAddCalendarDialog = new Subject<void>();
+export const openAddCalendarDialog$ = openAddCalendarDialog.asObservable();
+
+const openEditCalendarDialog = new Subject<Partial<CalendarData>>();
+export const openEditCalendarDialog$ = openEditCalendarDialog.asObservable();
+
+export const sendOpenAddEventDialogEvent = (date: Date | undefined) => {
+  openAddEventDialog.next(date);
+};
+
+export const sendOpenEditEventDialogEvent = (event: Partial<CalendarEvent>) => {
+  openEditEventDialog.next(event);
+};
+
+export const sendOpenAddCalendarDialogEvent = () => {
+  openAddCalendarDialog.next();
+};
+
+export const sendOpenEditCalendarDialogEvent = (
+  calendar: Partial<CalendarData>
+) => {
+  openEditCalendarDialog.next(calendar);
+};
 
 const weekViewStartDay = new BehaviorSubject<Date>(new Date());
 export const weekViewStartDay$ = weekViewStartDay.asObservable();
@@ -142,7 +127,34 @@ const getCalendarsWithActivatedStatuses = (
   });
 };
 
-export const downloadEventsInRange = (start: Date, end: Date) => {};
+export const downloadEventsInRange = (
+  start: Date,
+  end: Date
+): Observable<CalendarEvent[]> => {
+  return getToken().pipe(
+    switchMap((token) =>
+      from(
+        axios.get<CalendarEvent[]>(baseUrl + "/calendar/event/all", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+      )
+    ),
+    catchError((e) => {
+      console.error(e);
+      return of(null);
+    }),
+    filter(Boolean),
+    map((response) => response.data),
+    map((events) =>
+      events.map((event) => {
+        event.start_date = new Date(event.start_date);
+        event.eventOffset =
+          event.start_date.getMinutes() + 60 * event.start_date.getHours();
+        return event;
+      })
+    )
+  );
+};
 
 export const setSelectedDay = (day: Date) => {
   selectedDay.next(day);
@@ -212,6 +224,88 @@ export const visibleDays$ = combineLatest(
   weekViewStartDay$,
   visibleDaysCount$
 ).pipe(
-  shareReplay(1),
-  map(([startingDay, daysCount]) => generateVisibleDays(daysCount, startingDay))
+  map(([startingDay, daysCount]) =>
+    generateVisibleDays(daysCount, startingDay)
+  ),
+  switchMap((days) =>
+    downloadEventsInRange(days[0], days[days.length - 1]).pipe(
+      tap((events) => calendarEvents.next(events)),
+      catchError((err) => {
+        console.error(err);
+        return of(null);
+      }),
+      map((_) => days)
+    )
+  ),
+  shareReplay(1)
 );
+
+export const createEvent = (event: Partial<CalendarEvent>): Observable<any> => {
+  return getToken().pipe(
+    switchMap((token) =>
+      from(
+        axios.post<CalendarEvent>(
+          baseUrl + "/calendar/" + event.calendar_id + "/event",
+          event,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
+      )
+    ),
+    tap((response) => {
+      const currentEvents = [...calendarEvents.getValue()];
+      const responseEvent = response.data;
+      responseEvent.start_date = new Date(responseEvent.start_date);
+      responseEvent.eventOffset =
+        responseEvent.start_date.getMinutes() +
+        60 * responseEvent.start_date.getHours();
+      currentEvents.push(responseEvent);
+      calendarEvents.next(currentEvents);
+    })
+  );
+};
+
+export const updateEvent = (event: Partial<CalendarEvent>): Observable<any> => {
+  return getToken().pipe(
+    switchMap((token) =>
+      from(
+        axios.put<CalendarEvent>(baseUrl + "/calendar/event", event, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+      )
+    ),
+    tap((response) => {
+      const currentEvents = [...calendarEvents.getValue()];
+      const eventIdx = currentEvents.findIndex((e) => e.id === event.id);
+
+      if (eventIdx === -1) return;
+
+      const responseEvent = response.data;
+      responseEvent.start_date = new Date(responseEvent.start_date);
+      responseEvent.eventOffset =
+        responseEvent.start_date.getMinutes() +
+        60 * responseEvent.start_date.getHours();
+
+      currentEvents.splice(eventIdx, 1, responseEvent);
+      calendarEvents.next(currentEvents);
+    })
+  );
+};
+
+export const deleteEvent = (eventId: string): Observable<any> => {
+  return getToken().pipe(
+    switchMap((token) =>
+      from(
+        axios.delete(baseUrl + "/calendar/event/" + eventId, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+      )
+    ),
+    tap((response) => {
+      let currentEvents = [...calendarEvents.getValue()];
+      currentEvents = currentEvents.filter((e) => e.id !== eventId);
+      calendarEvents.next(currentEvents);
+    })
+  );
+};

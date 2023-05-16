@@ -1,5 +1,8 @@
 import React from "react";
-import { upcomingEvents$ } from "../../../../../../../../../../services/CalendarService";
+import {
+  sendOpenAddEventDialogEvent,
+  upcomingEvents$,
+} from "../../../../../../../../../../services/CalendarService";
 import { bind } from "react-rxjs";
 import { UpcomingEventData } from "../../../../../../../../../../models/ui/UpcomingEventData";
 import { language$ } from "../../../../../../../../../../services/LanguageService";
@@ -55,7 +58,7 @@ const CalendarUpcomingEvents = () => {
     <div className="app__sidebar__upcoming-events">
       <div className="app__sidebar__upcoming-events__header">
         {LANGUAGE.CALENDAR.UPCOMING_EVENTS}
-        <IconButton size="small">
+        <IconButton size="small" onClick={sendOpenAddEventDialogEvent}>
           <AddIcon />
         </IconButton>
       </div>

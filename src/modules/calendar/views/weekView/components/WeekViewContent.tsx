@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { bind } from "react-rxjs";
 import {
   calendarEvents$,
   highlightedEvent$,
+  sendOpenAddEventDialogEvent,
+  sendOpenEditEventDialogEvent,
   setHighlightedEvent,
   visibleDays$,
 } from "../../../../../services/CalendarService";
@@ -61,9 +63,16 @@ const prepareCalendarEvents = (
   updatedEvents = updatedEvents.filter(
     (event) => event.start_date.getDate() === day.getDate()
   );
+
   updatedEvents = updatedEvents.sort((a, b) =>
     a.eventOffset! - b.eventOffset! > 0 ? 1 : -1
   );
+
+  updatedEvents = updatedEvents.map((event) => ({
+    ...event,
+    overlapCount: undefined,
+    overlapIdx: undefined,
+  }));
 
   updatedEvents.forEach((event, eventIdx) => {
     if (overlappingEvents.length === 0) {
@@ -153,13 +162,10 @@ const getTextColor = (backgroundColor: string) => {
 
 const WeekViewContent = () => {
   const visibleDays = useVisibleDays();
-  const mobileView = useMobileView();
   const calendarEvents = useCalendarEvents();
-  const highlightedEvent = useHighlightedEvent();
 
-  const [timeIndicatorOffset, setTimeIndicatorOffset] = React.useState(
-    getOffset()
-  );
+  const highlightedEvent = useHighlightedEvent();
+  const [timeIndicatorOffset, setTimeIndicatorOffset] = useState(getOffset());
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -170,16 +176,14 @@ const WeekViewContent = () => {
   });
 
   const handleAddEvent = (day: Date, time: CalendarTime) => {
-    // TODO: Add event dialog
-    console.log("Adding new calendar event: ", day, time);
+    day.setHours(time.hour);
+    day.setMinutes(time.minute);
+    sendOpenAddEventDialogEvent(day);
   };
 
   const handleToggleEventDetails = (event: CalendarEvent) => {
-    if (highlightedEvent?.id === event.id) {
-      return setHighlightedEvent(null);
-    }
-
     setHighlightedEvent(event);
+    sendOpenEditEventDialogEvent(event);
   };
 
   return (
@@ -216,7 +220,7 @@ const WeekViewContent = () => {
                 }
                 style={{
                   top: `${(calendarEvent.eventOffset! * 4) / 60}rem`,
-                  height: calendarEvent.duration,
+                  height: `${(calendarEvent.duration * 4) / 60}rem`,
                   backgroundColor: calendarEvent.block_color,
                   color: getTextColor(calendarEvent.block_color),
                   width: `${95 / calendarEvent.overlapCount!}%`,

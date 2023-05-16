@@ -25,6 +25,8 @@ import NotesDeleted from "./modules/notes/components/deleted/NotesDeleted";
 import { initializeDrive } from "./services/DriveService";
 import { updateView } from "./services/DimensionsService";
 import { initializeCalendar } from "./services/CalendarService";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const router = createBrowserRouter([
   {
@@ -157,7 +159,9 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <RouterProvider router={router} />
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <RouterProvider router={router} />
+      </LocalizationProvider>
     </ThemeProvider>
   );
 };

@@ -42,3 +42,36 @@
         margin: 0 0.2rem;
     }
 }
+
+.app__navbar__calendar-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+}
+
+.app__navbar__calendar-controls__view-mode {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0.5rem;
+    border-radius: var(--border-radius-sm);
+    background-color: var(--dark-mode-background-color-light);
+    padding: 0.5rem 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.app__navbar__calendar-controls__view-mode:hover {
+    background-color: var(--color-darkgrey);
+}
+
+.app__navbar__calendar-controls__view-mode:active {
+    background-color: var(--color-grey);
+}
+
+.app__navbar__calendar-controls__view-mode__name {
+    margin-left: 0.5rem;
+    font-weight: bold;
+}
