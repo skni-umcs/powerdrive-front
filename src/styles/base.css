@@ -9,6 +9,7 @@
     --color-white: #EEEEEE;
     --color-lightgrey: #CCCCCC;
     --color-grey: #888888;
+    --color-darkgrey: #666666;
     --border-radius-sm: 5px;
 }
 
@@ -46,6 +47,10 @@ body {
 
 .app__m-2 {
     margin: 1rem;
+}
+
+.app__w-100 {
+    width: 100%;
 }
 
 .app__global__container {

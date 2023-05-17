@@ -112,7 +112,6 @@ export const login = (user: LoginData): Observable<OperationResult> => {
 };
 
 export const register = (user: RegisterData): Observable<OperationResult> => {
-  console.log("register", user);
   return from(axios.post(baseUrl + "/user/", user)).pipe(
     map((_) => ({ isSuccessful: true })),
     catchError((_) => of({ isSuccessful: false }))

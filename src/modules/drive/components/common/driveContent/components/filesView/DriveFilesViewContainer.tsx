@@ -232,7 +232,12 @@ const DriveFilesViewContainer = () => {
         <Fab
           onClick={handleToggleAddMenu}
           color={"primary"}
-          sx={{ position: "absolute", bottom: mobileView ? 66 : 24, right: 24 }}
+          sx={{
+            position: "absolute",
+            bottom: mobileView ? 66 : 24,
+            right: 24,
+            mt: 2,
+          }}
         >
           <AddIcon />
         </Fab>
@@ -248,6 +253,7 @@ const DriveFilesViewContainer = () => {
             vertical: "bottom",
             horizontal: "left",
           }}
+          sx={{ mb: 4 }}
         >
           <MenuItem onClick={handleOpenFileUpload}>
             <ListItemIcon>

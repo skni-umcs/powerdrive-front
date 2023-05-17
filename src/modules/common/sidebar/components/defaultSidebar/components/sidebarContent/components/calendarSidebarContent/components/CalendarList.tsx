@@ -1,16 +1,22 @@
 import React from "react";
 import { bind } from "react-rxjs";
+import AddIcon from "@mui/icons-material/Add";
 import { language$ } from "../../../../../../../../../../services/LanguageService";
 import {
   calendars$,
+  sendOpenAddCalendarDialogEvent,
   setCalendars,
 } from "../../../../../../../../../../services/CalendarService";
+import { loggedUser$ } from "../../../../../../../../../../services/AuthService";
+import { Divider, IconButton } from "@mui/material";
 
 const [useLanguage] = bind(language$);
+const [useLoggedUser] = bind(loggedUser$);
 const [useCalendars] = bind(calendars$);
 
 const CalendarList = () => {
   const LANGUAGE = useLanguage();
+  const loggedUser = useLoggedUser();
   const calendars = useCalendars();
 
   const handleToggleCalendar = (calendarId: string) => {
@@ -27,6 +33,9 @@ const CalendarList = () => {
     <div className="app__sidebar__calendar__list">
       <div className="app__sidebar__calendar__list__header">
         {LANGUAGE.CALENDAR.YOUR_CALENDARS}
+        <IconButton size="small" onClick={sendOpenAddCalendarDialogEvent}>
+          <AddIcon />
+        </IconButton>
       </div>
       <div className="app__sidebar__calendar__list__items">
         {calendars.map((calendar) => (
@@ -38,13 +47,21 @@ const CalendarList = () => {
                   : "app__sidebar__calendar__list__item__checkbox"
               }
               style={{
-                borderColor: calendar.color,
-                backgroundColor: calendar.isActivated ? calendar.color : "",
+                borderColor: calendar.default
+                  ? "#3F784C"
+                  : calendar.block_color,
+                backgroundColor: calendar.isActivated
+                  ? calendar.default
+                    ? "#3F784C"
+                    : calendar.block_color
+                  : "",
               }}
               onClick={() => handleToggleCalendar(calendar.id)}
             />
             <div className="app__sidebar__calendar__list__item__title">
-              {calendar.name}
+              {calendar.default
+                ? `${loggedUser?.first_name} ${loggedUser?.last_name}`
+                : calendar.name}
             </div>
           </div>
         ))}

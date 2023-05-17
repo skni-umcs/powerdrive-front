@@ -1,0 +1,273 @@
+@import "base.css";
+
+.app__calendar__container {
+    display: flex;
+    flex: 1;
+    align-items: stretch;
+    justify-content: stretch;
+
+}
+
+.app__calendar__week__container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.app__calendar__week__header {
+    z-index: 50;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 4rem;
+    padding: 0.5rem 0.5rem 0.5rem 3.5rem;
+    font-size: 0.8rem;
+    color: var(--color-lightgrey);
+    background-color: var(--dark-mode-background-color-dark);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+}
+
+.app__calendar__week__header__item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.app__calendar__week__header__item__date {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    width: 2rem;
+    height: 2rem;
+    font-weight: bold;
+    color: var(--color-white);
+    margin-bottom: 0.2rem;
+}
+
+.app__calendar__week__header__item__date--today {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    width: 2rem;
+    height: 2rem;
+    font-weight: bold;
+    color: var(--color-white);
+    margin-bottom: 0.2rem;
+    background-color: var(--color-green);
+    border-radius: 50%;
+}
+
+.app__calendar__week__header__item__day {
+    font-size: 0.8rem;
+    color: var(--color-grey);
+}
+
+.app__calendar__week__content__container {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow-y: auto;
+    min-height: 450px;
+}
+
+
+.app__calendar__week__timeline {
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    width: 3.5rem;
+    background-color: var(--dark-mode-background-color-dark);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+}
+
+.app__calendar__week__timeline__item {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-end;
+    width: 100%;
+    height: 4rem;
+    padding: 0 0.5rem 0 0;
+    font-size: 0.8rem;
+    color: var(--color-lightgrey);
+}
+
+.app__calendar__week__content {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
+}
+
+.app__calendar__week__time-indicator {
+    z-index: 40;
+    position: absolute;
+    top: 0;
+    left: 2px;
+    width: 99%;
+    height: 2px;
+    background-color: var(--color-red);
+    transition: all 0.1s ease-in-out;
+}
+
+.app__calendar__week__time-indicator::after {
+    position: absolute;
+    bottom: -4px;
+    left: auto;
+    right: 0;
+    height: 10px;
+    width: 10px;
+    background-color: var(--color-red);
+    content: "";
+    border-radius: 5px;
+}
+
+.app__calendar__week__content__day {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+.app__calendar__week__content__day__item__container {
+    border-left: 1px solid var(--dark-mode-background-color-light);
+    border-top: 1px solid var(--dark-mode-background-color-light);
+    height: 4rem;
+    padding: 0.4rem;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: stretch;
+}
+
+.app__calendar__week__content__day__item {
+    padding: 0.1rem;
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius-sm);
+    transition: all 0.1s ease-in-out;
+}
+
+.app__calendar__week__content__day__item:hover {
+    background-color: var(--dark-mode-background-color-light);
+}
+
+.app__calendar__week__content__day__item__icon {
+    opacity: 0;
+    transition: all 0.1s ease-in-out;
+}
+
+
+.app__calendar__week__content__day__item:hover  > .app__calendar__week__content__day__item__icon {
+    opacity: 1;
+}
+
+.app__calendar__event,
+.app__calendar__event--highlighted {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 100%;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    overflow: hidden;
+    padding: 0.5rem;
+    align-items: flex-start;
+    justify-content: flex-start;
+    transition: all 0.1s ease-in-out;
+}
+
+.app__calendar__event--highlighted {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    z-index: 500;
+    scale: 1.1;
+}
+
+
+.app__calendar__event__title {
+    font-size: 1rem;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    color: inherit;
+}
+
+.app__calendar__event__subtitle {
+    font-size: 0.9rem;
+    margin: 0.2rem 0;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    color: inherit;
+}
+
+.app__calendar__add-event-dialog__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.MuiOutlinedInput-root.Mui-focused,
+fieldset {
+    border-color: #3F784C !important;
+}
+
+label.Mui-focused {
+    color: #CCC !important;
+}
+
+.app__calendar__event-form__section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.app__calendar__event-form__section__title {
+    font-size: 0.8rem;
+    color: var(--color-grey);
+    margin: 0 0.5rem;
+}
+
+.app__calendar__event-form__section__row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.app__calendar__event-form__section__column {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: center;
+    margin: 0.5rem;
+}
+
+.app__calendar__event-form__actions {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { CalendarWidgetData } from "../../../../../../../../../../models/ui/CalendarWidgetData";
 import { CalendarWidgetWeekData } from "../../../../../../../../../../models/ui/CalendarWidgetWeekData";
@@ -106,7 +106,7 @@ const CalendarWidget = () => {
         </div>
         <div className="app__sidebar__calendar__widget__header__navigation">
           <IconButton size="small" onClick={handleDecreaseMonth}>
-            <ArrowBackIosIcon fontSize="small" />
+            <ArrowBackIosNewIcon fontSize="small" />
           </IconButton>
           <IconButton size="small" onClick={handleIncreaseMonth}>
             <ArrowForwardIosIcon fontSize="small" />
