@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { visibleDays$ } from "../../../../../services/CalendarService";
 import { bind } from "react-rxjs";
 import { language$ } from "../../../../../services/LanguageService";
 
 const [useLanguage] = bind(language$);
-const [useVisibleDays] = bind(visibleDays$);
 
 const WeekViewHeader = () => {
   const LANGUAGE = useLanguage();
-  const visibleDays = useVisibleDays();
   const today = new Date();
+
+  const [visibleDays, setVisibleDays] = useState<Date[]>([]);
+
+  useEffect(() => {
+    const subscription = visibleDays$.subscribe((days) => setVisibleDays(days));
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <div className="app__calendar__week__header">

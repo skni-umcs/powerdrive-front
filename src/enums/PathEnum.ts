@@ -10,6 +10,7 @@ export enum PathEnum {
   NOTES = "notes",
   HOME = "home",
   SHARED = "shared",
+  FILES = "files",
   FAVORITES = "favorites",
   DELETED = "deleted",
 }

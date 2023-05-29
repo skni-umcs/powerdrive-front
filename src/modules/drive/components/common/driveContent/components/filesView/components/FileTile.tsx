@@ -11,6 +11,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import DriveFileMoveIcon from "@mui/icons-material/DriveFileMove";
 import InfoIcon from "@mui/icons-material/Info";
+import ShareIcon from "@mui/icons-material/Share";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { first } from "rxjs";
 import { getFileIcon } from "../../../../../../../../services/FileUtil";
@@ -22,6 +23,7 @@ interface FileTileProps {
   mobileView: boolean;
   onPathChange: (folder: FileData) => void;
   onFileDelete: (file: FileData) => void;
+  onFileShare: (file: FileData) => void;
 }
 
 const [useLanguage] = bind(language$);
@@ -33,6 +35,7 @@ const FileTile = ({
   mobileView,
   onPathChange,
   onFileDelete,
+  onFileShare,
 }: FileTileProps) => {
   const LANGUAGE = useLanguage();
   const [isSelected, setIsSelected] = useState(false);
@@ -115,6 +118,11 @@ const FileTile = ({
     handleCloseContextMenu();
   };
 
+  const handleShare = () => {
+    onFileShare(file);
+    handleCloseContextMenu();
+  };
+
   return (
     <React.Fragment>
       <div
@@ -183,6 +191,12 @@ const FileTile = ({
                 <InfoIcon fontSize="small" />
               </ListItemIcon>
               {LANGUAGE.DRIVE.FILE_CONTEXT.SHOW_DETAILS}
+            </MenuItem>
+            <MenuItem onClick={handleShare}>
+              <ListItemIcon>
+                <ShareIcon fontSize="small" />
+              </ListItemIcon>
+              {LANGUAGE.DRIVE.FILE_CONTEXT.SHARE}
             </MenuItem>
             <MenuItem onClick={handleDelete}>
               <ListItemIcon>
