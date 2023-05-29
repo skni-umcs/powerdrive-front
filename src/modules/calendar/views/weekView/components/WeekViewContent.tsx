@@ -10,7 +10,6 @@ import {
   visibleDays$,
 } from "../../../../../services/CalendarService";
 import { CalendarTime } from "../../../../../models/ui/CalendarTime";
-import { mobileView$ } from "../../../../../services/DimensionsService";
 import { CalendarEvent } from "../../../../../models/api/CalendarEvent";
 
 const dayTiles: CalendarTime[] = [
@@ -40,8 +39,6 @@ const dayTiles: CalendarTime[] = [
   { hour: 23, minute: 0 },
 ];
 
-const [useVisibleDays] = bind(visibleDays$);
-const [useMobileView] = bind(mobileView$);
 const [useCalendarEvents] = bind(calendarEvents$);
 const [useHighlightedEvent] = bind(highlightedEvent$);
 
@@ -161,11 +158,16 @@ const getTextColor = (backgroundColor: string) => {
 };
 
 const WeekViewContent = () => {
-  const visibleDays = useVisibleDays();
   const calendarEvents = useCalendarEvents();
 
   const highlightedEvent = useHighlightedEvent();
   const [timeIndicatorOffset, setTimeIndicatorOffset] = useState(getOffset());
+  const [visibleDays, setVisibleDays] = useState<Date[]>([]);
+
+  useEffect(() => {
+    const subscription = visibleDays$.subscribe((days) => setVisibleDays(days));
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {

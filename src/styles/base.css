@@ -3,7 +3,9 @@
     --dark-mode-background-color-dark: #202020;
     --dark-mode-background-color-medium: #272727;
     --dark-mode-background-color-light: #353535;
+    --color-darkblue: #2558b0;
     --color-blue: #5793FB;
+    --color-lightblue: #8AB4F8;
     --color-red: #B20D30;
     --color-green: #3F784C;
     --color-white: #EEEEEE;
@@ -11,6 +13,8 @@
     --color-grey: #888888;
     --color-darkgrey: #666666;
     --border-radius-sm: 5px;
+    --border-radius-md: 10px;
+    --border-radius-lg: 15px;
 }
 
 * {

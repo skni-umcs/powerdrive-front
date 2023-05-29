@@ -6,7 +6,6 @@ import {
   map,
   Observable,
   of,
-  Subject,
   switchMap,
   tap,
   throwError,
@@ -26,7 +25,7 @@ import { isExpired } from "react-jwt";
 const loggedUser = new BehaviorSubject<UserData | null>(null);
 export const loggedUser$ = loggedUser.asObservable();
 
-const identityUpdated = new Subject<void>();
+const identityUpdated = new BehaviorSubject<void | null>(null);
 export const identityUpdated$ = identityUpdated.asObservable();
 
 export const initializeAuth = (): Observable<OperationResult> => {

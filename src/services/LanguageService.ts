@@ -12,6 +12,19 @@ const LANGUAGES = {
       LOGIN: "Zaloguj",
       REGISTER: "Zarejestruj",
     },
+    INIT: {
+      SLOGAN: "Twoje biuro, gdziekolwiek jesteś",
+      DESCRIPTION:
+        "Załóż konto i zacznij organizować swoją wirtualną przestrzeń",
+      CREATE_ACCOUNT_SLOGAN: "Dołącz do nas już dziś!",
+      CREATE_ACCOUNT_DESCRIPTION:
+        "Załóż konto i zacznij korzystać z naszych usług",
+      CREATE_ACCOUNT: "Załóż konto",
+      FILES: "Pliki",
+      EVENTS: "Wydarzenia",
+      NOTES: "Notatki",
+      JOIN: "Dołącz teraz!",
+    },
     AUTH: {
       LOGIN_TITLE: "Logowanie",
       LOGIN: "Zaloguj",
@@ -62,6 +75,12 @@ const LANGUAGES = {
       FAVORITES: "Ulubione",
       DELETED: "Usunięte",
       LAST_USED: "Ostatnio używane",
+    },
+    COMMON: {
+      DELETE_DIALOG: {
+        CANCEL: "Anuluj",
+        DELETE: "Usuń",
+      },
     },
     CALENDAR: {
       DAYS: {
@@ -193,6 +212,7 @@ const LANGUAGES = {
         RENAME: "Zmień nazwę",
         MOVE: "Przenieś",
         SHOW_DETAILS: "Pokaż szczegóły",
+        SHARE: "Udostępnij",
         DELETE: "Usuń",
       },
       DELETE_FILE_DIALOG: {
@@ -202,6 +222,28 @@ const LANGUAGES = {
         DELETE: "Usuń",
         CANCEL: "Anuluj",
       },
+      SHARE_FILE_DIALOG: {
+        TITLE: "Udostępnianie pliku",
+        SHARE_LINK: "Link udostępniania",
+        USERS: "Użytkownicy",
+        SHARE: "Udostępnij",
+        CANCEL: "Anuluj",
+        NO_USERS: "Nie odnaleziono użytkowników",
+        USERS_SHARES: "Udostępniono użytkownikom",
+        SAVE: "Zapisz",
+        OK: "OK",
+        DELETE_TITLE: "Usuwanie udostępnienia",
+        DELETE_DESCRIPTION: "Czy na pewno chcesz usunąć to udostępnienie?",
+        SHARE_OPTIONS: {
+          READ: "Wyświetlanie",
+          WRITE: "Edycja",
+        },
+        SEARCH_USERS: "Wyszukaj użytkowników",
+        CAN_READ: "Może wyświetlać",
+        CAN_WRITE: "Może edytować",
+        CAN_SHARE: "Może udostępniać",
+        CAN_DELETE: "Może usuwać",
+      },
       DROP: "Upuść pliki tutaj",
     },
   },
@@ -210,6 +252,19 @@ const LANGUAGES = {
       SEARCH: "Search",
       LOGIN: "Login",
       REGISTER: "Register",
+    },
+    INIT: {
+      SLOGAN: "Organize your virtual space",
+      DESCRIPTION:
+        "ZWith our application you can easily manage your files, notes and events. Join us now!",
+      CREATE_ACCOUNT_SLOGAN: "Join us today!",
+      CREATE_ACCOUNT_DESCRIPTION:
+        "Create an account and start using our services",
+      CREATE_ACCOUNT: "Create account",
+      FILES: "Files",
+      EVENTS: "Events",
+      NOTES: "Notes",
+      JOIN: "Join now!",
     },
     AUTH: {
       LOGIN_TITLE: "Login",
@@ -260,6 +315,12 @@ const LANGUAGES = {
       FAVORITES: "Favorites",
       DELETED: "Deleted",
       LAST_USED: "Last used",
+    },
+    COMMON: {
+      DELETE_DIALOG: {
+        CANCEL: "Cancel",
+        DELETE: "Delete",
+      },
     },
     CALENDAR: {
       DAYS: {
@@ -391,6 +452,7 @@ const LANGUAGES = {
         RENAME: "Rename",
         MOVE: "Move",
         SHOW_DETAILS: "Show details",
+        SHARE: "Share",
         DELETE: "Delete",
       },
       DELETE_FILE_DIALOG: {
@@ -399,6 +461,28 @@ const LANGUAGES = {
         DESCRIPTION: "This action cannot be undone. Do you want to continue?",
         DELETE: "Delete",
         CANCEL: "Cancel",
+      },
+      SHARE_FILE_DIALOG: {
+        TITLE: "Share file",
+        SHARE_LINK: "Share link",
+        USERS: "Users",
+        SHARE: "Share",
+        CANCEL: "Cancel",
+        NO_USERS: "No users found",
+        USERS_SHARES: "Users shares",
+        SAVE: "Save",
+        OK: "OK",
+        DELETE_TITLE: "Delete share",
+        DELETE_DESCRIPTION: "Are you sure you want to delete this share?",
+        SHARE_OPTIONS: {
+          READ: "Read",
+          WRITE: "Write",
+        },
+        SEARCH_USERS: "Search users",
+        CAN_READ: "Can view",
+        CAN_WRITE: "Can edit",
+        CAN_SHARE: "Can share",
+        CAN_DELETE: "Can delete",
       },
       DROP: "Drop files here",
     },

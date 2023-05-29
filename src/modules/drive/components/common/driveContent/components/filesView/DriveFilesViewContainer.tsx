@@ -30,11 +30,12 @@ import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import { language$ } from "../../../../../../../services/LanguageService";
 import { first } from "rxjs";
-import CreateFolderDialog from "../../../createFolderModal/CreateFolderDialog";
+import CreateFolderDialog from "../../../createFolderDialog/CreateFolderDialog";
 import { FilesViewTypeEnum } from "../../../../../../../enums/FilesViewTypeEnum";
 import { FileData } from "../../../../../../../models/api/FileData";
 import { useNavigate } from "react-router-dom";
 import DeleteFileDialog from "../../../deleteFileModal/DeleteFileDialog";
+import ShareFileDialog from "../../../shareFileDialog/ShareFileDialog";
 
 const [useLanguage] = bind(language$);
 const [useSplitViewEnabled] = bind(splitViewEnabled$);
@@ -75,6 +76,12 @@ const DriveFilesViewContainer = () => {
   const [deleteFileDialogLoading, setDeleteFileDialogLoading] =
     useState<boolean>(false);
   const [fileToDelete, setFileToDelete] = useState<FileData | null>(null);
+  const [shareFileDialogOpened, setShareFileDialogOpened] =
+    useState<boolean>(false);
+  const [shareFileDialogLoading, setShareFileDialogLoading] =
+    useState<boolean>(false);
+  const [fileToShare, setFileToShare] = useState<FileData | null>(null);
+
   const navigate = useNavigate();
 
   const handleCloseAddMenu = () => {
@@ -99,6 +106,11 @@ const DriveFilesViewContainer = () => {
   const handleOpenCreateFolderDialog = () => {
     setCreateFolderDialogOpened(true);
     handleCloseAddMenu();
+  };
+
+  const handleOpenShareFileDialog = (file: FileData) => {
+    setShareFileDialogOpened(true);
+    setFileToShare(file);
   };
 
   const handleUploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -189,6 +201,11 @@ const DriveFilesViewContainer = () => {
       });
   };
 
+  const handleShareFile = () => {
+    setShareFileDialogOpened(false);
+    setFileToShare(null);
+  };
+
   return (
     <React.Fragment>
       <div className="app__drive__files__view__container">
@@ -203,6 +220,7 @@ const DriveFilesViewContainer = () => {
           }
           filesViewType={FilesViewTypeEnum.PRIMARY}
           onFileDelete={handleOpenDeleteFileDialog}
+          onFileShare={handleOpenShareFileDialog}
           sortType={sortType}
           sortMode={sortMode}
         />
@@ -224,6 +242,7 @@ const DriveFilesViewContainer = () => {
               }
               filesViewType={FilesViewTypeEnum.SECONDARY}
               onFileDelete={handleOpenDeleteFileDialog}
+              onFileShare={handleOpenShareFileDialog}
               sortType={sortType}
               sortMode={sortMode}
             />
@@ -301,6 +320,13 @@ const DriveFilesViewContainer = () => {
         file={fileToDelete}
         onClose={handleDeleteFile}
       />
+      {fileToShare && (
+        <ShareFileDialog
+          open={shareFileDialogOpened}
+          onClose={handleShareFile}
+          sharedFile={fileToShare}
+        />
+      )}
     </React.Fragment>
   );
 };

@@ -1,0 +1,161 @@
+@import "base.css";
+
+.app__init__container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.app__init__component__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 2rem 1rem;
+}
+
+.app__init__component {
+  max-width: 1024px;
+  display: flex;
+  flex: 1;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 1rem;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--dark-mode-background-color-dark);
+}
+
+.app__init__component__section {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.app__init__component__section--centered {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.app__init__component__section__title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--color-lightgrey);
+  margin-bottom: 1rem;
+}
+
+.app__init__component__section__subtitle {
+  font-size: 2.6rem;
+  font-weight: bold;
+  color: var(--color-lightgrey);
+  margin-bottom: 1rem;
+}
+
+.app__init__component__section__description {
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--color-grey);
+}
+
+.app__init__component__image {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  object-fit: contain;
+  margin: 2rem;
+}
+
+.app__init__component__subimage {
+  width: 80%;
+  max-width: 300px;
+  height: auto;
+  object-fit: contain;
+  margin: 2rem;
+}
+
+.app__init__component__section__join-btn {
+  margin: 2rem;
+  border-radius: var(--border-radius-lg);
+  padding: 1rem 2rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  background-color: var(--color-blue);
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.app__init__component__section__btn {
+  margin: 2rem;
+  border-radius: var(--border-radius-lg);
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  background-color: var(--color-blue);
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.app__init__component__section__join-btn:hover,
+.app__init__component__section__btn:hover {
+  background-color: var(--color-darkblue);
+}
+
+.app__init__component__section__join-btn:active,
+.app__init__component__section__btn:active {
+  background-color: var(--color-lightblue);
+}
+
+@media screen and (max-width: 768px) {
+  .app__init__component {
+    flex-direction: column;
+  }
+}
+
+.app__init__function__card {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--dark-mode-background-color-light);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.app__init__function__card:hover {
+  transform: scale(1.05);
+}
+
+.app__init__function__card:active {
+  background-color:   var(--dark-mode-background-color-dark);
+}
+
+.app__init__function__card__image {
+width: 80%;
+  max-width: 200px;
+  height: auto;
+  object-fit: contain;
+  margin: 2rem;
+}
+
+.app__init__function__card__label {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--dark-mode-background-color-dark);
+  margin-bottom: 1rem;
+  background-color: var(--color-lightgrey);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius-lg);
+}
