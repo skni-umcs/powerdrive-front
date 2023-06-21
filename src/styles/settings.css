@@ -1,0 +1,41 @@
+@import "base.css";
+
+.app__settings__container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.app__settings__header {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.app__settings__content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: stretch;
+    flex: 1;
+}
+
+.app__settings__card {
+    width: 30%;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    border-radius: var(--border-radius-sm);
+    background-color: var(--dark-mode-background-color-medium);
+}
+
+.app__settings__card__title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}

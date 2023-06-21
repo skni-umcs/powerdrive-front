@@ -15,8 +15,8 @@ import { language$ } from "../../../../services/LanguageService";
 import { bind } from "react-rxjs";
 import CloseIcon from "@mui/icons-material/Close";
 import AddEventForm from "./AddEventForm";
-import DeleteEventDialog from "../deleteEventDialog/DeleteEventDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteDialog from "../deleteDialog/DeleteDialog";
 
 interface AddEditEventDialogProps {
   open: boolean;
@@ -125,10 +125,12 @@ const AddEditEventDialog = ({
         </div>
       </Dialog>
       {isEdit && event?.id && (
-        <DeleteEventDialog
+        <DeleteDialog
           open={open && deleteEventDialogOpen}
           loading={isInProgress}
-          eventId={event?.id}
+          data={event?.id}
+          title={LANGUAGE.CALENDAR.DELETE_EVENT_DIALOG.TITLE}
+          description={LANGUAGE.CALENDAR.DELETE_EVENT_DIALOG.DESCRIPTION}
           onClose={handleDeleteEvent}
         />
       )}

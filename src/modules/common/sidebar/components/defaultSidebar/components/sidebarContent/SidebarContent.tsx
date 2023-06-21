@@ -4,6 +4,7 @@ import DriveSidebarContent from "./components/driveSidebarContent/DriveSidebarCo
 import CalendarSidebarContent from "./components/calendarSidebarContent/CalendarSidebarContent";
 import NotesSidebarContent from "./components/notesSidebarContent/NotesSidebarContent";
 import { PathEnum } from "../../../../../../../enums/PathEnum";
+import SettingsSidebarContent from "./components/settingsSidebarContent/SettingsSidebarContent";
 
 const SidebarContent = () => {
   const location = useLocation();
@@ -22,6 +23,10 @@ const SidebarContent = () => {
           "/" + PathEnum.APP + "/" + PathEnum.NOTES
         ) ? (
         <NotesSidebarContent />
+      ) : location.pathname.startsWith(
+          "/" + PathEnum.APP + "/" + PathEnum.SETTINGS
+        ) ? (
+        <SettingsSidebarContent />
       ) : null}
     </div>
   );

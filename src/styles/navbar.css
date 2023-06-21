@@ -17,6 +17,14 @@
 .app__navbar-account {
     display: flex;
     align-items: center;
+    cursor: pointer;
+    border-radius: var(--border-radius-sm);
+    transition: all 0.1s ease-in-out;
+    padding: 0 0.5rem;
+}
+
+.app__navbar-account:hover {
+    background-color: var(--color-darkgrey);
 }
 
 .app__navbar-link,
@@ -74,4 +82,130 @@
 .app__navbar__calendar-controls__view-mode__name {
     margin-left: 0.5rem;
     font-weight: bold;
+}
+
+.app__navbar__menu {
+    border-radius: var(--border-radius-sm);
+    margin: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.app__navbar__menu__user-details {
+    background-color: var(--color-verydarkgrey);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1rem;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: 1rem;
+}
+
+.app__navbar__menu__user-details__icon {
+    margin-right: 1rem;
+}
+
+.app__navbar__menu__user-details__info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.app__navbar__menu__user-details__title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.app__navbar__menu__user-details__subtitle {
+    color: var(--color-lightgrey);
+    font-weight: 400;
+}
+
+.app__navbar__menu__actions {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    border-radius: var(--border-radius-sm);
+    background-color: var(--dark-mode-background-color-light);
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.app__navbar__menu__actions__item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0.5rem;
+    cursor: pointer;
+    flex: 1;
+    border-radius: var(--border-radius-sm);
+}
+
+.app__navbar__menu__actions__item:hover {
+    background-color: var(--color-darkgrey);
+}
+
+.app__navbar__menu__actions__item__icon {
+    margin-right: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app__navbar__menu__actions__item__label {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.app__navbar__menu__languages {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: var(--border-radius-sm);
+    background-color: var(--dark-mode-background-color-light);
+    padding: 0.5rem;
+}
+
+.app__navbar__menu__languages__language,
+.app__navbar__menu__languages__language--active {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: var(--border-radius-sm);
+    transition: all 0.1s ease-in-out;
+}
+
+.app__navbar__menu__languages__language:hover {
+    background-color: var(--color-darkgrey);
+}
+
+.app__navbar__menu__languages__language--active {
+    background-color: var(--color-verydarkgrey);
+}
+
+.app__navbar__menu__languages__language__icon {
+    width: 2rem;
+    height: auto;
+    object-fit: contain;
+    margin-right: 0.5rem;
+}
+
+.app__navbar__menu__languages__language__label {
+    font-weight: 600;
+    font-size: 1rem;
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { bind } from "react-rxjs";
 import { language$ } from "../../../../../../services/LanguageService";
 import {
@@ -12,6 +12,8 @@ import ShareIcon from "@mui/icons-material/Share";
 import DownloadIcon from "@mui/icons-material/Download";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ClearIcon from "@mui/icons-material/Clear";
+import { FileData } from "../../../../../../models/api/FileData";
+import DeleteDialog from "../../../../../common/dialogs/deleteDialog/DeleteDialog";
 
 const [useLanguage] = bind(language$);
 const [useSelectedFiles] = bind(selectedFiles$);
@@ -19,13 +21,26 @@ const [useSelectedFiles] = bind(selectedFiles$);
 const SelectedFiles = () => {
   const LANGUAGE = useLanguage();
   const selectedFiles = useSelectedFiles();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleteDialogLoading, setDeleteDialogLoading] = useState(false);
 
   const handleClearSelected = () => {
     setSelectedFiles([]);
   };
 
-  const handleDeleteSelected = () => {
+  const handleOpenDeleteDialog = () => {
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteSelected = (files: FileData[]) => {
+    if (!files) {
+      return setDeleteDialogOpen(false);
+    }
+
+    setDeleteDialogLoading(true);
     deleteSelectedFiles().subscribe((result) => {
+      setDeleteDialogLoading(false);
+      setDeleteDialogOpen(false);
       if (!result.isSuccessful) {
         console.log(result.error);
       }
@@ -77,7 +92,7 @@ const SelectedFiles = () => {
             >
               <div
                 className="app__drive__selected__action"
-                onClick={handleDeleteSelected}
+                onClick={handleOpenDeleteDialog}
               >
                 <IconButton aria-label="delete" size="small">
                   <DeleteIcon fontSize="inherit" />
@@ -100,6 +115,14 @@ const SelectedFiles = () => {
           </div>
         </div>
       ) : null}
+      <DeleteDialog
+        open={deleteDialogOpen}
+        loading={deleteDialogLoading}
+        data={selectedFiles}
+        title={LANGUAGE.DRIVE.SELECTED_FILES.DELETE_TITLE}
+        description={LANGUAGE.DRIVE.SELECTED_FILES.DELETE_DESCRIPTION}
+        onClose={handleDeleteSelected}
+      />
     </React.Fragment>
   );
 };

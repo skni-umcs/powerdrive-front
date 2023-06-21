@@ -17,15 +17,17 @@ import { RegisterData } from "../models/api/RegisterData";
 import { SendPasswordResetEmailResult } from "../models/api/SendPasswordResetEmailResult";
 import { PasswordResetData } from "../models/api/PasswordResetData";
 import { PasswordResetResult } from "../models/api/PasswordResetResult";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { baseUrl } from "../const/environment";
 import { StorageKeysEnum } from "../enums/StorageKeysEnum";
 import { isExpired } from "react-jwt";
+import { getErrorCode } from "../utils/ApiUtil";
+import { notifyError } from "./NotificationService";
 
 const loggedUser = new BehaviorSubject<UserData | null>(null);
 export const loggedUser$ = loggedUser.asObservable();
 
-const identityUpdated = new BehaviorSubject<void | null>(null);
+const identityUpdated = new BehaviorSubject<boolean>(false);
 export const identityUpdated$ = identityUpdated.asObservable();
 
 export const initializeAuth = (): Observable<OperationResult> => {
@@ -33,7 +35,7 @@ export const initializeAuth = (): Observable<OperationResult> => {
 
   if (!refreshToken) {
     loggedUser.next(null);
-    identityUpdated.next();
+    identityUpdated.next(true);
     return of({ isSuccessful: false });
   }
 
@@ -62,20 +64,22 @@ export const initializeAuth = (): Observable<OperationResult> => {
     ),
     map((res) => {
       loggedUser.next(res.data);
-      identityUpdated.next();
+      identityUpdated.next(true);
       return { isSuccessful: true };
     }),
     catchError((_) => {
       localStorage.removeItem(StorageKeysEnum.TOKEN);
       localStorage.removeItem(StorageKeysEnum.REFRESH_TOKEN);
       loggedUser.next(null);
-      identityUpdated.next();
+      identityUpdated.next(true);
       return of({ isSuccessful: false });
     })
   );
 };
 
-export const login = (user: LoginData): Observable<OperationResult> => {
+export const login = (
+  user: LoginData
+): Observable<OperationResult<boolean>> => {
   const formData = new FormData();
   formData.append("username", user.username);
   formData.append("password", user.password);
@@ -97,24 +101,24 @@ export const login = (user: LoginData): Observable<OperationResult> => {
     ),
     map((res) => {
       loggedUser.next(res.data);
-      identityUpdated.next();
+      identityUpdated.next(true);
       return { isSuccessful: true };
     }),
-    catchError((_) => {
+    catchError((error) => {
+      notifyError(getErrorCode(error));
       localStorage.removeItem(StorageKeysEnum.TOKEN);
       localStorage.removeItem(StorageKeysEnum.REFRESH_TOKEN);
       loggedUser.next(null);
-      identityUpdated.next();
-      return of({ isSuccessful: false });
+      identityUpdated.next(true);
+      return of({ isSuccessful: false, error: "" });
     })
   );
 };
 
-export const register = (user: RegisterData): Observable<OperationResult> => {
-  return from(axios.post(baseUrl + "/user/", user)).pipe(
-    map((_) => ({ isSuccessful: true })),
-    catchError((_) => of({ isSuccessful: false }))
-  );
+export const register = (
+  user: RegisterData
+): Observable<AxiosResponse<UserData>> => {
+  return from(axios.post<UserData>(baseUrl + "/user/", user));
 };
 
 export const logout = () => {
@@ -122,7 +126,7 @@ export const logout = () => {
   localStorage.removeItem(StorageKeysEnum.REFRESH_TOKEN);
 
   loggedUser.next(null);
-  identityUpdated.next();
+  identityUpdated.next(true);
 };
 
 export const sendPasswordResetEmail = (
@@ -150,7 +154,7 @@ export const getToken = (): Observable<string> => {
     localStorage.removeItem(StorageKeysEnum.REFRESH_TOKEN);
 
     loggedUser.next(null);
-    identityUpdated.next();
+    identityUpdated.next(true);
 
     throw throwError("Token expired");
   }

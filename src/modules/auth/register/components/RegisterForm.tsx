@@ -5,7 +5,13 @@ import { language$ } from "../../../../services/LanguageService";
 import { PropsBase } from "../../../../models/api/PropsBase";
 import { RegisterData } from "../../../../models/api/RegisterData";
 import { RegisterErrorTypeEnum } from "../../../../enums/RegisterErrorTypeEnum";
-import { Grid, Snackbar, TextField } from "@mui/material";
+import {
+  Grid,
+  IconButton,
+  InputAdornment,
+  Snackbar,
+  TextField,
+} from "@mui/material";
 import { Alert, LoadingButton } from "@mui/lab";
 import { EmailValidator } from "../../../form/validators/EmailValidator";
 import { PasswordValidator } from "../../../form/validators/PasswordValidator";
@@ -13,6 +19,7 @@ import { FormValidatorFunction } from "../../../../models/ui/FormValidatorFuncti
 import { PasswordRepValidator } from "../../../form/validators/PasswordRepValidator";
 import { validateFormField } from "../../../form/utils/ValidateFormFieldUtil";
 import { bind } from "react-rxjs";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const [useLanguage] = bind(language$);
 
@@ -67,6 +74,8 @@ const RegisterForm = ({
       validators: [RequiredValidator],
     },
   });
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [repeatPasswordVisible, setRepeatPasswordVisible] = useState(false);
 
   const [formValidators] = useState<FormValidatorFunction[]>([
     PasswordRepValidator,
@@ -222,7 +231,7 @@ const RegisterForm = ({
           error={formData.password.hasError}
           fullWidth
           margin="dense"
-          type="password"
+          type={passwordVisible ? "text" : "password"}
           label={LANGUAGE.AUTH.PASSWORD}
           variant="filled"
           value={formData.password.content}
@@ -232,12 +241,24 @@ const RegisterForm = ({
               ? LANGUAGE.AUTH.ERRORS[formData.password.errorText]
               : " "
           }
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setPasswordVisible(!passwordVisible)}
+                  edge="end"
+                >
+                  {passwordVisible ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
         <TextField
           error={formData.repeatPassword.hasError}
           fullWidth
           margin="dense"
-          type="password"
+          type={repeatPasswordVisible ? "text" : "password"}
           label={LANGUAGE.AUTH.REPEAT_PASSWORD}
           variant="filled"
           value={formData.repeatPassword.content}
@@ -247,6 +268,20 @@ const RegisterForm = ({
               ? LANGUAGE.AUTH.ERRORS[formData.repeatPassword.errorText]
               : " "
           }
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() =>
+                    setRepeatPasswordVisible(!repeatPasswordVisible)
+                  }
+                  edge="end"
+                >
+                  {repeatPasswordVisible ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
       </Grid>
       <div className="app__m-2">

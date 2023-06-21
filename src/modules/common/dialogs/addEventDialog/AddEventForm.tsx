@@ -10,7 +10,7 @@ import {
 import { CalendarEvent } from "../../../../models/api/CalendarEvent";
 import { bind } from "react-rxjs";
 import { language$ } from "../../../../services/LanguageService";
-import { DatePicker, MobileTimePicker } from "@mui/x-date-pickers";
+import { DatePicker, MobileTimePicker, TimePicker } from "@mui/x-date-pickers";
 import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
 import dayjs from "dayjs";
 import { LoadingButton } from "@mui/lab";
@@ -119,7 +119,8 @@ const AddEventForm = ({
       endMinutesDate.getHours() * 60 + endMinutesDate.getMinutes();
 
     const start = new Date(startDate.value!);
-    start.setMinutes(start.getMinutes() + dayjs().utcOffset());
+    start.setHours(startMinutesDate.getHours());
+    start.setMinutes(startMinutesDate.getMinutes() + dayjs().utcOffset());
 
     return {
       ...event,
@@ -291,7 +292,7 @@ const AddEventForm = ({
       <div className="app__calendar__event-form__section">
         <div className="app__calendar__event-form__section__row">
           <div className="app__calendar__event-form__section__column">
-            <MobileTimePicker
+            <TimePicker
               disabled={!startDate.value}
               ampm={false}
               slotProps={{
@@ -301,7 +302,7 @@ const AddEventForm = ({
               }}
               value={startTime.value ? dayjs(startTime.value) : null}
               onChange={(date) =>
-                setStartDate({
+                setStartTime({
                   ...startTime,
                   hasError: false,
                   value: date ? date.toDate() : null,
@@ -313,7 +314,7 @@ const AddEventForm = ({
           </div>
           <HorizontalRuleIcon />
           <div className="app__calendar__event-form__section__column">
-            <MobileTimePicker
+            <TimePicker
               disabled={!startTime.value}
               ampm={false}
               slotProps={{
