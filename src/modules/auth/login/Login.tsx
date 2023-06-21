@@ -11,11 +11,13 @@ import { LoginErrorTypeEnum } from "../../../enums/LoginErrorTypeEnum";
 import { bind } from "react-rxjs";
 import { Snackbar } from "@mui/material";
 import { Alert } from "@mui/lab";
+import { useSnackbar } from "notistack";
 
 const [useLanguage] = bind(language$);
 
 const Login = () => {
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const [loginError, setLoginError] = useState<LoginErrorTypeEnum | null>(null);
   const [errorSnackOpen, setErrorSnackOpen] = useState(false);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Snackbar, TextField } from "@mui/material";
+import { IconButton, InputAdornment, Snackbar, TextField } from "@mui/material";
 import { Alert, LoadingButton } from "@mui/lab";
 import { LoginFormData } from "../../../../models/ui/LoginFormData";
 import { RequiredValidator } from "../../../form/validators/RequiredValidator";
@@ -9,6 +9,7 @@ import { language$ } from "../../../../services/LanguageService";
 import { LoginErrorTypeEnum } from "../../../../enums/LoginErrorTypeEnum";
 import { validateFormField } from "../../../form/utils/ValidateFormFieldUtil";
 import { bind } from "react-rxjs";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const [useLanguage] = bind(language$);
 
@@ -25,6 +26,7 @@ const LoginForm = ({
   attempts,
 }: LoginFormProps) => {
   const LANGUAGE = useLanguage();
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [formData, setFormData] = useState<LoginFormData>({
     username: {
       content: "",
@@ -124,7 +126,7 @@ const LoginForm = ({
         error={formData.password.hasError}
         fullWidth
         margin="dense"
-        type="password"
+        type={passwordVisible ? "text" : "password"}
         label={LANGUAGE.AUTH.PASSWORD}
         variant="filled"
         value={formData.password.content}
@@ -134,6 +136,18 @@ const LoginForm = ({
             ? LANGUAGE.AUTH.ERRORS[formData.password.errorText]
             : " "
         }
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                onClick={() => setPasswordVisible(!passwordVisible)}
+                edge="end"
+              >
+                {passwordVisible ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
       />
       <div className="app__m-2">
         <LoadingButton

@@ -39,8 +39,8 @@ import { FileData } from "../../../../../../../models/api/FileData";
 import { useNavigate } from "react-router-dom";
 import RenameFileDialog from "../../../renameFileDialog/RenameFileDialog";
 import MoveFileDialog from "../../../moveFileDialog/MoveFileDialog";
-import DeleteFileDialog from "../../../deleteFileModal/DeleteFileDialog";
 import ShareFileDialog from "../../../shareFileDialog/ShareFileDialog";
+import DeleteDialog from "../../../../../../common/dialogs/deleteDialog/DeleteDialog";
 
 const [useLanguage] = bind(language$);
 const [useSplitViewEnabled] = bind(splitViewEnabled$);
@@ -375,10 +375,16 @@ const   DriveFilesViewContainer = () => {
         loading={createFolderDialogLoading}
         onClose={handleCreateFolder}
       />
-      <DeleteFileDialog
+      <DeleteDialog
         open={deleteFileDialogOpened}
         loading={deleteFileDialogLoading}
-        file={fileToDelete}
+        data={fileToDelete}
+        title={
+          LANGUAGE.DRIVE.DELETE_FILE_DIALOG[
+            fileToDelete?.is_dir ? "FOLDER_TITLE" : "FILE_TITLE"
+          ]
+        }
+        description={LANGUAGE.DRIVE.DELETE_FILE_DIALOG.DESCRIPTION}
         onClose={handleDeleteFile}
       />
       {fileToShare && (

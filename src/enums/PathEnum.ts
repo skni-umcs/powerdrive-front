@@ -13,4 +13,7 @@ export enum PathEnum {
   FILES = "files",
   FAVORITES = "favorites",
   DELETED = "deleted",
+  SETTINGS = "settings",
+  GENERAL = "general",
+  ACCOUNT = "account",
 }

@@ -1,4 +1,5 @@
 import { BehaviorSubject } from "rxjs";
+import { ErrorCodeEnum } from "../enums/ErrorCodeEnum";
 
 export enum Language {
   PL = "PL",
@@ -7,10 +8,40 @@ export enum Language {
 
 const LANGUAGES = {
   PL: {
+    NOTIFICATION: {
+      ERROR: {
+        [ErrorCodeEnum.UNKNOWN]: "Wystąpił nieznany błąd",
+        [ErrorCodeEnum.REGISTER_ATTEMPT_FAILED]: "Nieudana próba rejestracji",
+        [ErrorCodeEnum.PASSWORD_UPPERCASE_ERROR]:
+          "Hasło musi zawierać przynajmniej jedną wielką literę",
+        [ErrorCodeEnum.PASSWORD_LOWERCASE_ERROR]:
+          "Hasło musi zawierać przynajmniej jedną małą literę",
+        [ErrorCodeEnum.PASSWORD_DIGIT_ERROR]:
+          "Hasło musi zawierać przynajmniej jedną cyfrę",
+        [ErrorCodeEnum.PASSWORD_SPECIAL_CHARACTER_ERROR]:
+          "Hasło musi zawierać przynajmniej jeden znak specjalny",
+        [ErrorCodeEnum.EMAIL_ALREADY_IN_USE]:
+          "Użytkownik o podanym adresie email już istnieje",
+        [ErrorCodeEnum.USERNAME_ALREADY_IN_USE]:
+          "Użytkownik o podanej nazwie użytkownika już istnieje",
+      },
+      SUCCESS: {
+        REGISTER_ATTEMPT_SUCCESS: "Rejestracja przebiegła pomyślnie",
+        LOGIN_ATTEMPT_SUCCESS: "Logowanie przebiegło pomyślnie",
+      },
+      WARNING: {},
+      INFO: {},
+    },
     NAVBAR: {
       SEARCH: "Wyszukaj",
       LOGIN: "Zaloguj",
       REGISTER: "Zarejestruj",
+      LOGOUT: "Wyloguj",
+      SETTINGS: "Ustawienia",
+      LANGUAGES: {
+        PL: "Polski",
+        EN: "English",
+      },
     },
     INIT: {
       SLOGAN: "Twoje biuro, gdziekolwiek jesteś",
@@ -62,7 +93,6 @@ const LANGUAGES = {
       },
       LOGIN_ATTEMPT_FAILED: "Nieudana próba logowania",
       LOGIN_ATTEMPT_SUCCESS: "Zalogowano pomyślnie",
-      REGISTER_ATTEMPT_FAILED: "Nieudana próba rejestracji",
       REGISTER_ATTEMPT_SUCCESS: "Zarejestrowano pomyślnie",
     },
     SIDEBAR: {
@@ -75,6 +105,8 @@ const LANGUAGES = {
       FAVORITES: "Ulubione",
       DELETED: "Usunięte",
       LAST_USED: "Ostatnio używane",
+      GENERAL: "Ogólne",
+      ACCOUNT: "Konto",
     },
     COMMON: {
       DELETE_DIALOG: {
@@ -179,6 +211,8 @@ const LANGUAGES = {
         DOWNLOAD: "Pobierz",
         DELETE: "Usuń",
         CLEAR: "Wyczyść",
+        DELETE_TITLE: "Usuń zaznaczone pliki",
+        DELETE_DESCRIPTION: "Czy na pewno chcesz usunąć zaznaczone pliki?",
       },
       SORT_TYPE: {
         NAME: "Nazwa",
@@ -260,12 +294,23 @@ const LANGUAGES = {
       },
       DROP: "Upuść pliki tutaj",
     },
+    SETTINGS: {
+      ACCOUNT: {
+        TITLE: "Ustawienia konta",
+      },
+    },
   },
   EN: {
     NAVBAR: {
       SEARCH: "Search",
       LOGIN: "Login",
       REGISTER: "Register",
+      LOGOUT: "Logout",
+      SETTINGS: "Settings",
+      LANGUAGES: {
+        PL: "Polski",
+        EN: "English",
+      },
     },
     INIT: {
       SLOGAN: "Organize your virtual space",
@@ -316,7 +361,21 @@ const LANGUAGES = {
       },
       LOGIN_ATTEMPT_FAILED: "Login attempt failed",
       LOGIN_ATTEMPT_SUCCESS: "Logged in successfully",
-      REGISTER_ATTEMPT_FAILED: "Register attempt failed",
+      REGISTER_ATTEMPT_FAILED: {
+        "Password must contain at least one uppercase letter":
+          "Password must contain at least one uppercase letter",
+        "Password must contain at least one lowercase letter":
+          "Password must contain at least one lowercase letter",
+        "Password must contain at least one digit":
+          "Password must contain at least one digit",
+        "Password must contain at least one special character":
+          "Password must contain at least one special character",
+        "User with given email already exists":
+          "User with given email already exists",
+        "User with given username already exists":
+          "User with given username already exists",
+        GENERAL: "Nieudana próba rejestracji",
+      },
       REGISTER_ATTEMPT_SUCCESS: "Registered successfully",
     },
     SIDEBAR: {
@@ -329,6 +388,8 @@ const LANGUAGES = {
       FAVORITES: "Favorites",
       DELETED: "Deleted",
       LAST_USED: "Last used",
+      GENERAL: "General",
+      ACCOUNT: "Account",
     },
     COMMON: {
       DELETE_DIALOG: {
@@ -434,6 +495,8 @@ const LANGUAGES = {
         DOWNLOAD: "Download",
         DELETE: "Delete",
         CLEAR: "Clear",
+        DELETE_TITLE: "Delete files",
+        DELETE_DESCRIPTION: "Are you sure you want to delete selected files?",
       },
       SORT_TYPE: {
         NAME: "Name",
@@ -514,12 +577,21 @@ const LANGUAGES = {
       },
       DROP: "Drop files here",
     },
+    SETTINGS: {
+      ACCOUNT: {
+        TITLE: "Account settings",
+      },
+    },
   },
 };
 
 const language = new BehaviorSubject<any>(LANGUAGES.PL);
 export const language$ = language.asObservable();
 
+const selectedLanguage = new BehaviorSubject<Language>(Language.PL);
+export const selectedLanguage$ = selectedLanguage.asObservable();
+
 export const setLanguage = (lang: Language) => {
   language.next(LANGUAGES[lang as keyof typeof LANGUAGES]);
+  selectedLanguage.next(lang);
 };
