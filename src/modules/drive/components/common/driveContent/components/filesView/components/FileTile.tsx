@@ -38,6 +38,7 @@ const FileTile = ({
   onPathChange,
   onFileDelete,
   onFileShare,
+  onFileRename,
 }: FileTileProps) => {
   const LANGUAGE = useLanguage();
   const [isSelected, setIsSelected] = useState(false);
@@ -101,9 +102,7 @@ const FileTile = ({
   };
 
   const handleRename = () => {
-    renameFile(file).pipe(first()).subscribe();
-    console.log("Zmieniam nazwe essa");
-    // TODO: Implement file rename modal
+    onFileRename(file);
     handleCloseContextMenu();
   };
 
