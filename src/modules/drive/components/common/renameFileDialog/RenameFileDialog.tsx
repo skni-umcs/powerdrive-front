@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
     Button,
     Dialog,
@@ -30,14 +30,15 @@ const RenameFileDialog = ({
     const [filename, setFilename] = React.useState<string>("");
     const [filenameError, setFilenameError] = React.useState<boolean>(false);
 
+    useEffect(() => { setFilename(file.filename) }, [file]);
     const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const updatedFilename = event.target.value;
         setFilename(updatedFilename);
         setFilenameError(
             updatedFilename.length === 0 ||
             updatedFilename.includes("/") ||
-            filename.includes(" ") ||
-            filename === file.filename
+            updatedFilename.includes(" ") ||
+            updatedFilename === file.filename
         );
     };
 
@@ -95,6 +96,7 @@ const RenameFileDialog = ({
                     onClick={handleSubmit}
                     loading={false}
                     loadingPosition="start"
+                    startIcon={<></>}
                     variant="contained"
                     color="primary"
                     disabled={filenameError}

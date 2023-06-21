@@ -275,7 +275,14 @@ export const uploadFiles = (
   );
 };
 
-export const renameFile = (file: FileData): Observable<any> => {
+export const renameFile = (file: FileData): Observable<OperationResult> => {
+  const operationId = Math.random();
+
+  driveOperationInProgress.next([
+    ...driveOperationInProgress.getValue(),
+    operationId,
+  ]);
+
   return getToken().pipe(
       switchMap((token) =>
           from(
@@ -286,28 +293,29 @@ export const renameFile = (file: FileData): Observable<any> => {
       ),
       tap((response) => {
         const responseFile = response.data;
-        const primaryViewFileIdx = primaryFilesViewFiles.getValue().findIndex((f) => f.id === file.id);
-        if (primaryViewFileIdx !== -1) {
-          primaryFilesViewFiles.next(
-              primaryFilesViewFiles.getValue().splice(primaryViewFileIdx, 1, responseFile)
-          );
-        }
 
-        const secondaryViewFileIdx = secondaryFilesViewFiles.getValue().findIndex((f) => f.id === file.id);
-        if (secondaryViewFileIdx !== -1) {
-          secondaryFilesViewFiles.next(
-              secondaryFilesViewFiles.getValue().splice(secondaryViewFileIdx, 1, responseFile)
-          );
-        }
+        primaryFilesViewFiles.next(
+            primaryFilesViewFiles.getValue().map( file => file.id === responseFile.id ? responseFile : file )
+        );
 
-        const selectedFileIdx = selectedFiles.getValue().findIndex((f) => f.id === file.id);
-        if (selectedFileIdx !== -1) {
-          selectedFiles.next(
-              selectedFiles.getValue().splice(selectedFileIdx, 1, responseFile)
-          );
-        }
+        secondaryFilesViewFiles.next(
+            secondaryFilesViewFiles.getValue().map( file => file.id === responseFile.id ? responseFile : file )
+        );
 
-      })
+        selectedFiles.next(
+            selectedFiles.getValue().map( file => file.id === responseFile.id ? responseFile : file )
+        );
+
+      }),
+      map((_) => ({ isSuccessful: true })),
+      catchError((err) => of({ isSuccessful: false, error: err })),
+      finalize(() =>
+          driveOperationInProgress.next([
+            ...driveOperationInProgress
+                .getValue()
+                .filter((op) => op !== operationId),
+          ])
+      )
   );
 };
 
