@@ -54,7 +54,7 @@ const [useSelectedFiles] = bind(selectedFiles$);
 const [useSortType] = bind(sortType$);
 const [useSortMode] = bind(sortMode$);
 
-const   DriveFilesViewContainer = () => {
+const DriveFilesViewContainer = () => {
   const LANGUAGE = useLanguage();
   const splitViewEnabled = useSplitViewEnabled();
   const mobileView = useMobileView();

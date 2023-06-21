@@ -300,7 +300,6 @@ export const uploadFiles = (
   );
 };
 
-
 const renameUpdateFiles = (responseFile: FileData) => {
     primaryFilesViewFiles.next(
         primaryFilesViewFiles.getValue().map(file => file.id === responseFile.id ? responseFile : file)
@@ -314,7 +313,8 @@ const renameUpdateFiles = (responseFile: FileData) => {
         selectedFiles.getValue().map(file => file.id === responseFile.id ? responseFile : file)
     );
 }
-export const renameFile = (file: FileData): Observable<OperationResult> => {
+
+export const renameFile = (file: FileData): Observable<OperationResult<void>> => {
   const operationId = Math.random();
 
   driveOperationInProgress.next([
