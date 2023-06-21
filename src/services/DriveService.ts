@@ -21,6 +21,7 @@ import { baseUrl } from "../const/environment";
 import { OperationResult } from "../models/api/OperationResult";
 import { saveAs } from "file-saver";
 import { OperationProgressData } from "../models/ui/OperationProgressData";
+import {CalendarEvent} from "../models/api/CalendarEvent";
 
 const directoryTree = new BehaviorSubject<FileData | null>(null);
 export const directoryTree$ = directoryTree.asObservable();
@@ -271,6 +272,42 @@ export const uploadFiles = (
   return zip(filesData.map((file) => uploadFile(file, path, false))).pipe(
     map((_) => ({ isSuccessful: true })),
     catchError((err) => of({ isSuccessful: false, error: err }))
+  );
+};
+
+export const renameFile = (file: FileData): Observable<any> => {
+  return getToken().pipe(
+      switchMap((token) =>
+          from(
+              axios.put<FileData>(baseUrl + "/file", file, {
+                headers: { Authorization: `Bearer ${token}` },
+              })
+          )
+      ),
+      tap((response) => {
+        const responseFile = response.data;
+        const primaryViewFileIdx = primaryFilesViewFiles.getValue().findIndex((f) => f.id === file.id);
+        if (primaryViewFileIdx !== -1) {
+          primaryFilesViewFiles.next(
+              primaryFilesViewFiles.getValue().splice(primaryViewFileIdx, 1, responseFile)
+          );
+        }
+
+        const secondaryViewFileIdx = secondaryFilesViewFiles.getValue().findIndex((f) => f.id === file.id);
+        if (secondaryViewFileIdx !== -1) {
+          secondaryFilesViewFiles.next(
+              secondaryFilesViewFiles.getValue().splice(secondaryViewFileIdx, 1, responseFile)
+          );
+        }
+
+        const selectedFileIdx = selectedFiles.getValue().findIndex((f) => f.id === file.id);
+        if (selectedFileIdx !== -1) {
+          selectedFiles.next(
+              selectedFiles.getValue().splice(selectedFileIdx, 1, responseFile)
+          );
+        }
+
+      })
   );
 };
 

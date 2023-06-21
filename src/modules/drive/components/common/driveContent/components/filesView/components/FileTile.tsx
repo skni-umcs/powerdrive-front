@@ -3,6 +3,7 @@ import { FileData } from "../../../../../../../../models/api/FileData";
 import { ListItemIcon, Menu, MenuItem, MenuList, Paper } from "@mui/material";
 import {
   downloadFile,
+  renameFile,
   setSelectedFiles,
 } from "../../../../../../../../services/DriveService";
 import { language$ } from "../../../../../../../../services/LanguageService";
@@ -24,6 +25,7 @@ interface FileTileProps {
   onPathChange: (folder: FileData) => void;
   onFileDelete: (file: FileData) => void;
   onFileShare: (file: FileData) => void;
+  onFileRename: (file: FileData) => void;
 }
 
 const [useLanguage] = bind(language$);
@@ -99,6 +101,8 @@ const FileTile = ({
   };
 
   const handleRename = () => {
+    renameFile(file).pipe(first()).subscribe();
+    console.log("Zmieniam nazwe essa");
     // TODO: Implement file rename modal
     handleCloseContextMenu();
   };

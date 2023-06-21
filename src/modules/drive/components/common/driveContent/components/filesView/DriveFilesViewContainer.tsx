@@ -10,6 +10,7 @@ import {
   setSecondaryFilesViewPath,
   splitViewEnabled$,
   uploadFile,
+  renameFile,
   deleteFile,
   sortType$,
   sortMode$,
@@ -34,6 +35,7 @@ import CreateFolderDialog from "../../../createFolderDialog/CreateFolderDialog";
 import { FilesViewTypeEnum } from "../../../../../../../enums/FilesViewTypeEnum";
 import { FileData } from "../../../../../../../models/api/FileData";
 import { useNavigate } from "react-router-dom";
+import RenameFileDialog from "../../../renameFileDialog/RenameFileDialog";
 import DeleteFileDialog from "../../../deleteFileModal/DeleteFileDialog";
 import ShareFileDialog from "../../../shareFileDialog/ShareFileDialog";
 
@@ -78,9 +80,12 @@ const DriveFilesViewContainer = () => {
   const [fileToDelete, setFileToDelete] = useState<FileData | null>(null);
   const [shareFileDialogOpened, setShareFileDialogOpened] =
     useState<boolean>(false);
+  const [renameFileDialogOpened, setRenameFileDialogOpened] =
+    useState<boolean>(false);
   const [shareFileDialogLoading, setShareFileDialogLoading] =
     useState<boolean>(false);
   const [fileToShare, setFileToShare] = useState<FileData | null>(null);
+  const [fileToRename, setFileToRename] = useState<FileData | null>(null);
 
   const navigate = useNavigate();
 
@@ -112,6 +117,11 @@ const DriveFilesViewContainer = () => {
     setShareFileDialogOpened(true);
     setFileToShare(file);
   };
+
+  const handleOpenRenameFileDialog = (file: FileData) => {
+    setRenameFileDialogOpened(true);
+    setFileToRename(file);
+  }
 
   const handleUploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -201,6 +211,23 @@ const DriveFilesViewContainer = () => {
       });
   };
 
+  const handleRenameFile = (file: FileData | null, newName: string | null) => {
+    if (!file || !newName) {
+      setRenameFileDialogOpened(false);
+      return;
+    }
+    const changedFile = {...file, filename: newName};
+    renameFile(changedFile)
+      .pipe(first())
+      .subscribe((result) => {
+        if (result.isSuccessful) {
+          setRenameFileDialogOpened(false);
+        } else {
+          console.error(result.error);
+        }
+      });
+  }
+
   const handleShareFile = () => {
     setShareFileDialogOpened(false);
     setFileToShare(null);
@@ -221,6 +248,7 @@ const DriveFilesViewContainer = () => {
           filesViewType={FilesViewTypeEnum.PRIMARY}
           onFileDelete={handleOpenDeleteFileDialog}
           onFileShare={handleOpenShareFileDialog}
+          onFileRename={handleOpenRenameFileDialog}
           sortType={sortType}
           sortMode={sortMode}
         />
@@ -243,6 +271,7 @@ const DriveFilesViewContainer = () => {
               filesViewType={FilesViewTypeEnum.SECONDARY}
               onFileDelete={handleOpenDeleteFileDialog}
               onFileShare={handleOpenShareFileDialog}
+              onFileRename={handleOpenRenameFileDialog}
               sortType={sortType}
               sortMode={sortMode}
             />
@@ -326,6 +355,13 @@ const DriveFilesViewContainer = () => {
           onClose={handleShareFile}
           sharedFile={fileToShare}
         />
+      )}
+      {fileToRename && (
+      <RenameFileDialog
+        open={renameFileDialogOpened}
+        onClose={handleRenameFile}
+        file={fileToRename}
+      />
       )}
     </React.Fragment>
   );

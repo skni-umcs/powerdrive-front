@@ -215,6 +215,13 @@ const LANGUAGES = {
         SHARE: "Udostępnij",
         DELETE: "Usuń",
       },
+      RENAME_FILE_DIALOG: {
+        TITLE: "Zmień nazwę pliku",
+        DESCRIPTION: "Wprowadź nową nazwę pliku",
+        ERROR: "Wprowadzona nazwa jest niepoprawna",
+        RENAME: "Zmień nazwę",
+        CANCEL: "Anuluj",
+      },
       DELETE_FILE_DIALOG: {
         FILE_TITLE: "Czy na pewwno chcesz usunąć ten plik?",
         FOLDER_TITLE: "Czy na pewwno chcesz usunąć ten folder?",
