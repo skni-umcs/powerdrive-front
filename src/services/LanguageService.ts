@@ -462,6 +462,13 @@ const LANGUAGES = {
         SHARE: "Share",
         DELETE: "Delete",
       },
+      RENAME_FILE_DIALOG: {
+        TITLE: "Rename file",
+        DESCRIPTION: "Enter new file name",
+        ERROR: "File name is incorrect",
+        RENAME: "Rename",
+        CANCEL: "Cancel",
+      },
       DELETE_FILE_DIALOG: {
         FILE_TITLE: "Are you sure you want to delete this file?",
         FOLDER_TITLE: "Are you sure you want to delete this folder?",
