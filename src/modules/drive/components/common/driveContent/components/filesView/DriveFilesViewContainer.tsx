@@ -246,7 +246,6 @@ const   DriveFilesViewContainer = () => {
         setMoveFileDialogOpened(false);
         return;
     }
-    console.log(file);
     const changedFile = {...file, path: newPath};
     moveFile(changedFile)
       .pipe(first())

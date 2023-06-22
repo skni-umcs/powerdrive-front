@@ -67,7 +67,7 @@ const MoveFileDialog = ({
     const getTreeData = (dir_tree: FileData) => {
         const treeData: RenderTree = {
             id: dir_tree.id,
-            name: dir_tree.filename === "/" ? "root" : dir_tree.filename,
+            name: dir_tree.filename === "/" ? "Home" : dir_tree.filename,
             path: dir_tree.path,
             children: [],
         }
