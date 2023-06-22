@@ -49,6 +49,8 @@ export const visibleDaysCount$ = calendarWeekViewMode$.pipe(
         return 3;
       case CalendarWeekViewModeEnum.WEEK:
         return 7;
+      case CalendarWeekViewModeEnum.MONTH:
+        return 31;
     }
   })
 );

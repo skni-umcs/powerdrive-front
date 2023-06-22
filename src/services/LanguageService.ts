@@ -121,6 +121,7 @@ const LANGUAGES = {
         DAY: "Dzień",
         SCHEDULE: "Grafik",
         WEEK: "Tydzień",
+        MONTH: "Miesiąc"
       },
       ADD_EDIT_EVENT_DIALOG: {
         ADD_TITLE: "Utwórz wydarzenie",
@@ -361,6 +362,7 @@ const LANGUAGES = {
         DAY: "Day",
         SCHEDULE: "Schedule",
         WEEK: "Week",
+        MONTH: "Month",
       },
       ADD_EDIT_EVENT_DIALOG: {
         ADD_TITLE: "Add event",
