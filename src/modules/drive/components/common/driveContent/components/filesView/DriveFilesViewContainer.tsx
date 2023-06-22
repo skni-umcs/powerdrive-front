@@ -11,9 +11,11 @@ import {
   splitViewEnabled$,
   uploadFile,
   renameFile,
+  moveFile,
   deleteFile,
   sortType$,
   sortMode$,
+  directoryTree$
 } from "../../../../../../../services/DriveService";
 import AddIcon from "@mui/icons-material/Add";
 import DriveFilesView from "./components/DriveFilesView";
@@ -36,12 +38,14 @@ import { FilesViewTypeEnum } from "../../../../../../../enums/FilesViewTypeEnum"
 import { FileData } from "../../../../../../../models/api/FileData";
 import { useNavigate } from "react-router-dom";
 import RenameFileDialog from "../../../renameFileDialog/RenameFileDialog";
+import MoveFileDialog from "../../../moveFileDialog/MoveFileDialog";
 import DeleteFileDialog from "../../../deleteFileModal/DeleteFileDialog";
 import ShareFileDialog from "../../../shareFileDialog/ShareFileDialog";
 
 const [useLanguage] = bind(language$);
 const [useSplitViewEnabled] = bind(splitViewEnabled$);
 const [useMobileView] = bind(mobileView$);
+const [useDirectoryTree] = bind(directoryTree$);
 const [usePrimaryFilesViewPath] = bind(primaryFilesViewPath$);
 const [usePrimaryFilesViewFiles] = bind(primaryFilesViewFiles$);
 const [useSecondaryFilesViewPath] = bind(secondaryFilesViewPath$);
@@ -54,6 +58,7 @@ const   DriveFilesViewContainer = () => {
   const LANGUAGE = useLanguage();
   const splitViewEnabled = useSplitViewEnabled();
   const mobileView = useMobileView();
+  const directoryTree = useDirectoryTree();
   const primaryFilesViewPath = usePrimaryFilesViewPath();
   const primaryFilesViewFiles = usePrimaryFilesViewFiles();
   const secondaryFilesViewPath = useSecondaryFilesViewPath();
@@ -82,10 +87,13 @@ const   DriveFilesViewContainer = () => {
     useState<boolean>(false);
   const [renameFileDialogOpened, setRenameFileDialogOpened] =
     useState<boolean>(false);
+  const [moveFileDialogOpened, setMoveFileDialogOpened] =
+    useState<boolean>(false);
   const [shareFileDialogLoading, setShareFileDialogLoading] =
     useState<boolean>(false);
   const [fileToShare, setFileToShare] = useState<FileData | null>(null);
   const [fileToRename, setFileToRename] = useState<FileData | null>(null);
+  const [fileToMove, setFileToMove] = useState<FileData | null>(null);
 
   const navigate = useNavigate();
 
@@ -121,6 +129,11 @@ const   DriveFilesViewContainer = () => {
   const handleOpenRenameFileDialog = (file: FileData) => {
     setRenameFileDialogOpened(true);
     setFileToRename(file);
+  }
+
+  const handleOpenMoveFileDialog = (file: FileData) => {
+    setMoveFileDialogOpened(true);
+    setFileToMove(file);
   }
 
   const handleUploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -228,6 +241,24 @@ const   DriveFilesViewContainer = () => {
       });
   }
 
+  const handleMoveFile = (file: FileData | null, newPath: string | null) => {
+    if (!file || !newPath) {
+        setMoveFileDialogOpened(false);
+        return;
+    }
+    console.log(file);
+    const changedFile = {...file, path: newPath};
+    moveFile(changedFile)
+      .pipe(first())
+      .subscribe((result) => {
+          if (result.isSuccessful) {
+              setMoveFileDialogOpened(false);
+          } else {
+              console.error(result.error);
+          }
+      });
+  }
+
   const handleShareFile = () => {
     setShareFileDialogOpened(false);
     setFileToShare(null);
@@ -249,6 +280,7 @@ const   DriveFilesViewContainer = () => {
           onFileDelete={handleOpenDeleteFileDialog}
           onFileShare={handleOpenShareFileDialog}
           onFileRename={handleOpenRenameFileDialog}
+          onFileMove={handleOpenMoveFileDialog}
           sortType={sortType}
           sortMode={sortMode}
         />
@@ -272,6 +304,7 @@ const   DriveFilesViewContainer = () => {
               onFileDelete={handleOpenDeleteFileDialog}
               onFileShare={handleOpenShareFileDialog}
               onFileRename={handleOpenRenameFileDialog}
+              onFileMove={handleOpenMoveFileDialog}
               sortType={sortType}
               sortMode={sortMode}
             />
@@ -361,6 +394,14 @@ const   DriveFilesViewContainer = () => {
         open={renameFileDialogOpened}
         onClose={handleRenameFile}
         file={fileToRename}
+      />
+      )}
+      {fileToMove && (
+      <MoveFileDialog
+        open={moveFileDialogOpened}
+        onClose={handleMoveFile}
+        file={fileToMove}
+        dir_tree={directoryTree}
       />
       )}
     </React.Fragment>

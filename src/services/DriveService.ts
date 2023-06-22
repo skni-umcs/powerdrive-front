@@ -275,6 +275,20 @@ export const uploadFiles = (
   );
 };
 
+
+const renameUpdateFiles = (responseFile: FileData) => {
+    primaryFilesViewFiles.next(
+        primaryFilesViewFiles.getValue().map(file => file.id === responseFile.id ? responseFile : file)
+    );
+
+    secondaryFilesViewFiles.next(
+        secondaryFilesViewFiles.getValue().map(file => file.id === responseFile.id ? responseFile : file)
+    );
+
+    selectedFiles.next(
+        selectedFiles.getValue().map(file => file.id === responseFile.id ? responseFile : file)
+    );
+}
 export const renameFile = (file: FileData): Observable<OperationResult> => {
   const operationId = Math.random();
 
@@ -293,19 +307,7 @@ export const renameFile = (file: FileData): Observable<OperationResult> => {
       ),
       tap((response) => {
         const responseFile = response.data;
-
-        primaryFilesViewFiles.next(
-            primaryFilesViewFiles.getValue().map( file => file.id === responseFile.id ? responseFile : file )
-        );
-
-        secondaryFilesViewFiles.next(
-            secondaryFilesViewFiles.getValue().map( file => file.id === responseFile.id ? responseFile : file )
-        );
-
-        selectedFiles.next(
-            selectedFiles.getValue().map( file => file.id === responseFile.id ? responseFile : file )
-        );
-
+        renameUpdateFiles(responseFile);
       }),
       map((_) => ({ isSuccessful: true })),
       catchError((err) => of({ isSuccessful: false, error: err })),
@@ -317,6 +319,38 @@ export const renameFile = (file: FileData): Observable<OperationResult> => {
           ])
       )
   );
+};
+
+export const moveFile = (file: FileData): Observable<OperationResult> => {
+    const operationId = Math.random();
+
+    driveOperationInProgress.next([
+        ...driveOperationInProgress.getValue(),
+        operationId,
+    ]);
+
+    return getToken().pipe(
+        switchMap((token) =>
+            from(
+                axios.put<FileData>(baseUrl + "/file", file, {
+                    headers: { Authorization: `Bearer ${token}` },
+                })
+            )
+        ),
+        tap((response) => {
+            const responseFile = response.data;
+            //  TODO update files
+        }),
+        map((_) => ({ isSuccessful: true })),
+        catchError((err) => of({ isSuccessful: false, error: err })),
+        finalize(() =>
+            driveOperationInProgress.next([
+                ...driveOperationInProgress
+                    .getValue()
+                    .filter((op) => op !== operationId),
+            ])
+        )
+    );
 };
 
 export const deleteFile = (fileId: string): Observable<OperationResult> => {

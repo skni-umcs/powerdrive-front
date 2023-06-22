@@ -222,6 +222,13 @@ const LANGUAGES = {
         RENAME: "Zmień nazwę",
         CANCEL: "Anuluj",
       },
+      MOVE_FILE_DIALOG: {
+        TITLE: "Przenieś plik",
+        DESCRIPTION: "Wybierz folder docelowy",
+        ERROR: "Nie można przenieść pliku do folderu",
+        MOVE: "Przenieś",
+        CANCEL: "Anuluj",
+      },
       DELETE_FILE_DIALOG: {
         FILE_TITLE: "Czy na pewwno chcesz usunąć ten plik?",
         FOLDER_TITLE: "Czy na pewwno chcesz usunąć ten folder?",
@@ -467,6 +474,13 @@ const LANGUAGES = {
         DESCRIPTION: "Enter new file name",
         ERROR: "File name is incorrect",
         RENAME: "Rename",
+        CANCEL: "Cancel",
+      },
+      MOVE_FILE_DIALOG: {
+        TITLE: "Move file",
+        DESCRIPTION: "Select destination folder",
+        ERROR: "Destination folder is incorrect",
+        MOVE: "Move",
         CANCEL: "Cancel",
       },
       DELETE_FILE_DIALOG: {
