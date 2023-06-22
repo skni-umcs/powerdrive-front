@@ -360,7 +360,7 @@ const moveUpdateFiles = (responseFile: FileData) => {
     );
 }
 
-export const moveFile = (file: FileData): Observable<OperationResult> => {
+export const moveFile = (file: FileData): Observable<OperationResult<void>> => {
     const operationId = Math.random();
 
     driveOperationInProgress.next([
@@ -379,7 +379,6 @@ export const moveFile = (file: FileData): Observable<OperationResult> => {
         tap((response) => {
             const responseFile = response.data;
             moveUpdateFiles(responseFile);
-            //  TODO update files
         }),
         map((_) => ({ isSuccessful: true })),
         catchError((err) => of({ isSuccessful: false, error: err })),
