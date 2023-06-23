@@ -146,12 +146,14 @@ export const downloadEventsInRange = (
     filter(Boolean),
     map((response) => response.data),
     map((events) =>
-      events.map((event) => {
-        event.start_date = new Date(event.start_date);
-        event.eventOffset =
-          event.start_date.getMinutes() + 60 * event.start_date.getHours();
-        return event;
-      })
+      events
+        .map((event) => {
+          event.start_date = new Date(event.start_date);
+          event.eventOffset =
+            event.start_date.getMinutes() + 60 * event.start_date.getHours();
+          return event;
+        })
+        .filter((event) => event.start_date >= start && event.start_date <= end)
     )
   );
 };

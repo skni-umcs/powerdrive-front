@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
 import { PropsBase } from "../../../models/api/PropsBase";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { identityUpdated$, loggedUser$ } from "../../../services/AuthService";
 import { PathEnum } from "../../../enums/PathEnum";
-import { filter, switchMap, tap } from "rxjs";
+import { filter, switchMap } from "rxjs";
+import { navigate } from "../../../services/NavigationService";
+import { notifyError } from "../../../services/NotificationService";
+import { ErrorCodeEnum } from "../../../enums/ErrorCodeEnum";
 
 const SecuredContainer = ({ children }: PropsBase) => {
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const subscription = identityUpdated$
@@ -16,7 +18,10 @@ const SecuredContainer = ({ children }: PropsBase) => {
         switchMap(() => loggedUser$)
       )
       .subscribe((loggedUser) => {
-        if (!loggedUser) navigate("/" + PathEnum.LOGIN);
+        if (!loggedUser) {
+          navigate("/" + PathEnum.LOGIN);
+          notifyError(ErrorCodeEnum.UNAUTHORIZED_PAGE);
+        }
       });
 
     return () => subscription.unsubscribe();

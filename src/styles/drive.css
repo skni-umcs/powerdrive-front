@@ -315,16 +315,46 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    padding: 0 1rem;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    background-color: var(--color-verydarkgrey);
+    border-radius: var(--border-radius-sm);
 }
 
-.app__progress__indicator__item__name {
-    font-size: 1rem;
+.app__progress__indicator__item__icon__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.app__progress__indicator__item__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: contain;
+    margin-right: 0.5rem;
+}
+
+.app__progress__indicator__item__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
     flex: 1;
 }
 
+.app__progress__indicator__item__name {
+    font-size: 0.9rem;
+    color: var(--color-lightgrey);
+    flex: 1;
+    margin-bottom: 0.5rem;
+}
+
 .app__progress__indicator__item__progress {
-    padding: 0.5rem;
+    width: 100%;
+}
+
+.app__progress__indicator__item__cancel {
+    margin: 0.3rem 0 0.3rem 0.3rem;
 }
 
 .app__share-file-dialog__content {
