@@ -4,7 +4,6 @@ import { bind } from "react-rxjs";
 import { mobileView$ } from "../../../../services/DimensionsService";
 import NavbarSidebarHandle from "./NavbarSidebarHandle";
 import { navigate } from "../../../../services/NavigationService";
-import { PathEnum } from "../../../../enums/PathEnum";
 
 const [useMobileView] = bind(mobileView$);
 

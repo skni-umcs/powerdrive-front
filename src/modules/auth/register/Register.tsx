@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { language$ } from "../../../services/LanguageService";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { PathEnum } from "../../../enums/PathEnum";
 import RegisterForm from "./components/RegisterForm";
 import { RegisterErrorTypeEnum } from "../../../enums/RegisterErrorTypeEnum";
@@ -8,12 +8,6 @@ import { register } from "../../../services/AuthService";
 import { finalize, take } from "rxjs";
 import { RegisterData } from "../../../models/api/RegisterData";
 import { bind } from "react-rxjs";
-import { Snackbar } from "@mui/material";
-import { Alert } from "@mui/lab";
-import { useSnackbar } from "notistack";
-import { notify, notifyError } from "../../../services/NotificationService";
-import { NotificationTypeEnum } from "../../../enums/NotificationTypeEnum";
-import { getErrorCode } from "../../../utils/ApiUtil";
 
 const [useLanguage] = bind(language$);
 

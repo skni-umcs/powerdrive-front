@@ -8,9 +8,7 @@ import {
 } from "../../../../../../../../services/DriveService";
 import DriveBreadcrumbs from "../../../../driveBreadcrumbs/DriveBreadcrumbs";
 import FileTile from "./FileTile";
-import { Snackbar } from "@mui/material";
 import { bind } from "react-rxjs";
-import { Alert } from "@mui/lab";
 import { language$ } from "../../../../../../../../services/LanguageService";
 import { FilesViewTypeEnum } from "../../../../../../../../enums/FilesViewTypeEnum";
 import { SortTypeEnum } from "../../../../../../../../enums/SortTypeEnum";
@@ -51,7 +49,6 @@ const DriveFilesView = ({
 }: DriveFilesViewProps) => {
   const LANGUAGE = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
-  const [errorSnackOpen, setErrorSnackOpen] = useState(false);
 
   const handleUploadFile = (files: File[]) => {
     const path$ =
@@ -87,9 +84,7 @@ const DriveFilesView = ({
       previewPath[previewPath.length - 1].id,
       previewPath[previewPath.length - 1].path
     ).subscribe((result) => {
-      if (!result.isSuccessful) {
-        setErrorSnackOpen(true);
-      }
+      // TODO: Handle error response
 
       setIsLoading(false);
     });
