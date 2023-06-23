@@ -130,15 +130,6 @@ const DriveFilesView = ({
             ))
           : [...Array(5)].map((_, i) => <SkeletonFileTile key={i} />)}
       </div>
-      <Snackbar
-        open={errorSnackOpen}
-        autoHideDuration={6000}
-        onClose={() => setErrorSnackOpen(false)}
-      >
-        <Alert severity={"error"} onClose={() => setErrorSnackOpen(false)}>
-          {LANGUAGE.DRIVE.ERRORS.FOLDER_CONTENT_DOWNLOAD_ERROR}
-        </Alert>
-      </Snackbar>
     </div>
   );
 };

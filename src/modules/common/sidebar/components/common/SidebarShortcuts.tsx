@@ -4,6 +4,7 @@ import { language$ } from "../../../../../services/LanguageService";
 import { bind } from "react-rxjs";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ColorsEnum } from "../../../../../enums/ColorsEnum";
+import { closeSidebar } from "../../../../../services/SidebarService";
 
 const [useLanguage] = bind(language$);
 interface SidebarShortcutsProps {
@@ -17,6 +18,11 @@ const SidebarShortcuts = ({
   const LANGUAGE = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const handleShortcutClick = (path: string) => {
+    navigate(path);
+    closeSidebar();
+  };
 
   return (
     <div className="app__sidebar__shortcuts">
@@ -33,7 +39,7 @@ const SidebarShortcuts = ({
               ? { backgroundColor: activeColor }
               : {}
           }
-          onClick={() => navigate(shortcut.path)}
+          onClick={() => handleShortcutClick(shortcut.path)}
         >
           <div className="app__sidebar__shortcut__icon">{shortcut.icon}</div>
           <div className="app__sidebar__shortcut__title">

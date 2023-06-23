@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { IconButton, InputAdornment, Snackbar, TextField } from "@mui/material";
-import { Alert, LoadingButton } from "@mui/lab";
+import { IconButton, InputAdornment, TextField } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import { LoginFormData } from "../../../../models/ui/LoginFormData";
 import { RequiredValidator } from "../../../form/validators/RequiredValidator";
 import { PropsBase } from "../../../../models/api/PropsBase";
@@ -41,11 +41,6 @@ const LoginForm = ({
       validators: [RequiredValidator],
     },
   });
-  const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
-
-  const handleCloseErrorSnackbar = () => {
-    setErrorSnackbarOpen(false);
-  };
 
   useEffect(() => {
     if (error) {
@@ -59,8 +54,6 @@ const LoginForm = ({
               LANGUAGE.AUTH.ERRORS[error as keyof typeof LANGUAGE.AUTH.ERRORS],
           },
         }));
-      } else {
-        setErrorSnackbarOpen(true);
       }
     }
   }, [error, attempts]);
@@ -158,16 +151,6 @@ const LoginForm = ({
           {LANGUAGE.AUTH.LOGIN}
         </LoadingButton>
       </div>
-      <Snackbar
-        open={errorSnackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleCloseErrorSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert severity="error" onClose={handleCloseErrorSnackbar}>
-          {LANGUAGE.AUTH.ERRORS.SERVER_ERROR}
-        </Alert>
-      </Snackbar>
     </div>
   );
 };

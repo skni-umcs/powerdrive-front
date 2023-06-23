@@ -1,5 +1,6 @@
 import { BehaviorSubject } from "rxjs";
 import { ErrorCodeEnum } from "../enums/ErrorCodeEnum";
+import { SuccessCodeEnum } from "../enums/SuccessCodeEnum";
 
 export enum Language {
   PL = "PL",
@@ -24,10 +25,32 @@ const LANGUAGES = {
           "Użytkownik o podanym adresie email już istnieje",
         [ErrorCodeEnum.USERNAME_ALREADY_IN_USE]:
           "Użytkownik o podanej nazwie użytkownika już istnieje",
+        [ErrorCodeEnum.DIRECTORIES_DOWNLOAD_FAILED]:
+          "Nie udało się pobrać katalogów",
+        [ErrorCodeEnum.INVALID_CREDENTIALS]: "Nieprawidłowe dane logowania",
+        [ErrorCodeEnum.INACTIVE_USER]: "Użytkownik nieaktywny",
+        [ErrorCodeEnum.UNAUTHORIZED_PAGE]:
+          "Nie posiadasz uprawnień do tej strony",
+        [ErrorCodeEnum.FILE_DOWNLOAD_FAILED]: "Nie udało się pobrać pliku",
+        [ErrorCodeEnum.FILES_DOWNLOAD_FAILED]: "Nie udało się pobrać plików",
+        [ErrorCodeEnum.FILE_UPLOAD_FAILED]: "Nie udało się przesłać pliku",
+        [ErrorCodeEnum.FILES_UPLOAD_FAILED]: "Nie udało się przesłać plików",
       },
       SUCCESS: {
-        REGISTER_ATTEMPT_SUCCESS: "Rejestracja przebiegła pomyślnie",
-        LOGIN_ATTEMPT_SUCCESS: "Logowanie przebiegło pomyślnie",
+        [SuccessCodeEnum.REGISTER_SUCCESSFUL]:
+          "Rejestracja przebiegła pomyślnie",
+        [SuccessCodeEnum.LOGIN_SUCCESSFUL]: "Logowanie przebiegło pomyślnie",
+        [SuccessCodeEnum.LOGOUT_SUCCESSFUL]: "Nastąpiło poprawne wylogowanie",
+        [SuccessCodeEnum.FILE_UPLOAD_SUCCESSFUL]:
+          "Plik został pomyślnie przesłany",
+        [SuccessCodeEnum.FILES_UPLOAD_SUCCESSFUL]:
+          "Pliki zostały pomyślnie przesłane",
+        [SuccessCodeEnum.FILE_DOWNLOAD_SUCCESSFUL]:
+          "Plik został pomyślnie pobrany",
+        [SuccessCodeEnum.FILES_DOWNLOAD_SUCCESSFUL]:
+          "Pliki zostały pomyślnie pobrane",
+        [SuccessCodeEnum.FILE_DELETE_SUCCESSFUL]: "Plik został usunięty",
+        [SuccessCodeEnum.FILES_DELETE_SUCCESSFUL]: "Pliki zostały usunięte",
       },
       WARNING: {},
       INFO: {},
@@ -91,9 +114,6 @@ const LANGUAGES = {
         ACCOUNT_RETRIEVAL_ERROR:
           "Nie udało się wysłać linku do przywracania konta",
       },
-      LOGIN_ATTEMPT_FAILED: "Nieudana próba logowania",
-      LOGIN_ATTEMPT_SUCCESS: "Zalogowano pomyślnie",
-      REGISTER_ATTEMPT_SUCCESS: "Zarejestrowano pomyślnie",
     },
     SIDEBAR: {
       DRIVE: "Dysk",
@@ -301,6 +321,50 @@ const LANGUAGES = {
     },
   },
   EN: {
+    NOTIFICATION: {
+      ERROR: {
+        [ErrorCodeEnum.UNKNOWN]: "Unknown error",
+        [ErrorCodeEnum.REGISTER_ATTEMPT_FAILED]: "Register attempt failed",
+        [ErrorCodeEnum.PASSWORD_UPPERCASE_ERROR]:
+          "Password must contain at least one uppercase letter",
+        [ErrorCodeEnum.PASSWORD_LOWERCASE_ERROR]:
+          "Password must contain at least one lowercase letter",
+        [ErrorCodeEnum.PASSWORD_DIGIT_ERROR]:
+          "Password must contain at least one digit",
+        [ErrorCodeEnum.PASSWORD_SPECIAL_CHARACTER_ERROR]:
+          "Password must contain at least one special character",
+        [ErrorCodeEnum.EMAIL_ALREADY_IN_USE]:
+          "User with this email already exists",
+        [ErrorCodeEnum.USERNAME_ALREADY_IN_USE]:
+          "User with this username already exists",
+        [ErrorCodeEnum.DIRECTORIES_DOWNLOAD_FAILED]:
+          "Failed to download directories",
+        [ErrorCodeEnum.INVALID_CREDENTIALS]: "Invalid credentials",
+        [ErrorCodeEnum.INACTIVE_USER]: "User is inactive",
+        [ErrorCodeEnum.UNAUTHORIZED_PAGE]:
+          "You are not authorized to view this page",
+        [ErrorCodeEnum.FILE_DOWNLOAD_FAILED]: "Failed to download file",
+        [ErrorCodeEnum.FILES_DOWNLOAD_FAILED]: "Failed to download files",
+        [ErrorCodeEnum.FILE_UPLOAD_FAILED]: "Failed to upload file",
+        [ErrorCodeEnum.FILES_UPLOAD_FAILED]: "Failed to upload files",
+      },
+      SUCCESS: {
+        [SuccessCodeEnum.REGISTER_SUCCESSFUL]: "Registration successful",
+        [SuccessCodeEnum.LOGIN_SUCCESSFUL]: "Login successful",
+        [SuccessCodeEnum.LOGOUT_SUCCESSFUL]: "Logout successful",
+        [SuccessCodeEnum.FILE_UPLOAD_SUCCESSFUL]: "File uploaded successfully",
+        [SuccessCodeEnum.FILES_UPLOAD_SUCCESSFUL]:
+          "Files uploaded successfully",
+        [SuccessCodeEnum.FILE_DOWNLOAD_SUCCESSFUL]:
+          "File downloaded successfully",
+        [SuccessCodeEnum.FILES_DOWNLOAD_SUCCESSFUL]:
+          "Files downloaded successfully",
+        [SuccessCodeEnum.FILE_DELETE_SUCCESSFUL]: "File deleted successfully",
+        [SuccessCodeEnum.FILES_DELETE_SUCCESSFUL]: "Files deleted successfully",
+      },
+      WARNING: {},
+      INFO: {},
+    },
     NAVBAR: {
       SEARCH: "Search",
       LOGIN: "Login",
@@ -359,24 +423,6 @@ const LANGUAGES = {
         USERNAME_TAKEN: "Username taken",
         ACCOUNT_RETRIEVAL_ERROR: "Failed to send link to retrieve account",
       },
-      LOGIN_ATTEMPT_FAILED: "Login attempt failed",
-      LOGIN_ATTEMPT_SUCCESS: "Logged in successfully",
-      REGISTER_ATTEMPT_FAILED: {
-        "Password must contain at least one uppercase letter":
-          "Password must contain at least one uppercase letter",
-        "Password must contain at least one lowercase letter":
-          "Password must contain at least one lowercase letter",
-        "Password must contain at least one digit":
-          "Password must contain at least one digit",
-        "Password must contain at least one special character":
-          "Password must contain at least one special character",
-        "User with given email already exists":
-          "User with given email already exists",
-        "User with given username already exists":
-          "User with given username already exists",
-        GENERAL: "Nieudana próba rejestracji",
-      },
-      REGISTER_ATTEMPT_SUCCESS: "Registered successfully",
     },
     SIDEBAR: {
       DRIVE: "Drive",

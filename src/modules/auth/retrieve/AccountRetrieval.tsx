@@ -16,11 +16,6 @@ const AccountRetrieval = () => {
   const LANGUAGE = useLanguage();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
-
-  const handleCloseErrorSnackbar = () => {
-    setErrorSnackbarOpen(false);
-  };
 
   const handleSubmitRetrieval = (formData: AccountRetrievalData): void => {
     setIsLoading(true);
@@ -32,9 +27,9 @@ const AccountRetrieval = () => {
       .subscribe((res) => {
         if (res.isSuccessful) {
           navigate("/" + PathEnum.RETRIEVE_LINK_SENT);
-        } else {
-          setErrorSnackbarOpen(true);
         }
+
+        // TODO: Handle error response
       });
   };
 
@@ -52,16 +47,6 @@ const AccountRetrieval = () => {
           onSubmit={handleSubmitRetrieval}
         />
       </div>
-      <Snackbar
-        open={errorSnackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleCloseErrorSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert severity="error" onClose={handleCloseErrorSnackbar}>
-          {LANGUAGE.AUTH.ERRORS.ACCOUNT_RETRIEVAL_ERROR}
-        </Alert>
-      </Snackbar>
     </div>
   );
 };

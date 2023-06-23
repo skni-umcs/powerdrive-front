@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { PropsBase } from "../../../models/api/PropsBase";
+import { PropsBase } from "../models/api/PropsBase";
 import { useSnackbar } from "notistack";
-import { notificationStream$ } from "../../../services/NotificationService";
-import { language$ } from "../../../services/LanguageService";
+import { notificationStream$ } from "../services/NotificationService";
+import { language$ } from "../services/LanguageService";
 import { bind } from "react-rxjs";
 
 const [useLanguage] = bind(language$);
