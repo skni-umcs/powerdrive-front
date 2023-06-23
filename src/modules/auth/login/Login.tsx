@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../../../styles/auth.css";
 import LoginForm from "./components/LoginForm";
 import { LoginData } from "../../../models/api/LoginData";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { PathEnum } from "../../../enums/PathEnum";
 import { language$ } from "../../../services/LanguageService";
 import { login } from "../../../services/AuthService";

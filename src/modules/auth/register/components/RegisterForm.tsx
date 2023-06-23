@@ -5,14 +5,8 @@ import { language$ } from "../../../../services/LanguageService";
 import { PropsBase } from "../../../../models/api/PropsBase";
 import { RegisterData } from "../../../../models/api/RegisterData";
 import { RegisterErrorTypeEnum } from "../../../../enums/RegisterErrorTypeEnum";
-import {
-  Grid,
-  IconButton,
-  InputAdornment,
-  Snackbar,
-  TextField,
-} from "@mui/material";
-import { Alert, LoadingButton } from "@mui/lab";
+import { Grid, IconButton, InputAdornment, TextField } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import { EmailValidator } from "../../../form/validators/EmailValidator";
 import { PasswordValidator } from "../../../form/validators/PasswordValidator";
 import { FormValidatorFunction } from "../../../../models/ui/FormValidatorFunction";

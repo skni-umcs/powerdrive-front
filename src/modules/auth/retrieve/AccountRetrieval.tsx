@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { language$ } from "../../../services/LanguageService";
-import { Snackbar } from "@mui/material";
-import { Alert } from "@mui/lab";
 import { sendPasswordResetEmail } from "../../../services/AuthService";
 import { finalize, take } from "rxjs";
 import { useNavigate } from "react-router-dom";

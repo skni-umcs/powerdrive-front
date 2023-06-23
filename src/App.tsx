@@ -35,7 +35,6 @@ import SettingsCalendar from "./modules/settings/components/SettingsCalendar";
 import SettingsNotes from "./modules/settings/components/SettingsNotes";
 import { SnackbarProvider } from "notistack";
 import NotificationProvider from "./providers/NotificationProvider";
-import NavigationProvider from "./providers/NavigationProvider";
 
 const router = createBrowserRouter([
   {
