@@ -6,16 +6,9 @@ import { Fab, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { mobileView$ } from "../../../../services/DimensionsService";
 import { bind } from "react-rxjs";
-import AddEditEventDialog from "../../../common/dialogs/addEventDialog/AddEditEventDialog";
-import { CalendarEvent } from "../../../../models/api/CalendarEvent";
 import {
-  createEvent,
-  deleteEvent,
-  openAddEventDialog$,
   sendOpenAddCalendarDialogEvent,
   sendOpenAddEventDialogEvent,
-  setHighlightedEvent,
-  updateEvent,
 } from "../../../../services/CalendarService";
 import EventIcon from "@mui/icons-material/Event";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";

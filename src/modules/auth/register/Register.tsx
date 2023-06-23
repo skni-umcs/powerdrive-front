@@ -10,12 +10,17 @@ import { RegisterData } from "../../../models/api/RegisterData";
 import { bind } from "react-rxjs";
 import { Snackbar } from "@mui/material";
 import { Alert } from "@mui/lab";
+import { useSnackbar } from "notistack";
+import { notify, notifyError } from "../../../services/NotificationService";
+import { NotificationTypeEnum } from "../../../enums/NotificationTypeEnum";
+import { getErrorCode } from "../../../utils/ApiUtil";
 
 const [useLanguage] = bind(language$);
 
 const Register = () => {
   const LANGUAGE = useLanguage();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const [registerError, setRegisterError] =
     useState<RegisterErrorTypeEnum | null>(null);
@@ -30,14 +35,20 @@ const Register = () => {
         take(1),
         finalize(() => setIsLoading(false))
       )
-      .subscribe((registerRes) => {
-        setAttemptCounter(attemptCounter + 1);
-        if (registerRes.isSuccessful) {
-          setSuccessSnackOpen(true);
+      .subscribe({
+        next: (registerRes) => {
+          console.log("Register response: ", registerRes);
+          setAttemptCounter(attemptCounter + 1);
+          notify({
+            type: NotificationTypeEnum.SUCCESS,
+            message: "REGISTER_ATTEMPT_SUCCESSFUL",
+          });
           navigate("/" + PathEnum.LOGIN);
-        } else {
-          setErrorSnackOpen(true);
-        }
+        },
+        error: (error) => {
+          console.log("Error: ", error);
+          notifyError(getErrorCode(error));
+        },
       });
   };
 

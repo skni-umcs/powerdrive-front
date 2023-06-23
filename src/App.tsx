@@ -27,6 +27,14 @@ import { updateView } from "./services/DimensionsService";
 import { initializeCalendar } from "./services/CalendarService";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import Settings from "./modules/settings/Settings";
+import SettingsGeneral from "./modules/settings/components/SettingsGeneral";
+import SettingsDrive from "./modules/settings/components/SettingsDrive";
+import SettingsAccount from "./modules/settings/components/SettingsAccount";
+import SettingsCalendar from "./modules/settings/components/SettingsCalendar";
+import SettingsNotes from "./modules/settings/components/SettingsNotes";
+import { SnackbarProvider } from "notistack";
+import NotificationProvider from "./modules/common/notificationProvider/NotificationProvider";
 
 const router = createBrowserRouter([
   {
@@ -105,6 +113,32 @@ const router = createBrowserRouter([
               },
             ],
           },
+          {
+            path: PathEnum.SETTINGS,
+            element: <Settings />,
+            children: [
+              {
+                path: PathEnum.GENERAL,
+                element: <SettingsGeneral />,
+              },
+              {
+                path: PathEnum.ACCOUNT,
+                element: <SettingsAccount />,
+              },
+              {
+                path: PathEnum.DRIVE,
+                element: <SettingsDrive />,
+              },
+              {
+                path: PathEnum.CALENDAR,
+                element: <SettingsCalendar />,
+              },
+              {
+                path: PathEnum.NOTES,
+                element: <SettingsNotes />,
+              },
+            ],
+          },
         ],
       },
       {
@@ -160,7 +194,11 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <RouterProvider router={router} />
+        <SnackbarProvider autoHideDuration={5000}>
+          <NotificationProvider>
+            <RouterProvider router={router} />
+          </NotificationProvider>
+        </SnackbarProvider>
       </LocalizationProvider>
     </ThemeProvider>
   );
