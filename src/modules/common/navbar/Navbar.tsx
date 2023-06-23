@@ -1,5 +1,5 @@
 import React from "react";
-import { AppBar, Box, Toolbar } from "@mui/material";
+import { AppBar, Toolbar } from "@mui/material";
 import Search from "../search/Search";
 import "../../../styles/navbar.css";
 import NavbarCalendarControls from "./components/NavbarCalendarControls";

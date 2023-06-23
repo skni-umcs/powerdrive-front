@@ -31,6 +31,10 @@ const analyzeError = (error: string): ErrorCodeEnum => {
       return ErrorCodeEnum.EMAIL_ALREADY_IN_USE;
     case "User with given username already exists":
       return ErrorCodeEnum.USERNAME_ALREADY_IN_USE;
+    case "Invalid credentials":
+      return ErrorCodeEnum.INVALID_CREDENTIALS;
+    case "Inactive user":
+      return ErrorCodeEnum.INACTIVE_USER;
     default:
       return ErrorCodeEnum.UNKNOWN;
   }

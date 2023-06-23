@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { language$ } from "../../../services/LanguageService";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { PathEnum } from "../../../enums/PathEnum";
 import RegisterForm from "./components/RegisterForm";
 import { RegisterErrorTypeEnum } from "../../../enums/RegisterErrorTypeEnum";
@@ -8,24 +8,14 @@ import { register } from "../../../services/AuthService";
 import { finalize, take } from "rxjs";
 import { RegisterData } from "../../../models/api/RegisterData";
 import { bind } from "react-rxjs";
-import { Snackbar } from "@mui/material";
-import { Alert } from "@mui/lab";
-import { useSnackbar } from "notistack";
-import { notify, notifyError } from "../../../services/NotificationService";
-import { NotificationTypeEnum } from "../../../enums/NotificationTypeEnum";
-import { getErrorCode } from "../../../utils/ApiUtil";
 
 const [useLanguage] = bind(language$);
 
 const Register = () => {
   const LANGUAGE = useLanguage();
-  const navigate = useNavigate();
-  const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const [registerError, setRegisterError] =
     useState<RegisterErrorTypeEnum | null>(null);
-  const [errorSnackOpen, setErrorSnackOpen] = useState(false);
-  const [successSnackOpen, setSuccessSnackOpen] = useState(false);
   const [attemptCounter, setAttemptCounter] = useState(0);
 
   const handleSubmitRegister = (formData: RegisterData) => {
@@ -35,20 +25,9 @@ const Register = () => {
         take(1),
         finalize(() => setIsLoading(false))
       )
-      .subscribe({
-        next: (registerRes) => {
-          console.log("Register response: ", registerRes);
-          setAttemptCounter(attemptCounter + 1);
-          notify({
-            type: NotificationTypeEnum.SUCCESS,
-            message: "REGISTER_ATTEMPT_SUCCESSFUL",
-          });
-          navigate("/" + PathEnum.LOGIN);
-        },
-        error: (error) => {
-          console.log("Error: ", error);
-          notifyError(getErrorCode(error));
-        },
+      .subscribe((result) => {
+        setAttemptCounter(attemptCounter + 1);
+        // TODO: Handle register error response
       });
   };
 
@@ -81,24 +60,6 @@ const Register = () => {
           </div>
         </div>
       </div>
-      <Snackbar
-        open={errorSnackOpen}
-        autoHideDuration={6000}
-        onClose={() => setErrorSnackOpen(false)}
-      >
-        <Alert severity={"error"} onClose={() => setErrorSnackOpen(false)}>
-          {LANGUAGE.AUTH.REGISTER_ATTEMPT_FAILED}
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        open={successSnackOpen}
-        autoHideDuration={6000}
-        onClose={() => setSuccessSnackOpen(false)}
-      >
-        <Alert severity={"success"} onClose={() => setSuccessSnackOpen(false)}>
-          {LANGUAGE.AUTH.REGISTER_ATTEMPT_SUCCESS}
-        </Alert>
-      </Snackbar>
     </React.Fragment>
   );
 };

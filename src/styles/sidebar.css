@@ -11,6 +11,10 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
 }
 
+.app__sidebar__content {
+    min-width: 15rem;
+}
+
 .app__sidebar__navigation {
     display: flex;
     flex-direction: row;

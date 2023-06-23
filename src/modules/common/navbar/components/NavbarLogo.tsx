@@ -2,6 +2,8 @@ import React from "react";
 import { IconButton, Typography } from "@mui/material";
 import { bind } from "react-rxjs";
 import { mobileView$ } from "../../../../services/DimensionsService";
+import NavbarSidebarHandle from "./NavbarSidebarHandle";
+import { navigate } from "../../../../services/NavigationService";
 
 const [useMobileView] = bind(mobileView$);
 
@@ -10,7 +12,8 @@ const NavbarLogo = () => {
 
   return (
     <div className="app__navbar-logo">
-      <IconButton>
+      <NavbarSidebarHandle />
+      <IconButton onClick={() => navigate("/")}>
         <img src={require("../../../../assets/images/driveLogo.png")} alt="" />
       </IconButton>
       {!mobileView && (

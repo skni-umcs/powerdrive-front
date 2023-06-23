@@ -17,12 +17,16 @@ import { RegisterData } from "../models/api/RegisterData";
 import { SendPasswordResetEmailResult } from "../models/api/SendPasswordResetEmailResult";
 import { PasswordResetData } from "../models/api/PasswordResetData";
 import { PasswordResetResult } from "../models/api/PasswordResetResult";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { baseUrl } from "../const/environment";
 import { StorageKeysEnum } from "../enums/StorageKeysEnum";
 import { isExpired } from "react-jwt";
 import { getErrorCode } from "../utils/ApiUtil";
-import { notifyError } from "./NotificationService";
+import { notify, notifyError } from "./NotificationService";
+import { NotificationTypeEnum } from "../enums/NotificationTypeEnum";
+import { SuccessCodeEnum } from "../enums/SuccessCodeEnum";
+import { navigate } from "./NavigationService";
+import { PathEnum } from "../enums/PathEnum";
 
 const loggedUser = new BehaviorSubject<UserData | null>(null);
 export const loggedUser$ = loggedUser.asObservable();
@@ -30,7 +34,7 @@ export const loggedUser$ = loggedUser.asObservable();
 const identityUpdated = new BehaviorSubject<boolean>(false);
 export const identityUpdated$ = identityUpdated.asObservable();
 
-export const initializeAuth = (): Observable<OperationResult> => {
+export const initializeAuth = (): Observable<OperationResult<void>> => {
   const refreshToken = localStorage.getItem(StorageKeysEnum.REFRESH_TOKEN);
 
   if (!refreshToken) {
@@ -77,9 +81,7 @@ export const initializeAuth = (): Observable<OperationResult> => {
   );
 };
 
-export const login = (
-  user: LoginData
-): Observable<OperationResult<boolean>> => {
+export const login = (user: LoginData): Observable<OperationResult<void>> => {
   const formData = new FormData();
   formData.append("username", user.username);
   formData.append("password", user.password);
@@ -99,9 +101,16 @@ export const login = (
         })
       )
     ),
-    map((res) => {
+    tap((res) => {
       loggedUser.next(res.data);
       identityUpdated.next(true);
+      notify({
+        type: NotificationTypeEnum.SUCCESS,
+        message: SuccessCodeEnum.LOGIN_SUCCESSFUL,
+      });
+      navigate("/" + PathEnum.APP + "/" + PathEnum.DRIVE);
+    }),
+    map((res) => {
       return { isSuccessful: true };
     }),
     catchError((error) => {
@@ -117,8 +126,23 @@ export const login = (
 
 export const register = (
   user: RegisterData
-): Observable<AxiosResponse<UserData>> => {
-  return from(axios.post<UserData>(baseUrl + "/user/", user));
+): Observable<OperationResult<void>> => {
+  return from(axios.post<UserData>(baseUrl + "/user/", user)).pipe(
+    tap((res) => {
+      notify({
+        type: NotificationTypeEnum.SUCCESS,
+        message: SuccessCodeEnum.REGISTER_SUCCESSFUL,
+      });
+      navigate("/" + PathEnum.LOGIN);
+    }),
+    map((res) => {
+      return { isSuccessful: true };
+    }),
+    catchError((error) => {
+      notifyError(getErrorCode(error));
+      return of({ isSuccessful: false, error: "" });
+    })
+  );
 };
 
 export const logout = () => {
@@ -127,6 +151,10 @@ export const logout = () => {
 
   loggedUser.next(null);
   identityUpdated.next(true);
+  notify({
+    type: NotificationTypeEnum.SUCCESS,
+    message: SuccessCodeEnum.LOGOUT_SUCCESSFUL,
+  });
 };
 
 export const sendPasswordResetEmail = (

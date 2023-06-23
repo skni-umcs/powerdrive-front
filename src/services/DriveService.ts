@@ -21,6 +21,11 @@ import { baseUrl } from "../const/environment";
 import { OperationResult } from "../models/api/OperationResult";
 import { saveAs } from "file-saver";
 import { OperationProgressData } from "../models/ui/OperationProgressData";
+import { notify, notifyError } from "./NotificationService";
+import { ErrorCodeEnum } from "../enums/ErrorCodeEnum";
+import { NotificationTypeEnum } from "../enums/NotificationTypeEnum";
+import { SuccessCodeEnum } from "../enums/SuccessCodeEnum";
+import { OperationTypeEnum } from "../enums/OperationTypeEnum";
 
 const directoryTree = new BehaviorSubject<FileData | null>(null);
 export const directoryTree$ = directoryTree.asObservable();
@@ -122,7 +127,7 @@ export const setSelectedFiles = (files: FileData[]) => {
 export const downloadDirectoryContent = (
   directoryId: string,
   downloadRequestorPath: string
-): Observable<OperationResult> => {
+): Observable<OperationResult<void>> => {
   const operationId = Math.random();
 
   driveOperationInProgress.next([
@@ -158,7 +163,10 @@ export const downloadDirectoryContent = (
       }
     }),
     map((_) => ({ isSuccessful: true })),
-    catchError((err) => of({ isSuccessful: false, error: err })),
+    catchError((err) => {
+      notifyError(ErrorCodeEnum.DIRECTORIES_DOWNLOAD_FAILED);
+      return of({ isSuccessful: false, error: err });
+    }),
     finalize(() =>
       driveOperationInProgress.next([
         ...driveOperationInProgress
@@ -172,9 +180,11 @@ export const downloadDirectoryContent = (
 export const uploadFile = (
   fileData: File | null,
   path: string,
-  isDir: boolean
-): Observable<OperationResult> => {
+  isDir: boolean,
+  notifyResult: boolean = true
+): Observable<OperationResult<void>> => {
   const operationId = Math.random();
+  const abortController = new AbortController();
 
   driveOperationInProgress.next([
     ...driveOperationInProgress.getValue(),
@@ -197,15 +207,20 @@ export const uploadFile = (
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          signal: abortController.signal,
           onUploadProgress: (progressEvent) => {
             uploadProgress.next(
               new Map(
                 uploadProgress.getValue().set(operationId, {
+                  operationId: operationId,
                   progress: progressEvent.progress
                     ? progressEvent.progress * 100
                     : 0,
                   filename: fileData?.name ? fileData.name : "",
                   isDir: isDir,
+                  file: fileData,
+                  abortController: abortController,
+                  operationType: OperationTypeEnum.UPLOAD,
                 })
               )
             );
@@ -247,20 +262,19 @@ export const uploadFile = (
         ]);
       }
     }),
+    tap((_) => {
+      if (notifyResult)
+        notify({
+          type: NotificationTypeEnum.SUCCESS,
+          message: SuccessCodeEnum.FILE_UPLOAD_SUCCESSFUL,
+        });
+    }),
     map((_) => ({ isSuccessful: true })),
-    catchError((err) => of({ isSuccessful: false, error: err })),
-    finalize(() => {
-      driveOperationInProgress.next([
-        ...driveOperationInProgress
-          .getValue()
-          .filter((op) => op !== operationId),
-      ]);
-
-      const updatedUploadMap = uploadProgress.getValue();
-      updatedUploadMap.delete(operationId);
-
-      uploadProgress.next(new Map(updatedUploadMap));
-    })
+    catchError((err) => {
+      if (notifyResult) notifyError(ErrorCodeEnum.FILE_UPLOAD_FAILED);
+      return of({ isSuccessful: false, error: err });
+    }),
+    finalize(() => deleteUploadOperation(operationId))
   );
 };
 
@@ -268,13 +282,26 @@ export const uploadFiles = (
   filesData: File[],
   path: string
 ): Observable<any> => {
-  return zip(filesData.map((file) => uploadFile(file, path, false))).pipe(
+  return zip(
+    filesData.map((file) => uploadFile(file, path, false, false))
+  ).pipe(
+    tap((_) =>
+      notify({
+        type: NotificationTypeEnum.SUCCESS,
+        message: SuccessCodeEnum.FILES_UPLOAD_SUCCESSFUL,
+      })
+    ),
     map((_) => ({ isSuccessful: true })),
-    catchError((err) => of({ isSuccessful: false, error: err }))
+    catchError((err) => {
+      notifyError(ErrorCodeEnum.FILES_UPLOAD_FAILED);
+      return of({ isSuccessful: false, error: err });
+    })
   );
 };
 
-export const deleteFile = (fileId: string): Observable<OperationResult> => {
+export const deleteFile = (
+  fileId: string
+): Observable<OperationResult<void>> => {
   const operationId = Math.random();
 
   driveOperationInProgress.next([
@@ -315,8 +342,19 @@ export const deleteFile = (fileId: string): Observable<OperationResult> => {
   );
 };
 
-export const downloadFile = (file: FileData): Observable<OperationResult> => {
+export const downloadFile = (
+  file: FileData,
+  notifyResult: boolean = true
+): Observable<OperationResult<void>> => {
+  // @ts-ignore
+  for (const [key, value] of downloadProgress.getValue()) {
+    if (value.filename === file.filename) {
+      return of({ isSuccessful: true });
+    }
+  }
+
   const operationId = Math.random();
+  const abortController = new AbortController();
 
   driveOperationInProgress.next([
     ...driveOperationInProgress.getValue(),
@@ -331,18 +369,21 @@ export const downloadFile = (file: FileData): Observable<OperationResult> => {
             Authorization: `Bearer ${token}`,
           },
           responseType: "blob",
+          signal: abortController.signal,
           onDownloadProgress: (progressEvent) => {
             downloadProgress.next(
               new Map(
-                downloadProgress
-                  .getValue()
-                  .set(operationId, {
-                    progress: progressEvent.progress
-                      ? progressEvent.progress * 100
-                      : 0,
-                    filename: file.filename,
-                    isDir: file.is_dir,
-                  })
+                downloadProgress.getValue().set(operationId, {
+                  operationId: operationId,
+                  progress: progressEvent.progress
+                    ? progressEvent.progress * 100
+                    : 0,
+                  filename: file.filename,
+                  isDir: file.is_dir,
+                  fileData: file,
+                  abortController: abortController,
+                  operationType: OperationTypeEnum.DOWNLOAD,
+                })
               )
             );
           },
@@ -351,39 +392,79 @@ export const downloadFile = (file: FileData): Observable<OperationResult> => {
     ),
     map((response) => response.data),
     map((fileContent) => saveAs(fileContent, file.filename)),
+    tap((_) => {
+      if (notifyResult)
+        notify({
+          type: NotificationTypeEnum.SUCCESS,
+          message: SuccessCodeEnum.FILE_DOWNLOAD_SUCCESSFUL,
+        });
+    }),
     map((_) => ({ isSuccessful: true })),
-    catchError((err) => of({ isSuccessful: false, error: err })),
-    finalize(() => {
-      driveOperationInProgress.next([
-        ...driveOperationInProgress
-          .getValue()
-          .filter((op) => op !== operationId),
-      ]);
-
-      const updatedDownloadMap = downloadProgress.getValue();
-      updatedDownloadMap.delete(operationId);
-
-      downloadProgress.next(new Map(updatedDownloadMap));
-    })
+    catchError((err) => {
+      if (notifyResult) notifyError(ErrorCodeEnum.FILE_DOWNLOAD_FAILED);
+      return of({ isSuccessful: false, error: err });
+    }),
+    finalize(() => deleteDownloadOperation(operationId))
   );
 };
 
-export const downloadSelectedFiles = (): Observable<OperationResult> => {
+export const downloadSelectedFiles = (): Observable<OperationResult<void>> => {
   return zip(
     selectedFiles
       .getValue()
       .filter((file) => !file.is_dir)
-      .map((file) => downloadFile(file))
+      .map((file) => downloadFile(file, false))
   ).pipe(
+    tap((_) =>
+      notify({
+        type: NotificationTypeEnum.SUCCESS,
+        message: SuccessCodeEnum.FILES_DOWNLOAD_SUCCESSFUL,
+      })
+    ),
     map((_) => ({ isSuccessful: true })),
-    catchError((err) => of({ isSuccessful: false, error: err }))
+    catchError((err) => {
+      notifyError(ErrorCodeEnum.FILES_DOWNLOAD_FAILED);
+      return of({ isSuccessful: false, error: err });
+    })
   );
 };
 
-export const deleteSelectedFiles = (): Observable<OperationResult> => {
+export const deleteSelectedFiles = (): Observable<OperationResult<void>> => {
   return zip(selectedFiles.getValue().map((file) => deleteFile(file.id))).pipe(
     tap((_) => selectedFiles.next([])),
     map((_) => ({ isSuccessful: true })),
     catchError((err) => of({ isSuccessful: false, error: err }))
   );
+};
+
+export const cancelOperation = (operation: OperationProgressData) => {
+  operation.abortController.abort();
+
+  if (operation.operationType === OperationTypeEnum.DOWNLOAD) {
+    deleteDownloadOperation(operation.operationId);
+  } else {
+    deleteUploadOperation(operation.operationId);
+  }
+};
+
+const deleteDownloadOperation = (operationId: number) => {
+  driveOperationInProgress.next([
+    ...driveOperationInProgress.getValue().filter((op) => op !== operationId),
+  ]);
+
+  const updatedDownloadMap = downloadProgress.getValue();
+  updatedDownloadMap.delete(operationId);
+
+  downloadProgress.next(new Map(updatedDownloadMap));
+};
+
+const deleteUploadOperation = (operationId: number) => {
+  driveOperationInProgress.next([
+    ...driveOperationInProgress.getValue().filter((op) => op !== operationId),
+  ]);
+
+  const updatedUploadMap = uploadProgress.getValue();
+  updatedUploadMap.delete(operationId);
+
+  uploadProgress.next(new Map(updatedUploadMap));
 };
