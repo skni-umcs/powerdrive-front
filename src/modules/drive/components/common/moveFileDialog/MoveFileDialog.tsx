@@ -19,7 +19,7 @@ interface MoveFileDialogProps {
     open: boolean;
     onClose: (file: FileData | null, newPath: string | null) => void;
     file: FileData | null;
-    dir_tree: FileData | null;
+    dirTree: FileData | null;
 }
 
 interface RenderTree {
@@ -35,7 +35,7 @@ const MoveFileDialog = ({
     open,
     onClose,
     file,
-    dir_tree,
+    dirTree,
 }: MoveFileDialogProps) => {
     const LANGUAGE = useLanguage();
     const [newPath, setNewPath] = React.useState<string>("");
@@ -64,14 +64,14 @@ const MoveFileDialog = ({
         setNewPathError(false);
     }
 
-    const getTreeData = (dir_tree: FileData) => {
+    const getTreeData = (dirTree: FileData) => {
         const treeData: RenderTree = {
-            id: dir_tree.id,
-            name: dir_tree.filename === "/" ? "Home" : dir_tree.filename,
-            path: dir_tree.path,
+            id: dirTree.id,
+            name: dirTree.filename === "/" ? "Home" : dirTree.filename,
+            path: dirTree.path,
             children: [],
         }
-        dir_tree.children?.forEach((child) => {
+        dirTree.children?.forEach((child) => {
             if (child.is_dir) {
                 treeData.children?.push(getTreeData(child));
             }
@@ -79,7 +79,7 @@ const MoveFileDialog = ({
         return treeData;
     }
 
-    const treeData: RenderTree = getTreeData(dir_tree!);
+    const treeData: RenderTree = getTreeData(dirTree!);
 
     const renderTree = (nodes: RenderTree) => (
         <TreeItem
@@ -96,9 +96,6 @@ const MoveFileDialog = ({
     );
 
     const onNodeSelect = (event: React.SyntheticEvent, nodeId: string) => {
-        console.log("selected:", nodeId);
-        console.log("node path:",
-            document.getElementById("tree-node-" + nodeId)?.getAttribute("file-path"));
         setNewPath(document.getElementById("tree-node-" + nodeId)?.getAttribute("file-path")!);
     }
 

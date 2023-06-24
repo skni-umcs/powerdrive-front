@@ -406,7 +406,7 @@ const DriveFilesViewContainer = () => {
         open={moveFileDialogOpened}
         onClose={handleMoveFile}
         file={fileToMove}
-        dir_tree={directoryTree}
+        dirTree={directoryTree}
       />
       )}
     </React.Fragment>
