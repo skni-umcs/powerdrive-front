@@ -24,6 +24,8 @@ interface FileTileProps {
   onPathChange: (folder: FileData) => void;
   onFileDelete: (file: FileData) => void;
   onFileShare: (file: FileData) => void;
+  onFileRename: (file: FileData) => void;
+  onFileMove: (file: FileData) => void;
 }
 
 const [useLanguage] = bind(language$);
@@ -36,6 +38,8 @@ const FileTile = ({
   onPathChange,
   onFileDelete,
   onFileShare,
+  onFileRename,
+  onFileMove,
 }: FileTileProps) => {
   const LANGUAGE = useLanguage();
   const [isSelected, setIsSelected] = useState(false);
@@ -99,12 +103,12 @@ const FileTile = ({
   };
 
   const handleRename = () => {
-    // TODO: Implement file rename modal
+    onFileRename(file);
     handleCloseContextMenu();
   };
 
   const handleMove = () => {
-    // TODO: Implement file move modal
+    onFileMove(file);
     handleCloseContextMenu();
   };
 
