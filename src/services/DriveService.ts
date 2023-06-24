@@ -321,6 +321,20 @@ export const renameFile = (file: FileData): Observable<OperationResult> => {
   );
 };
 
+const moveUpdateFiles = (responseFile: FileData) => {
+    primaryFilesViewFiles.next(
+        primaryFilesViewFiles.getValue().filter(file => file.id !== responseFile.id)
+    );
+
+    secondaryFilesViewFiles.next(
+        secondaryFilesViewFiles.getValue().filter(file => file.id !== responseFile.id)
+    );
+
+    selectedFiles.next(
+        selectedFiles.getValue().filter(file => file.id !== responseFile.id)
+    );
+}
+
 export const moveFile = (file: FileData): Observable<OperationResult> => {
     const operationId = Math.random();
 
@@ -339,6 +353,7 @@ export const moveFile = (file: FileData): Observable<OperationResult> => {
         ),
         tap((response) => {
             const responseFile = response.data;
+            moveUpdateFiles(responseFile);
             //  TODO update files
         }),
         map((_) => ({ isSuccessful: true })),
