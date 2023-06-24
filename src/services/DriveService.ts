@@ -301,20 +301,27 @@ export const uploadFiles = (
 };
 
 const renameUpdateFiles = (responseFile: FileData) => {
-    primaryFilesViewFiles.next(
-        primaryFilesViewFiles.getValue().map(file => file.id === responseFile.id ? responseFile : file)
-    );
+    const primaryFilesViewPathValue = primaryFilesViewPath.getValue()!;
+    const secondaryFilesViewPathValue = secondaryFilesViewPath.getValue()!;
+    const primaryFilesViewPathValueActualPath = primaryFilesViewPathValue[primaryFilesViewPathValue!.length - 1].path
+    const secondaryFilesViewPathValueActualPath = secondaryFilesViewPathValue[secondaryFilesViewPathValue!.length - 1].path
 
-    secondaryFilesViewFiles.next(
-        secondaryFilesViewFiles.getValue().map(file => file.id === responseFile.id ? responseFile : file)
-    );
-
+    if (primaryFilesViewPathValueActualPath === responseFile.path) {
+        primaryFilesViewFiles.next(
+            primaryFilesViewFiles.getValue().map(file => file.id === responseFile.id ? responseFile : file)
+        );
+    }
+    if (secondaryFilesViewPathValueActualPath === responseFile.path) {
+        secondaryFilesViewFiles.next(
+            secondaryFilesViewFiles.getValue().map(file => file.id === responseFile.id ? responseFile : file)
+        );
+    }
     selectedFiles.next(
         selectedFiles.getValue().map(file => file.id === responseFile.id ? responseFile : file)
     );
 }
 
-export const renameFile = (file: FileData): Observable<OperationResult<void>> => {
+export const renameFile = (file: FileData, newName: string): Observable<OperationResult<void>> => {
   const operationId = Math.random();
 
   driveOperationInProgress.next([
@@ -322,10 +329,12 @@ export const renameFile = (file: FileData): Observable<OperationResult<void>> =>
     operationId,
   ]);
 
+  const changedFile = {...file, filename: newName};
+
   return getToken().pipe(
       switchMap((token) =>
           from(
-              axios.put<FileData>(baseUrl + "/file", file, {
+              axios.put<FileData>(baseUrl + "/file", changedFile, {
                 headers: { Authorization: `Bearer ${token}` },
               })
           )
@@ -346,21 +355,35 @@ export const renameFile = (file: FileData): Observable<OperationResult<void>> =>
   );
 };
 
-const moveUpdateFiles = (responseFile: FileData) => {
-    primaryFilesViewFiles.next(
-        primaryFilesViewFiles.getValue().filter(file => file.id !== responseFile.id)
-    );
+const moveUpdateFiles = (originalFile: FileData, responseFile: FileData) => {
+    const primaryFilesViewPathValue = primaryFilesViewPath.getValue()!;
+    const secondaryFilesViewPathValue = secondaryFilesViewPath.getValue()!;
+    const primaryFilesViewPathValueActualPath = primaryFilesViewPathValue[primaryFilesViewPathValue!.length - 1].path
+    const secondaryFilesViewPathValueActualPath = secondaryFilesViewPathValue[secondaryFilesViewPathValue!.length - 1].path
 
-    secondaryFilesViewFiles.next(
-        secondaryFilesViewFiles.getValue().filter(file => file.id !== responseFile.id)
-    );
-
-    selectedFiles.next(
-        selectedFiles.getValue().filter(file => file.id !== responseFile.id)
-    );
+    if (originalFile.path === primaryFilesViewPathValueActualPath) {
+        primaryFilesViewFiles.next(
+            primaryFilesViewFiles.getValue().filter(file => file.id !== originalFile.id)
+        );
+    }
+    if (originalFile.path === secondaryFilesViewPathValueActualPath) {
+        secondaryFilesViewFiles.next(
+            secondaryFilesViewFiles.getValue().filter(file => file.id !== originalFile.id)
+        );
+    }
+    if (responseFile.path === primaryFilesViewPathValueActualPath) {
+        primaryFilesViewFiles.next(
+            [...primaryFilesViewFiles.getValue(), responseFile]
+        );
+    }
+    if (responseFile.path === secondaryFilesViewPathValueActualPath) {
+        secondaryFilesViewFiles.next(
+            [...secondaryFilesViewFiles.getValue(), responseFile]
+        );
+    }
 }
 
-export const moveFile = (file: FileData): Observable<OperationResult<void>> => {
+export const moveFile = (file: FileData, newPath: string): Observable<OperationResult<void>> => {
     const operationId = Math.random();
 
     driveOperationInProgress.next([
@@ -368,17 +391,19 @@ export const moveFile = (file: FileData): Observable<OperationResult<void>> => {
         operationId,
     ]);
 
+    const changedFile = {...file, path: newPath};
+
     return getToken().pipe(
         switchMap((token) =>
             from(
-                axios.put<FileData>(baseUrl + "/file", file, {
+                axios.put<FileData>(baseUrl + "/file", changedFile, {
                     headers: { Authorization: `Bearer ${token}` },
                 })
             )
         ),
         tap((response) => {
             const responseFile = response.data;
-            moveUpdateFiles(responseFile);
+            moveUpdateFiles(file, responseFile);
         }),
         map((_) => ({ isSuccessful: true })),
         catchError((err) => of({ isSuccessful: false, error: err })),

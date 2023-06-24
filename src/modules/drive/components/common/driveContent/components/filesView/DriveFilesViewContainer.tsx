@@ -229,8 +229,7 @@ const DriveFilesViewContainer = () => {
       setRenameFileDialogOpened(false);
       return;
     }
-    const changedFile = {...file, filename: newName};
-    renameFile(changedFile)
+    renameFile(file, newName)
       .pipe(first())
       .subscribe((result) => {
         if (result.isSuccessful) {
@@ -246,8 +245,7 @@ const DriveFilesViewContainer = () => {
         setMoveFileDialogOpened(false);
         return;
     }
-    const changedFile = {...file, path: newPath};
-    moveFile(changedFile)
+    moveFile(file, newPath)
       .pipe(first())
       .subscribe((result) => {
           if (result.isSuccessful) {
