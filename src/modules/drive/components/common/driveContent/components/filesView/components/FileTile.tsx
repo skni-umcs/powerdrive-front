@@ -108,7 +108,6 @@ const FileTile = ({
   };
 
   const handleMove = () => {
-    // TODO: Implement file move modal
     onFileMove(file);
     handleCloseContextMenu();
   };

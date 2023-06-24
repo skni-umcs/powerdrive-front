@@ -26,7 +26,6 @@ import { ErrorCodeEnum } from "../enums/ErrorCodeEnum";
 import { NotificationTypeEnum } from "../enums/NotificationTypeEnum";
 import { SuccessCodeEnum } from "../enums/SuccessCodeEnum";
 import { OperationTypeEnum } from "../enums/OperationTypeEnum";
-import {CalendarEvent} from "../models/api/CalendarEvent";
 
 const directoryTree = new BehaviorSubject<FileData | null>(null);
 export const directoryTree$ = directoryTree.asObservable();
