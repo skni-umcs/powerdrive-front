@@ -26,6 +26,7 @@ interface FileTileProps {
   onFileShare: (file: FileData) => void;
   onFileRename: (file: FileData) => void;
   onFileMove: (file: FileData) => void;
+  onFileDetails: (file: FileData) => void;
 }
 
 const [useLanguage] = bind(language$);
@@ -40,6 +41,7 @@ const FileTile = ({
   onFileShare,
   onFileRename,
   onFileMove,
+  onFileDetails,
 }: FileTileProps) => {
   const LANGUAGE = useLanguage();
   const [isSelected, setIsSelected] = useState(false);
@@ -113,7 +115,7 @@ const FileTile = ({
   };
 
   const handleShowDetails = () => {
-    // TODO: Implement file details modal
+    onFileDetails(file);
     handleCloseContextMenu();
   };
 

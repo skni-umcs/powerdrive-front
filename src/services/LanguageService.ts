@@ -312,6 +312,14 @@ const LANGUAGES = {
         CAN_SHARE: "Może udostępniać",
         CAN_DELETE: "Może usuwać",
       },
+      FILE_DETAILS_DIALOG: {
+        TITLE: "Szczegóły pliku",
+        NAME: "Nazwa",
+        TYPE: "Typ",
+        SIZE: "Rozmiar",
+        UPDATED: "Ostatnia modyfikacja",
+        PATH: "Ścieżka",
+      },
       DROP: "Upuść pliki tutaj",
     },
     SETTINGS: {
@@ -622,6 +630,14 @@ const LANGUAGES = {
         CAN_DELETE: "Can delete",
       },
       DROP: "Drop files here",
+    },
+    FILE_DETAILS_DIALOG: {
+      TITLE: "File details",
+      NAME: "Name",
+      TYPE: "Type",
+      SIZE: "Size",
+      UPDATED: "Last modified",
+      PATH: "Path",
     },
     SETTINGS: {
       ACCOUNT: {

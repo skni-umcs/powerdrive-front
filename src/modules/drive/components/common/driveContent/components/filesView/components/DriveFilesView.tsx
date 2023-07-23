@@ -30,6 +30,7 @@ interface DriveFilesViewProps {
   onFileShare: (file: FileData) => void;
   onFileRename: (file: FileData) => void;
   onFileMove: (file: FileData) => void;
+  onFileDetails: (file: FileData) => void;
   sortType: SortTypeEnum | null;
   sortMode: SortModeEnum | null;
 }
@@ -48,6 +49,7 @@ const DriveFilesView = ({
   onFileShare,
   onFileRename,
   onFileMove,
+  onFileDetails,
   sortType,
   sortMode,
 }: DriveFilesViewProps) => {
@@ -121,6 +123,7 @@ const DriveFilesView = ({
                 onFileShare={onFileShare}
                 onFileRename={onFileRename}
                 onFileMove={onFileMove}
+                onFileDetails={onFileDetails}
               />
             ))
           : [...Array(5)].map((_, i) => <SkeletonFileTile key={i} />)}
