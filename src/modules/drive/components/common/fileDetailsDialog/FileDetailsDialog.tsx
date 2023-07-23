@@ -28,7 +28,8 @@ const FileDetailsDialog = ({
 }: FileDetailsDialogProps) => {
   const LANGUAGE = useLanguage();
 
-  const localLastModified = new Date(detailsFile.last_modified!).toLocaleString();
+  // const localLastModified = new Date(detailsFile.last_modified!).toLocaleString();
+  const localLastModified = new Date(detailsFile.last_modified! + "Z").toLocaleString();
   function formatBytes(bytes: number, decimals = 2) {
     if (!+bytes) return '0 Bytes'
 
