@@ -64,8 +64,6 @@ const CreateFolderDialog = ({
     <Dialog
       open={open}
       onClose={handleClose}
-      aria-labelledby="createFolderDialogTitle"
-      aria-describedby="createFolderDialogDescription"
     >
       <DialogTitle id="createFolderDialogTitle">
         {LANGUAGE.DRIVE.CREATE_FOLDER_DIALOG.TITLE}

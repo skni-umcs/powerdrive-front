@@ -485,3 +485,83 @@
     align-items: center;
     margin-right: 0.5rem;
 }
+
+.app__file-details-dialog_rows {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: flex-start;
+    min-width: 200px;
+    padding-bottom: 0;
+}
+
+.app__file-details-dialog__row {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+
+.app__file-details-dialog__row__content {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    /*align-items: center;*/
+    width: 100%;
+    /*background-color: var(--color-darkgrey);*/
+    /*border-radius: var(--border-radius-sm);*/
+    padding: 0 0.5rem;
+}
+
+.app__file-details-dialog__row__content__title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    width: 30%;
+    margin-top: 0.5rem;
+    /*color: var(--color-lightgrey)*/
+}
+
+.app__file-details-dialog__row__content__value {
+    flex: 1;
+    font-size: 0.9rem;
+    font-weight: 400;
+    /*color: var(--color-lightgrey);*/
+    margin: 0.5rem;
+}
+
+.app__file-details-dialog__icon__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 65%;
+    margin-bottom: 0.5rem;
+    /*background-color: var(--dark-mode-background-color-light);*/
+}
+
+.app__file-details-dialog__icon {
+    object-fit: contain;
+    width: 30%;
+    height: 40%;
+}
+
+.app__file-details-dialog__actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+}
+
+.app__file-details-dialog__action {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 100px;
+    /*cursor: pointer;*/
+    /*transition: all 0.2s ease-in-out;*/
+}

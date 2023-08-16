@@ -218,6 +218,7 @@ const DriveFilesViewContainer = () => {
       return;
     }
 
+    handleCloseDetailsDialog();
     setDeleteFileDialogLoading(true);
 
     deleteFile(file.id)
@@ -428,6 +429,8 @@ const DriveFilesViewContainer = () => {
         open={fileDetailsDialogOpened}
         onClose={handleCloseDetailsDialog}
         detailsFile={fileToDetails}
+        handleOpenDeleteFileDialog={handleOpenDeleteFileDialog}
+        handleOpenShareFileDialog={handleOpenShareFileDialog}
       />
       )}
     </React.Fragment>
